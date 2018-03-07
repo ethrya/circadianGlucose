@@ -1,4 +1,4 @@
-function f  = f4(I)
+function f  = f4(I, const)
     % (Intersitiaial) Insulin dependent glucose utilisation
     const = models.constants;
     

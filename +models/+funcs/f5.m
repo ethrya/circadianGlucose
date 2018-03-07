@@ -1,4 +1,4 @@
-function f = f5(x3)
+function f = f5(x3, const)
     % Hepatic glucose production
     const = models.constants;
     

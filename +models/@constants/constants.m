@@ -1,11 +1,11 @@
 classdef constants
     %List of constsnats as outlined in Sturis et al. (1991),  
            % Tolic et al (2000), and Li et al. (2006)
-    properties (Constant)
+    properties
         % Degradation times (min)
         ti = 100;
         tp = 6;
-        td = 12;
+        td = 36;
         tdLi = 12; % The degradation time used in Li et al (2006)
         
         % Volume of spaces (l)
@@ -45,7 +45,7 @@ classdef constants
     
     properties
         % Exogeneous glucose infusion (mg/min)
-        Gin = 1.08;
+        Gin = 108;
     end
 end
 
