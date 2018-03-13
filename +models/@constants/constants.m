@@ -19,6 +19,8 @@ classdef constants
         C3 = 1000; %mg/l
         C4 = 80; %mU/l
         C5 = 26; %mU/l
+        C7 = 2.0;
+        C6 = 2.0;
         
         
         U0=40; % mg/min
@@ -41,6 +43,13 @@ classdef constants
         
         % Insulin Degradation rate (1/min)
         di = 0.06;
+        
+        %tolic values
+        Sb = 20;
+        Sm = 140;
+        delta = -2.4;
+        gamma = 5.0;
+        
     end
     
     properties
