@@ -1,10 +1,10 @@
 clear all
 tic
 % Bifurification parameter arrays
-Gin = 0:100:300;
+Gin = 0:1:300;
 nGin = length(Gin);
 
-tau = 1:50:100;
+tau = 1:0.5:100;
 nTau = length(tau);
 
 %Constants for all trials
@@ -35,11 +35,11 @@ LiResults = zeros(nGin, nTau, 4);
 SturisResults = zeros(nGin, nTau, 4);
 TolicResults = zeros(nGin, nTau, 4);
 
-fprintf("Starting Simulations");
+fprintf('Starting Simulations \n');
 
 %% Find Values
 parfor i=1:nGin
-    fprintf("Completed %i of %i Gin Values \n", i, nGin);
+    fprintf('Completed %i of %i Gin Values \n', i, nGin);
     for j=1:nTau
         % Update Gin value
         constArray(i,j).Gin = Gin(i);
@@ -63,7 +63,7 @@ end
 toc
 
 %% Save Output
-save('/project/RDS-FSC-circadianGlucose-RW/simResults/bifur_out',...
+save('/project/RDS-FSC-circadianGlucose-RW/simResults/bifur_02',...
 'LiResults','SturisResults','TolicResults','Gin', 'tau');
 
 %save('/suphys/erya7975/results/bifur02',...
