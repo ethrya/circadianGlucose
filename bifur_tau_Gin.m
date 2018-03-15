@@ -35,7 +35,7 @@ LiResults = zeros(nGin, nTau, 4);
 SturisResults = zeros(nGin, nTau, 4);
 TolicResults = zeros(nGin, nTau, 4);
 
-fprintf("Starting Simulations \n");
+fprintf("Starting Simulations");
 
 %% Find Values
 parfor i=1:nGin
