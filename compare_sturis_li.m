@@ -1,8 +1,9 @@
+clear all;
 const = models.constants;
 const.tau1 = 7;
 const.tau2 = 36;
 const.td = 36;
-const.Gin = 250;
+const.Gin = 900;
 
 %const.C5 = 29;
 %const.tp = 4;
