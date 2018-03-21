@@ -63,7 +63,7 @@ end
 toc
 
 %% Save Output
-save('/suphys/erya7975/results/bifur04',...
+save('../../simResults/bifur04',...
      'LiResults','SturisResults','TolicResults','Gin', 'tau');
 
 
