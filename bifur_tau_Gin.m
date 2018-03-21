@@ -4,7 +4,7 @@ tic
 Gin = 0:1:300;
 nGin = length(Gin);
 
-tau = 1:0.5:100;
+tau = 1:0.5:150;
 nTau = length(tau);
 
 %Constants for all trials
@@ -63,12 +63,11 @@ end
 toc
 
 %% Save Output
-save('/project/RDS-FSC-circadianGlucose-RW/simResults/bifur_02',...
-'LiResults','SturisResults','TolicResults','Gin', 'tau');
+save('/suphys/erya7975/results/bifur04',...
+     'LiResults','SturisResults','TolicResults','Gin', 'tau');
 
-%save('/suphys/erya7975/results/bifur02',...
 
-exit
+
 %% Plotting
 % hold on
 % plot(Gin, LiResults(:,3,1), 'b')
