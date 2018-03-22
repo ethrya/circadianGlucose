@@ -21,43 +21,45 @@ sturisState = [30; % Ip
                0; % x2
                0]; % x3
 
-time = [0, 15000];
-tmin = 0;
+time = [0, 50000];
+tmin = 15000;
 
 %% Solve ODEs
 %sol = liSolver(liState, const, time);
 [t, y] = sturisSolver(sturisState, const, time);
 %[tT, yT] = tolicSolver(sturisState, const, time);
-
-%t=time(1):0.01:time(2);
-
-%y=sin(0.5*pi*t);
+% 
+% t=time(1):0.001:time(2);
+% 
+% y = zeros(length(t), 6);
+% y(:,3) = sin(0.25*2*pi*t);
 
 state = [2; 0]; %initial (y', y)
 
 %[t, y] = ode15s(@vdp1000, time, state);
 figure()
-plot(t(t>tmin),y(t>tmin))
+plot(t(t>tmin),y(t>tmin,3))
 %% FFT preliminaries
 % Define sampling frequency and eqully spaced time vector
 t = t(t>tmin);
-y = y(t>tmin);
+y = y(t>tmin,:);
 
 Fs = 1;
 T = 1/Fs;
 L = (time(2)-tmin)*Fs;
 
-tEqual = (0:(L-1))*T;
+tEqual = (0:(L-1))*T+tmin;
 
 
 %% Create equally spaced sample of ODE solution
-yEqual = interp1(t, y, tEqual);
+yEqual = interp1(t, y(:,3), tEqual);
 
 yEqual = yEqual(~isnan(yEqual));
 tEqual = tEqual(~isnan(yEqual));
 
 
 %% Do FFT
+yEqual = yEqual - mean(yEqual);
 ydft = fft(yEqual);
 
 % ydft = ydft(1:L/2+1);
