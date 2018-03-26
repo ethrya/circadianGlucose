@@ -1,15 +1,20 @@
 clear all
 tic
 % Bifurification parameter arrays
-Gin = 0:1:300;
+Gin = 0:5:300;
 nGin = length(Gin);
 
-tau = 1:0.5:150;
+tau = 1:5:150;
 nTau = length(tau);
 
 %Constants for all trials
 const = models.constants;
 const.tau1 = 7;
+
+const.C5 = 29;
+const.alpha = 0.41;
+const.tp = 4;
+
 
 constArray(1:nGin, 1:nTau) = const;
 
@@ -63,7 +68,7 @@ end
 toc
 
 %% Save Output
-save('../../simResults/bifur04',...
+save('../simResults/bifur06',...
      'LiResults','SturisResults','TolicResults','Gin', 'tau');
 
 

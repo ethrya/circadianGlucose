@@ -7,8 +7,8 @@ nValues = length(Gin);
 %Constants for all trials
 const = models.constants;
 const.tau1 = 7;
-const.tau2 = 50;
-const.td = 50;
+const.tau2 = 46;
+const.td = 46;
 
 constArray(1:nValues) = const;
 
