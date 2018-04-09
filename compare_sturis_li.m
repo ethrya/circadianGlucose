@@ -5,7 +5,7 @@ const.tau2 = 36;
 const.td = 36;
 const.Gin = 0;
 
-const.C3 = 900;
+const.C2 = 2000;
 %const.tp = 4;
 %const.alpha = 0.41;
 
@@ -35,6 +35,7 @@ sol = liSolver(liState, const, time);
 Ip = y(:,1)/const.Vp; %[I]=I/Vp microU/ml
 G = y(:,3)/(const.Vg*10); %[G]=G/Vg mg/dl
 
+figure()
 subplot(2,1,1)
 hold on
 plot(sol.x, sol.y(2,:)/const.Vp)
