@@ -3,15 +3,16 @@ const = models.constants;
 const.tau1 = 7;
 const.tau2 = 36;
 const.td = 36;
-const.Gin = 900;
+const.Gin = 0;
 
-%const.C5 = 29;
+const.C3 = 900;
 %const.tp = 4;
 %const.alpha = 0.41;
 
+tmin = 3000;
 
 % Initial conditions
-liState = [13000; % Glucose
+liState = [15000; % Glucose
          30]; % Insulin
 
 %% Preliminaries
@@ -20,17 +21,16 @@ liState = [13000; % Glucose
 % Create initial condition
 sturisState = [30; % Ip
                0; % Ii
-               14000; % G
+               15000; % G
                0; % x1
                0; % x2
                0]; % x3
 
-time = [0, 15000];
+time = [0, 5000];
            
 sol = liSolver(liState, const, time);
 [t, y] = sturisSolver(sturisState, const, time);
 [tT, yT] = tolicSolver(sturisState, const, time);
-
 
 Ip = y(:,1)/const.Vp; %[I]=I/Vp microU/ml
 G = y(:,3)/(const.Vg*10); %[G]=G/Vg mg/dl
