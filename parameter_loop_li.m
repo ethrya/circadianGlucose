@@ -6,13 +6,13 @@ const.tau2 = 36;
 const.td = 36;
 const.Gin = 0;
 
-paramValues = 12:6:50;
+paramValues = 150:10:300;
 return1 = zeros(length(paramValues), 3);
-
+return2= zeros(length(paramValues), 3);
 tmin = 3000;
 
 for i=1:length(paramValues)
-    const.C5 = paramValues(i);
+    const.Rm = paramValues(i);
 
     % Initial conditions
     liState = [15000; % Glucose
@@ -40,17 +40,47 @@ for i=1:length(paramValues)
     baseLines = [mean(sol.y(1, sol.x>tmin)), mean(y(t>tmin, 3)),...
                 mean(yT(tT>tmin, 3))];
 
-    belowBaseIdxLi = find(sol.y(1,:)<baseLines(1));
-    belowBaseIdxSturis = find(y(:,3)<baseLines(2));
-    belowBaseIdxTolic = find(yT(:,3)<baseLines(3));
+    belowBaseIdxLi = find(sol.y(1,:)-baseLines(1)<0.01*baseLines(1));
+    belowBaseIdxSturis = find(y(:,3)-baseLines(2)<0.01*baseLines(2));
+    belowBaseIdxTolic = find(yT(:,3)-baseLines(3)<0.01*baseLines(3));
+    
+    [peakLi, locLi] = findpeaks(-sol.y(1,:), sol.x, 'MinPeakProminence', 2);
+    try
+        aboveBaseIdxLi = find(sol.y(1,:)>baseLines(1) & t>locSt(1));
+    catch 
+        aboveBaseIdxLi = [1];
+    end
+
+    [peakSt, locSt] = findpeaks(-y(:,3), t, 'MinPeakProminence', 2);
+    try
+        aboveBaseIdxSturis = find(y(:,3)>baseLines(2) & t>locSt(1));
+    catch 
+        aboveBaseIdxSturis = [1];
+    end
+
+    [peakTl, locTl] = findpeaks(-yT(:,3), tT, 'MinPeakProminence', 2);
+    try
+        aboveBaseIdxTolic = find(yT(:,3)>baseLines(3) & tT>locSt(1));
+    catch 
+        aboveBaseIdxTolic = [1];
+    end
+
 
     return1(i, :) = [sol.x(belowBaseIdxLi(1)), t(belowBaseIdxSturis(1))...
-                     yT(belowBaseIdxTolic(1))];   
+                     tT(belowBaseIdxTolic(1))];
+    return2(i, :) = [sol.x(aboveBaseIdxLi(1)), t(aboveBaseIdxSturis(1)),...
+                     tT(aboveBaseIdxTolic(1))];
 end
-
+%% Plotting
+figure()
+hold on
+subplot(2,1,1)
 plot(paramValues, return1)
-xlabel('Paramter Value')
 ylabel('Return Time (min)')
 legend('Li', 'Sturis', 'Tolic')
-
+subplot(2,1,2)
+plot(paramValues, return2)
+xlabel('Paramter Value')
+ylabel('Return Time (min)')
+%%
 toc()
