@@ -5,7 +5,7 @@ const.tau2 = 36;
 const.td = 36;
 const.Gin = 0;
 
-const.C2 = 2000;
+const.C3 = 550;
 %const.tp = 4;
 %const.alpha = 0.41;
 
@@ -28,26 +28,26 @@ sturisState = [30; % Ip
 
 time = [0, 5000];
            
-sol = liSolver(liState, const, time);
-[t, y] = sturisSolver(sturisState, const, time);
+solLi = liSolver(liState, const, time);
+[tSt, ySt] = sturisSolver(sturisState, const, time);
 [tT, yT] = tolicSolver(sturisState, const, time);
 
-Ip = y(:,1)/const.Vp; %[I]=I/Vp microU/ml
-G = y(:,3)/(const.Vg*10); %[G]=G/Vg mg/dl
+Ip = ySt(:,1)/const.Vp; %[I]=I/Vp microU/ml
+G = ySt(:,3)/(const.Vg*10); %[G]=G/Vg mg/dl
 
 figure()
 subplot(2,1,1)
 hold on
-plot(sol.x, sol.y(2,:)/const.Vp)
-plot(t,Ip)
+plot(solLi.x, solLi.y(2,:)/const.Vp)
+plot(tSt,Ip)
 plot(tT, yT(:,1)/const.Vp)
 hold off
 ylabel('Insulin (\muU/ml)')
 legend('Li et al. (2006)', 'Sturis et al. (1991)', 'Tolic et al. (2000)')
 subplot(2,1,2)
 hold on
-plot(sol.x, sol.y(1,:)/(10*const.Vg));
-plot(t,G)
+plot(solLi.x, solLi.y(1,:)/(10*const.Vg));
+plot(tSt,G)
 plot(tT, yT(:,3)/(10*const.Vg))
 hold off
 xlabel('Time (min)')
@@ -55,7 +55,7 @@ ylabel('Glucose (mg/dl)')
 
 figure
 hold on
-plot(sol.y(1,:)/(10*const.Vg), sol.y(2,:)/const.Vp)
+plot(solLi.y(1,:)/(10*const.Vg), solLi.y(2,:)/const.Vp)
 plot(G, Ip)
 plot(yT(:,3)/(10*const.Vg), yT(:,1)/const.Vp)
 legend('Li et al. (2006)', 'Sturis et al. (1991)', 'Tolic et al. (2000)')
