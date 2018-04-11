@@ -1,12 +1,24 @@
 clear all;
 tic()
+
+
 %% Preliminaries
 % Create Cell array with parameter nales
-paramList = cellstr(['C1'; 'C2']);
+paramList = cellstr(['Vp', 'Vi', 'Vg', 'E', 'tp', 'ti', 'td', 'Rm',...
+                    'Rg', 'a1', 'Ub', 'U0', 'Um', 'beta', 'alpha', 'C1',...
+                    'C2', 'C3', 'C4', 'C5']);
 
-% Create structure with corresponding parameter values
-paramValues.C1 = 1000:500:3000;
-paramValues.C2 = 74:40:214;
+% Default paramter values
+default.Vp = 3; default.Vi = 11; default.Vg = 10; default.E = 0.3; 
+default.tp = 6; default.ti = 100; default.td=36; 
+default.Rm = 210; default.Rg = 180;
+default.a1 = 300; 
+default.Ub = 72; default.U0 = 40; default.Um = 940;
+default.beta = 1.77; default.alpha = 0.29;
+default.C1 = 2000; default.C2 = 144; default.C3 = 1000; default.C4 = 80;
+default.C5 = 26;
+
+minV = 0.25; maxV =1.75; step = 0.01;
 
 % Initial conditions
 liState = [15000; % Glucose
@@ -19,7 +31,7 @@ sturisState = [30; % Ip
                0; % x1
                0; % x2
                0]; % x3
-
+           
 % Simulation start and end times
 time = [0, 5000];
 % Time to start measuring baseline [G] from
@@ -27,11 +39,16 @@ tmin = 3000;
 
 warning('off', 'MATLAB:mir_warning_maybe_uninitialized_temporary');
 
+path = '~/scratch/';
 
-for j=1:length(paramList)
+
+%% Simulations
+
+parfor j=1:length(paramList)
     param = char(paramList(j));
+    paramValues = minV*default.(param):default.(param)*step:minV*default.(param)
     fprintf('Simulating %s \n', param)
-    return1 = zeros(length(paramValues.(param)), 3);
+    return1 = zeros(length(paramValues.(param)), 3); %#ok<PFBNS>
     return2 = zeros(length(paramValues.(param)), 3);
     baseLines = zeros(length(paramValues.(param)), 3);
     
@@ -90,22 +107,36 @@ for j=1:length(paramList)
     %% Plotting
     h = figure();
     hold on
+    % Plot of 1st return to baseline [G]
     subplot(3,1,1)
     plot(paramValues.(param), return1)
     ylabel('t_{R,1} (min)')
     xlim([paramValues.(param)(1) paramValues.(param)(end)])
-    legend('Li', 'Sturis', 'Tolic')
+    legend('Li', 'Sturis', 'Tolic')    
+    
+    % Plot of 2nd return time to baseline [G]
     subplot(3,1,2)
     plot(paramValues.(param), return2)
     ylabel('t_{R,2} (min)')
     xlim([paramValues.(param)(1) paramValues.(param)(end)])
+    
+    % Plot of baseline [G]
     subplot(3,1,3)
     plot(paramValues.(param), baseLines./100)
     ylabel('[G]_B (mg/ml)')
     xlabel('Paramter Value')
     xlim([paramValues.(param)(1) paramValues.(param)(end)])
-    savefig(h, strcat('~/scratch/', param))
-    saveas(h, strcat('~/scratch/', param, '.png'))
-
+    
+    % Save figure as .fig and .png
+    savefig(h, strcat(path, param))
+    saveas(h, strcat(path, param, '.png'))
+    
+    % Save data
+    parsave(strcat(path, param, '.mat'), return1, return2, baseLines)
 end
 toc()
+
+%%
+function parsave(fname, return1, return2, baseLines) %#ok<INUSD>
+save(fname, 'return1', 'return2', 'baseLines')
+end
