@@ -24,13 +24,13 @@ minV = 0.50; maxV = 1.5; step = 1;
 relativeValues = minV:step:maxV;
 
 % Initial conditions
-liState = [15000; % Glucose
-         30]; % Insulin
+liState = [14000; % Glucose
+         40]; % Insulin
 
 % Initial condition for Sturis and Tolic
-sturisState = [30; % Ip
+sturisState = [40; % Ip
                0; % Ii
-               15000; % G
+               14000; % G
                0; % x1
                0; % x2
                0]; % x3
