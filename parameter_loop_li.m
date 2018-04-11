@@ -19,7 +19,7 @@ default.beta = 1.77; default.alpha = 0.29;
 default.C1 = 2000; default.C2 = 144; default.C3 = 1000; default.C4 = 80;
 default.C5 = 26;
 
-minV = 0.50; maxV = 1.5; step = 0.1;
+minV = 0.50; maxV = 1.5; step = 1;
 relativeValues = minV:step:maxV;
 
 % Initial conditions
@@ -41,8 +41,9 @@ tmin = 3000;
 
 warning('off', 'MATLAB:mir_warning_maybe_uninitialized_temporary');
 
-path = '~/scratch/';
+path = '../simResults/paramExplore/test/';
 
+poolobj = parpool(20)
 
 %% Simulations
 
@@ -142,3 +143,5 @@ toc()
 function parsave(fname, return1, return2, baseLines) %#ok<INUSD>
 save(fname, 'return1', 'return2', 'baseLines')
 end
+
+delete(poolobj)
