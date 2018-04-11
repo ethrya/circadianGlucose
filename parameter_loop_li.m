@@ -4,10 +4,10 @@ tic()
 
 %% Preliminaries
 % Create Cell array with parameter nales
-paramList = cellstr(['C1']);
-%paramList = cellstr(['Vp', 'Vi', 'Vg', 'E', 'tp', 'ti', 'td', 'Rm',...
-%                    'Rg', 'a1', 'Ub', 'U0', 'Um', 'beta', 'alpha', 'C1',...
-%                    'C2', 'C3', 'C4', 'C5']);
+%paramList = cellstr(['C1'; 'C2'; 'C3']);
+paramList = cellstr(['Vp'; 'Vi'; 'Vg'; 'E'; 'tp'; 'ti'; 'td'; 'Rm';...
+                    'Rg'; 'a1'; 'Ub'; 'U0'; 'Um'; 'beta'; 'alpha'; 'C1';...
+                    'C2'; 'C3'; 'C4'; 'C5']);
 
 % Default paramter values
 default.Vp = 3; default.Vi = 11; default.Vg = 10; default.E = 0.3; 
@@ -19,7 +19,7 @@ default.beta = 1.77; default.alpha = 0.29;
 default.C1 = 2000; default.C2 = 144; default.C3 = 1000; default.C4 = 80;
 default.C5 = 26;
 
-minV = 0.50; maxV = 1.5; step = 0.25;
+minV = 0.50; maxV = 1.5; step = 0.1;
 relativeValues = minV:step:maxV;
 
 % Initial conditions
@@ -46,7 +46,7 @@ path = '~/scratch/';
 
 %% Simulations
 
-for j=1:length(paramList)
+parfor j=1:length(paramList)
     param = char(paramList(j));
     paramValues = minV*default.(param):default.(param)*step:maxV*default.(param);
     fprintf('Simulating %s \n', param)
@@ -118,16 +118,16 @@ for j=1:length(paramList)
     
     % Plot of 2nd return time to baseline [G]
     subplot(3,1,2)
-    plot(paramValues, return2)
+    plot(relativeValues, return2)
     ylabel('t_{R,2} (min)')
-    xlim([paramValues(1) paramValues(end)])
+    xlim([relativeValues(1) relativeValues(end)])
     
     % Plot of baseline [G]
     subplot(3,1,3)
-    plot(paramValues, baseLines./100)
+    plot(relativeValues, baseLines./100)
     ylabel('[G]_B (mg/ml)')
-    xlabel('Paramter Value')
-    xlim([paramValues(1) paramValues(end)])
+    xlabel(param)
+    xlim([relativeValues(1) relativeValues(end)])
     
     % Save figure as .fig and .png
     savefig(h, strcat(path, param))
