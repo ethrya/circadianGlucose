@@ -4,9 +4,10 @@ tic()
 
 %% Preliminaries
 % Create Cell array with parameter nales
-paramList = cellstr(['Vp', 'Vi', 'Vg', 'E', 'tp', 'ti', 'td', 'Rm',...
-                    'Rg', 'a1', 'Ub', 'U0', 'Um', 'beta', 'alpha', 'C1',...
-                    'C2', 'C3', 'C4', 'C5']);
+paramList = cellstr(['C1']);
+%paramList = cellstr(['Vp', 'Vi', 'Vg', 'E', 'tp', 'ti', 'td', 'Rm',...
+%                    'Rg', 'a1', 'Ub', 'U0', 'Um', 'beta', 'alpha', 'C1',...
+%                    'C2', 'C3', 'C4', 'C5']);
 
 % Default paramter values
 default.Vp = 3; default.Vi = 11; default.Vg = 10; default.E = 0.3; 
@@ -18,7 +19,8 @@ default.beta = 1.77; default.alpha = 0.29;
 default.C1 = 2000; default.C2 = 144; default.C3 = 1000; default.C4 = 80;
 default.C5 = 26;
 
-minV = 0.25; maxV =1.75; step = 0.01;
+minV = 0.50; maxV = 1.5; step = 0.25;
+relativeValues = minV:step:maxV;
 
 % Initial conditions
 liState = [15000; % Glucose
@@ -44,15 +46,15 @@ path = '~/scratch/';
 
 %% Simulations
 
-parfor j=1:length(paramList)
+for j=1:length(paramList)
     param = char(paramList(j));
-    paramValues = minV*default.(param):default.(param)*step:minV*default.(param)
+    paramValues = minV*default.(param):default.(param)*step:maxV*default.(param);
     fprintf('Simulating %s \n', param)
-    return1 = zeros(length(paramValues.(param)), 3); %#ok<PFBNS>
-    return2 = zeros(length(paramValues.(param)), 3);
-    baseLines = zeros(length(paramValues.(param)), 3);
+    return1 = zeros(length(paramValues), 3);
+    return2 = zeros(length(paramValues), 3);
+    baseLines = zeros(length(paramValues), 3);
     
-    for i=1:length(paramValues.(param))
+    for i=1:length(paramValues)
         % Import constants
         const = models.constants;
         % Change constants from default values
@@ -62,7 +64,7 @@ parfor j=1:length(paramList)
         const.Gin = 0;
         
         % Select value of changing parameter
-        const.(param)= paramValues.(param)(i);
+        const.(param)= paramValues(i);
 
         % Solve equations
         solLi = liSolver(liState, const, time);
@@ -109,23 +111,23 @@ parfor j=1:length(paramList)
     hold on
     % Plot of 1st return to baseline [G]
     subplot(3,1,1)
-    plot(paramValues.(param), return1)
+    plot(relativeValues, return1)
     ylabel('t_{R,1} (min)')
-    xlim([paramValues.(param)(1) paramValues.(param)(end)])
+    xlim([relativeValues(1) relativeValues(end)])
     legend('Li', 'Sturis', 'Tolic')    
     
     % Plot of 2nd return time to baseline [G]
     subplot(3,1,2)
-    plot(paramValues.(param), return2)
+    plot(paramValues, return2)
     ylabel('t_{R,2} (min)')
-    xlim([paramValues.(param)(1) paramValues.(param)(end)])
+    xlim([paramValues(1) paramValues(end)])
     
     % Plot of baseline [G]
     subplot(3,1,3)
-    plot(paramValues.(param), baseLines./100)
+    plot(paramValues, baseLines./100)
     ylabel('[G]_B (mg/ml)')
     xlabel('Paramter Value')
-    xlim([paramValues.(param)(1) paramValues.(param)(end)])
+    xlim([paramValues(1) paramValues(end)])
     
     % Save figure as .fig and .png
     savefig(h, strcat(path, param))
@@ -136,7 +138,7 @@ parfor j=1:length(paramList)
 end
 toc()
 
-%%
+%% Function to save variables inside parfor loop
 function parsave(fname, return1, return2, baseLines) %#ok<INUSD>
 save(fname, 'return1', 'return2', 'baseLines')
 end
