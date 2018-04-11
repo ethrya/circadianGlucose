@@ -6,21 +6,19 @@ const.tau2 = 36;
 const.td = 36;
 const.Gin = 0;
 
-paramValues = 150:10:300;
+paramValues = 74:10:214;
 return1 = zeros(length(paramValues), 3);
 return2= zeros(length(paramValues), 3);
 tmin = 3000;
 
 for i=1:length(paramValues)
-    const.Rm = paramValues(i);
+    const.C2 = paramValues(i);
 
     % Initial conditions
     liState = [15000; % Glucose
              30]; % Insulin
 
     %% Preliminaries
-    % Change constants here
-
     % Create initial condition
     sturisState = [30; % Ip
                    0; % Ii
@@ -46,7 +44,7 @@ for i=1:length(paramValues)
     
     [peakLi, locLi] = findpeaks(-sol.y(1,:), sol.x, 'MinPeakProminence', 2);
     try
-        aboveBaseIdxLi = find(sol.y(1,:)>baseLines(1) & t>locSt(1));
+        aboveBaseIdxLi = find(sol.y(1,:)>baseLines(1) & sol.x>locLi(1));
     catch 
         aboveBaseIdxLi = [1];
     end
@@ -71,6 +69,7 @@ for i=1:length(paramValues)
     return2(i, :) = [sol.x(aboveBaseIdxLi(1)), t(aboveBaseIdxSturis(1)),...
                      tT(aboveBaseIdxTolic(1))];
 end
+
 %% Plotting
 figure()
 hold on
