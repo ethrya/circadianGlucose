@@ -4,10 +4,11 @@ tic()
 
 %% Preliminaries
 % Create Cell array with parameter nales
-%paramList = cellstr(['C1'; 'C2'; 'C3']);
-paramList = cellstr(['Vp'; 'Vi'; 'Vg'; 'E'; 'tp'; 'ti'; 'td'; 'Rm';...
-                    'Rg'; 'a1'; 'Ub'; 'U0'; 'Um'; 'beta'; 'alpha'; 'C1';...
-                    'C2'; 'C3'; 'C4'; 'C5']);
+%paramList = cellstr(['C1   '; 'C2   '; 'C3   '; 'alpha']);
+paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
+                     'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
+                     'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
+                     'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
 
 % Default paramter values
 default.Vp = 3; default.Vi = 11; default.Vg = 10; default.E = 0.3; 
@@ -43,7 +44,7 @@ warning('off', 'MATLAB:mir_warning_maybe_uninitialized_temporary');
 
 path = '../simResults/paramExplore/test/';
 
-poolobj = parpool(20)
+poolobj = parpool(3);
 
 %% Simulations
 
@@ -139,9 +140,9 @@ parfor j=1:length(paramList)
 end
 toc()
 
+delete(poolobj)
+
 %% Function to save variables inside parfor loop
 function parsave(fname, return1, return2, baseLines) %#ok<INUSD>
 save(fname, 'return1', 'return2', 'baseLines')
 end
-
-delete(poolobj)
