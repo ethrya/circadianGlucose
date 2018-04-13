@@ -4,11 +4,12 @@ tic()
 
 %% Preliminaries
 % Create Cell array with parameter nales
-paramList = cellstr(['C1   '; 'C2   '; 'C3   '; 'alpha']);
-%paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
-%                     'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
-%                     'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
-%                     'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
+%paramList = cellstr(['C1   '; 'C2   '; 'C3   '; 'alpha']);
+paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
+                    'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
+                    'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
+                    'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
+
 
 % Default paramter values
 default.Vp = 3; default.Vi = 11; default.Vg = 10; default.E = 0.3; 
@@ -20,7 +21,7 @@ default.beta = 1.77; default.alpha = 0.29;
 default.C1 = 2000; default.C2 = 144; default.C3 = 1000; default.C4 = 80;
 default.C5 = 26;
 
-minV = 0.50; maxV = 1.5; step = 1;
+minV = 0.25; maxV = 1.75; step = 0.25;
 relativeValues = minV:step:maxV;
 
 % Initial conditions
@@ -42,15 +43,15 @@ tmin = 3000;
 
 warning('off', 'MATLAB:mir_warning_maybe_uninitialized_temporary');
 
-%path = '../simResults/paramExplore/test/';
+path = '../simResults/paramExplore/test/';
 
-path ='~/scratch/';
+%path ='~/scratch/';
 
-poolobj = parpool(3);
+poolobj = parpool(10);
 
 %% Simulations
 
-parfor j=1:length(paramList)
+for j=1:length(paramList)
     param = char(paramList(j));
     paramValues = minV*default.(param):default.(param)*step:maxV*default.(param);
     fprintf('Simulating %s \n', param)
@@ -78,10 +79,11 @@ parfor j=1:length(paramList)
         % Vector of baseline values for Li, Sturis, Tolic
         baseLines(i,:) = [mean(solLi.y(1, solLi.x>tmin)), mean(ySt(tSt>tmin, 3)),...
                     mean(yT(tT>tmin, 3))];
-
-        belowBaseIdxLi = find(solLi.y(1,:)-baseLines(i,1)<0.01*baseLines(i,1));
-        belowBaseIdxSturis = find(ySt(:,3)-baseLines(i,2)<0.01*baseLines(i,2));
-        belowBaseIdxTolic = find(yT(:,3)-baseLines(i,3)<0.01*baseLines(i,3));
+        
+          
+        belowBaseIdxLi = find(solLi.y(1,:)-baseLines(i,1)<0.01*abs(baseLines(i,1)));
+        belowBaseIdxSturis = find(ySt(:,3)-baseLines(i,2)<0.01*abs(baseLines(i,2)));
+        belowBaseIdxTolic = find(yT(:,3)-baseLines(i,3)<0.01*abs(baseLines(i,3)));
 
         [peakLi, locLi] = findpeaks(-solLi.y(1,:), solLi.x, 'MinPeakProminence', 2);
         try
