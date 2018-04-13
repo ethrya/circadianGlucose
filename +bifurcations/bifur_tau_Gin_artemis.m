@@ -1,10 +1,11 @@
 clear all
 tic
+
 % Bifurification parameter arrays
-Gin = 0:10:300;
+Gin = 0:1:300;
 nGin = length(Gin);
 
-tau = 1:10:100;
+tau = 1:1:100;
 nTau = length(tau);
 
 %Constants for all trials
@@ -37,6 +38,8 @@ TolicResults = zeros(nGin, nTau, 4);
 
 fprintf('Starting Simulations \n');
 
+poolobj = parpool(20)
+
 %% Find Values
 parfor i=1:nGin
     fprintf('Completed %i of %i Gin Values \n', i, nGin);
@@ -63,9 +66,11 @@ end
 toc
 
 %% Save Output
-save('../../simResults/bifur_04',...
+save('../../simResults/bifur_08',...
 'LiResults','SturisResults','TolicResults','Gin', 'tau');
 
 %save('/suphys/erya7975/results/bifur02',...
+
+delete(poolobj)
 
 exit

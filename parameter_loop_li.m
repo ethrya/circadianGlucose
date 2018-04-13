@@ -21,7 +21,7 @@ default.beta = 1.77; default.alpha = 0.29;
 default.C1 = 2000; default.C2 = 144; default.C3 = 1000; default.C4 = 80;
 default.C5 = 26;
 
-minV = 0.25; maxV = 1.75; step = 0.25;
+minV = 0.20; maxV = 1.80; step = 0.001;
 relativeValues = minV:step:maxV;
 
 % Initial conditions
@@ -43,7 +43,7 @@ tmin = 3000;
 
 warning('off', 'MATLAB:mir_warning_maybe_uninitialized_temporary');
 
-path = '../simResults/paramExplore/test/';
+path = '../simResults/paramExplore/sim05/';
 
 %path ='~/scratch/';
 
@@ -51,7 +51,7 @@ poolobj = parpool(10);
 
 %% Simulations
 
-for j=1:length(paramList)
+parfor j=1:length(paramList)
     param = char(paramList(j));
     paramValues = minV*default.(param):default.(param)*step:maxV*default.(param);
     fprintf('Simulating %s \n', param)
