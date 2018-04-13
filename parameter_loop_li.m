@@ -21,10 +21,11 @@ default.beta = 1.77; default.alpha = 0.29;
 default.C1 = 2000; default.C2 = 144; default.C3 = 1000; default.C4 = 80;
 default.C5 = 26;
 
+% Range and resolution of parameter values. Relative to default value.
 minV = 0.20; maxV = 1.80; step = 0.001;
 relativeValues = minV:step:maxV;
 
-% Initial conditions
+% Initial conditions for Li
 liState = [14000; % Glucose
          40]; % Insulin
 
@@ -41,24 +42,33 @@ time = [0, 5000];
 % Time to start measuring baseline [G] from
 tmin = 3000;
 
+% Don't warn about temporary variables in parfor loop. This should return a
+% run-time error if there is an issue.
 warning('off', 'MATLAB:mir_warning_maybe_uninitialized_temporary');
 
+% Path to results output
 path = '../simResults/paramExplore/sim05/';
 
 %path ='~/scratch/';
 
+% Create Parallel pool with 10 workers.
 poolobj = parpool(10);
 
 %% Simulations
-
+% Loop over parameters and then loop over parameter values.
 parfor j=1:length(paramList)
+    % Name of parameter
     param = char(paramList(j));
+    % Create vector of parameter values of interest using min/max fraction
     paramValues = minV*default.(param):default.(param)*step:maxV*default.(param);
     fprintf('Simulating %s \n', param)
+    
+    % Empty results vectors
     return1 = zeros(length(paramValues), 3);
     return2 = zeros(length(paramValues), 3);
     baseLines = zeros(length(paramValues), 3);
     
+    % Loop over interesting parameter values
     for i=1:length(paramValues)
         % Import constants
         const = models.constants;
@@ -80,11 +90,15 @@ parfor j=1:length(paramList)
         baseLines(i,:) = [mean(solLi.y(1, solLi.x>tmin)), mean(ySt(tSt>tmin, 3)),...
                     mean(yT(tT>tmin, 3))];
         
-          
+        % Calculate the baselie glucose concentrations for each model.
+            % The abs deals with the (unphysiological) case where [G]<0.
         belowBaseIdxLi = find(solLi.y(1,:)-baseLines(i,1)<0.01*abs(baseLines(i,1)));
         belowBaseIdxSturis = find(ySt(:,3)-baseLines(i,2)<0.01*abs(baseLines(i,2)));
         belowBaseIdxTolic = find(yT(:,3)-baseLines(i,3)<0.01*abs(baseLines(i,3)));
 
+        % Find peaks in all models. If they exist find the index of the 
+        % second time that this value is obtained. Otherwise just say the
+        % index is 1.
         [peakLi, locLi] = findpeaks(-solLi.y(1,:), solLi.x, 'MinPeakProminence', 2);
         try
             aboveBaseIdxLi = find(solLi.y(1,:)>baseLines(i,1) & solLi.x>locLi(1));
@@ -105,7 +119,9 @@ parfor j=1:length(paramList)
         catch 
             aboveBaseIdxTolic = [1];
         end
-
+        
+        % Find the first two times that the glucose concentration reaches
+        % the baseline level.
         return1(i, :) = [solLi.x(belowBaseIdxLi(1)), tSt(belowBaseIdxSturis(1))...
                          tT(belowBaseIdxTolic(1))];
         return2(i, :) = [solLi.x(aboveBaseIdxLi(1)), tSt(aboveBaseIdxSturis(1)),...
@@ -144,6 +160,7 @@ parfor j=1:length(paramList)
 end
 toc()
 
+% Remoove parallel pool
 delete(poolobj)
 
 %% Function to save variables inside parfor loop

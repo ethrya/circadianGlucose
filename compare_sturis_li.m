@@ -42,6 +42,7 @@ G = ySt(:,3)/(const.Vg*10); %[G]=G/Vg mg/dl
 
 % Plot [G] and [I] vs t for all 3 models.
 figure()
+% Plot [G]
 subplot(2,1,1)
 hold on
 plot(solLi.x, solLi.y(2,:)/const.Vp)
@@ -50,6 +51,7 @@ plot(tT, yT(:,1)/const.Vp)
 hold off
 ylabel('Insulin (\muU/ml)')
 legend('Li et al. (2006)', 'Sturis et al. (1991)', 'Tolic et al. (2000)')
+% Plot [I]
 subplot(2,1,2)
 hold on
 plot(solLi.x, solLi.y(1,:)/(10*const.Vg));
@@ -59,7 +61,7 @@ hold off
 xlabel('Time (min)')
 ylabel('Glucose (mg/dl)')
 
-% plot phase plane of I vs G for three models
+% Plot phase plane of I vs G for three models
 figure
 hold on
 plot(solLi.y(1,:)/(10*const.Vg), solLi.y(2,:)/const.Vp)
