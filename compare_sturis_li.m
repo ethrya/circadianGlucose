@@ -1,24 +1,22 @@
 clear all;
+%% Preliminaries
+% Import constants class
 const = models.constants;
+
+%Change constants from default values
 const.tau1 = 7;
 const.tau2 = 36;
 const.td = 36;
 const.Gin = 0;
-
 const.C3 = 550;
 %const.tp = 4;
 %const.alpha = 0.41;
 
-tmin = 3000;
-
-% Initial conditions
+% Initial conditions Li 
 liState = [15000; % Glucose
          30]; % Insulin
 
-%% Preliminaries
-% Change constants here
-
-% Create initial condition
+% Initial condition Sturis and Tolic
 sturisState = [30; % Ip
                0; % Ii
                15000; % G
@@ -26,15 +24,23 @@ sturisState = [30; % Ip
                0; % x2
                0]; % x3
 
+% Integration time (min)
 time = [0, 5000];
-           
+  
+
+%% Solve equations
 solLi = liSolver(liState, const, time);
 [tSt, ySt] = sturisSolver(sturisState, const, time);
 [tT, yT] = tolicSolver(sturisState, const, time);
 
+
+%% Plotting
+% Convert glucose amounts into concentrations (Sturis only)
 Ip = ySt(:,1)/const.Vp; %[I]=I/Vp microU/ml
 G = ySt(:,3)/(const.Vg*10); %[G]=G/Vg mg/dl
 
+
+% Plot [G] and [I] vs t for all 3 models.
 figure()
 subplot(2,1,1)
 hold on
@@ -53,6 +59,7 @@ hold off
 xlabel('Time (min)')
 ylabel('Glucose (mg/dl)')
 
+% plot phase plane of I vs G for three models
 figure
 hold on
 plot(solLi.y(1,:)/(10*const.Vg), solLi.y(2,:)/const.Vp)
