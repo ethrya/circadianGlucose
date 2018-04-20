@@ -101,4 +101,6 @@ for j=1:length(paramList)
              
 end
 
-bar(Si)
+%%
+figure()
+bar(categorical(paramList), abs(Si))
