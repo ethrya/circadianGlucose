@@ -54,7 +54,7 @@ Sj = zeros(length(paramList),3);
 
 %% Simulations
 % Loop over parameters and then loop over parameter values.
-for j=1:length(paramList)
+parfor j=1:length(paramList)
     % Name of parameter
     param = char(paramList(j));
     % Loop over interesting parameter values
