@@ -83,9 +83,13 @@ parfor i=1:nSims
 end
 
 %%
+correlations = zeros(length(paramList),1);
 figure()
 for i=1:length(paramList)
 subplot(5,4,i)
-scatter(randomNumbers(i,:),baseLine(:,2), 'k.')
+scatter(randomNumbers(i,:),baseLine(:,1), 'k.')
 xlabel(char(paramList(i)))
+correlations(i) = corr(randomNumbers(i,:)',baseLine(:,1),'Type','Spearman');
 end
+figure()
+bar(categorical(paramList),abs(correlations))
