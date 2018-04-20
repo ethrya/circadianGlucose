@@ -21,7 +21,7 @@ default.C5 = 26;
 % Define parameter space
 k = length(paramList); % Number of parameters
 p = 4; % Number of levels
-r = 2; % Number of trajectories
+r = 10; % Number of trajectories
 delta = 1/(p-1); % spacing of trajectories
 
 % Initial conditions for Li
@@ -109,11 +109,43 @@ for i=1:r
 end
 
 %%
-muStar = zeros(k);
+model = 3;
+muStar = zeros(k,3); mu = zeros(k,3); sigma = zeros(k,3);
+
 for i=1:k
-    muStar(i) = mean(abs(EEs(i,:,2)));
+    muStar(i,:) = mean(abs(EEs(i,:,:)));
+    mu(i,:) = mean(EEs(i,:,:));
+    sigma(i,:) = std(EEs(i, :,:));
 end
 
 %%
 figure()
+subplot(2,1,1)
 bar(categorical(paramList),muStar)
+ylabel('\mu^*')
+set(gca, 'YScale', 'log')
+legend('Li et al.', 'Sturis et al.', 'Tolic et al.')
+subplot(2,1,2)
+bar(categorical(paramList),sigma)
+xlabel('Parameter')
+ylabel('\sigma')
+set(gca, 'YScale', 'log')
+
+
+%%
+model = 3;
+figure()
+set(gca, 'YScale', 'log')
+set(gca, 'XScale', 'log')
+muPlot = muStar(:,model);%(muStar(:,model)>10^(-10) & sigma(:,model)>10^(-10));
+sigmaPlot = sigma(:,model);%(muStar(:,model)>10^(-10) & sigma(:,model)>10^(-10));
+
+cmap = jet(2); % Make 1000 colors.
+
+hold on
+for i=1:k
+scatter(muPlot(i), sigmaPlot(i), 100, '.')
+end
+legend(paramList)
+
+

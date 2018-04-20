@@ -18,7 +18,7 @@ default.beta = 1.77; default.alpha = 0.29;
 default.C1 = 2000; default.C2 = 144; default.C3 = 1000; default.C4 = 80;
 default.C5 = 26;
 
-nSims = 100;
+nSims = 1000;
 
 randomNumbers = 0.1*(randn(length(paramList), nSims));
 
@@ -87,9 +87,9 @@ correlations = zeros(length(paramList),1);
 figure()
 for i=1:length(paramList)
 subplot(5,4,i)
-scatter(randomNumbers(i,:),baseLine(:,1), 'k.')
+scatter(randomNumbers(i,:),baseLine(:,2), 'k.')
 xlabel(char(paramList(i)))
-correlations(i) = corr(randomNumbers(i,:)',baseLine(:,1),'Type','Spearman');
+correlations(i) = corr(randomNumbers(i,:)',baseLine(:,2),'Type','Spearman');
 end
 figure()
 bar(categorical(paramList),abs(correlations))
