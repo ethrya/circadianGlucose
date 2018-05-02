@@ -1,4 +1,6 @@
+%% Note code requires MATLAB 2017a or higher
 clear all;
+
 %% Preliminaries
 % Create Cell array with parameter nales
 %paramList = cellstr(['C1   '; 'C2   '; 'C3   '; 'alpha']);
@@ -127,6 +129,7 @@ set(gca, 'YScale', 'log')
 legend('Li et al.', 'Sturis et al.', 'Tolic et al.')
 subplot(2,1,2)
 bar(categorical(paramList),sigma)
+
 xlabel('Parameter')
 ylabel('\sigma')
 set(gca, 'YScale', 'log')
@@ -135,10 +138,12 @@ set(gca, 'YScale', 'log')
 %%
 model = 3;
 figure()
+for j=1:model
+subplot(3,1,j)
 set(gca, 'YScale', 'log')
 set(gca, 'XScale', 'log')
-muPlot = muStar(:,model);%(muStar(:,model)>10^(-10) & sigma(:,model)>10^(-10));
-sigmaPlot = sigma(:,model);%(muStar(:,model)>10^(-10) & sigma(:,model)>10^(-10));
+muPlot = muStar(:,j);%(muStar(:,model)>10^(-10) & sigma(:,model)>10^(-10));
+sigmaPlot = sigma(:,j);%(muStar(:,model)>10^(-10) & sigma(:,model)>10^(-10));
 
 cmap = jet(2); % Make 1000 colors.
 
@@ -146,6 +151,7 @@ hold on
 for i=1:k
 scatter(muPlot(i), sigmaPlot(i), 100, '.')
 end
+ylabel('\sigma^*')
 legend(paramList)
-
-
+end
+xlabel('\mu^*')

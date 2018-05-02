@@ -1,3 +1,4 @@
+% Note code requires MATLAB 2017a or higher
 clear all;
 tic()
 
