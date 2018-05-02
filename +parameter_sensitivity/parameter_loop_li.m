@@ -22,7 +22,7 @@ default.C1 = 2000; default.C2 = 144; default.C3 = 1000; default.C4 = 80;
 default.C5 = 26;
 
 % Range and resolution of parameter values. Relative to default value.
-minV = 0.20; maxV = 1.80; step = 0.01;
+minV = 0.50; maxV = 1.50; step = 0.05;
 relativeValues = minV:step:maxV;
 
 % Initial conditions for Li
@@ -47,8 +47,9 @@ tmin = 3000;
 warning('off', 'MATLAB:mir_warning_maybe_uninitialized_temporary');
 
 % Path to results output
-path = '../../simResults/paramExplore/sim05/';
-%path ='../scratch/';
+%path = '../../simResults/paramExplore/sim05/';
+path ='../scratch/';
+%path = 'C:\Users\ethan\scratch\';
 
 % Create Parallel pool with 10 workers.
 poolobj = parpool(2);
