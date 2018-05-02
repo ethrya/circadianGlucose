@@ -22,7 +22,7 @@ default.C1 = 2000; default.C2 = 144; default.C3 = 1000; default.C4 = 80;
 default.C5 = 26;
 
 % Range and resolution of parameter values. Relative to default value.
-minV = 0.20; maxV = 1.80; step = 0.01;
+minV = 0.50; maxV = 1.50; step = 0.05;
 relativeValues = minV:step:maxV;
 
 % Initial conditions for Li
@@ -47,12 +47,12 @@ tmin = 3000;
 warning('off', 'MATLAB:mir_warning_maybe_uninitialized_temporary');
 
 % Path to results output
-path = '../../simResults/paramExplore/sim05/';
-
-% path ='~/scratch/';
+%path = '../../simResults/paramExplore/sim05/';
+path ='../scratch/';
+%path = 'C:\Users\ethan\scratch\';
 
 % Create Parallel pool with 10 workers.
-poolobj = parpool(3);
+poolobj = parpool(2);
 
 %% Simulations
 % Loop over parameters and then loop over parameter values.
@@ -65,8 +65,9 @@ parfor j=1:length(paramList)
     
     % Empty results vectors
     return1 = zeros(length(paramValues), 3);
-    return2 = zeros(length(paramValues), 3);
     baseLines = zeros(length(paramValues), 3);
+    baseLinesI = zeros(length(paramValues), 3);
+    maxG = zeros(length(paramValues), 3);
     
     % Loop over interesting parameter values
     for i=1:length(paramValues)
@@ -89,6 +90,8 @@ parfor j=1:length(paramList)
         % Vector of baseline values for Li, Sturis, Tolic
         baseLines(i,:) = [mean(solLi.y(1, solLi.x>tmin)), mean(ySt(tSt>tmin, 3)),...
                     mean(yT(tT>tmin, 3))];
+        baseLinesI(i,:) = [mean(solLi.y(2, solLi.x>tmin)), mean(ySt(tSt>tmin, 1)),...
+                    mean(yT(tT>tmin, 1))];
         
         % Calculate the baselie glucose concentrations for each model.
             % The abs deals with the (unphysiological) case where [G]<0.
@@ -96,58 +99,44 @@ parfor j=1:length(paramList)
         belowBaseIdxSturis = find(ySt(:,3)-baseLines(i,2)<0.01*abs(baseLines(i,2)));
         belowBaseIdxTolic = find(yT(:,3)-baseLines(i,3)<0.01*abs(baseLines(i,3)));
 
-        % Find peaks in all models. If they exist find the index of the 
-        % second time that this value is obtained. Otherwise just say the
-        % index is 1.
-        [peakLi, locLi] = findpeaks(-solLi.y(1,:), solLi.x, 'MinPeakProminence', 2);
-        try
-            aboveBaseIdxLi = find(solLi.y(1,:)>baseLines(i,1) & solLi.x>locLi(1));
-        catch 
-            aboveBaseIdxLi = [1];
-        end
-
-        [peakSt, locSt] = findpeaks(-ySt(:,3), tSt, 'MinPeakProminence', 2);
-        try
-            aboveBaseIdxSturis = find(ySt(:,3)>baseLines(i,2) & tSt>locSt(1));
-        catch 
-            aboveBaseIdxSturis = [1];
-        end
-
-        [peakTl, locTl] = findpeaks(-yT(:,3), tT, 'MinPeakProminence', 2);
-        try
-            aboveBaseIdxTolic = find(yT(:,3)>baseLines(i,3) & tT>locSt(1));
-        catch 
-            aboveBaseIdxTolic = [1];
-        end
+        % Find peak [G] in all models.
+        maxG(i,:) = [max(solLi.y(1,:)) max(ySt(:,3)) max(yT(:,3))];
         
-        % Find the first two times that the glucose concentration reaches
+        
+        % Find the first time that the glucose concentration reaches
         % the baseline level.
         return1(i, :) = [solLi.x(belowBaseIdxLi(1)), tSt(belowBaseIdxSturis(1))...
                          tT(belowBaseIdxTolic(1))];
-        return2(i, :) = [solLi.x(aboveBaseIdxLi(1)), tSt(aboveBaseIdxSturis(1)),...
-                         tT(aboveBaseIdxTolic(1))];
+
     end
 
     %% Plotting
     h = figure();
     hold on
     % Plot of 1st return to baseline [G]
-    subplot(3,1,1)
+    subplot(4,1,1)
     plot(relativeValues, return1)
     ylabel('t_{R,1} (min)')
     xlim([relativeValues(1) relativeValues(end)])
     legend('Li', 'Sturis', 'Tolic')    
     
     % Plot of 2nd return time to baseline [G]
-    subplot(3,1,2)
-    plot(relativeValues, return2)
-    ylabel('t_{R,2} (min)')
+    subplot(4,1,2)
+    plot(relativeValues, maxG./100)
+    ylabel('[G]_{max} (mg/ml)')
     xlim([relativeValues(1) relativeValues(end)])
     
     % Plot of baseline [G]
-    subplot(3,1,3)
+    subplot(4,1,3)
     plot(relativeValues, baseLines./100)
     ylabel('[G]_B (mg/ml)')
+    xlabel(param)
+    xlim([relativeValues(1) relativeValues(end)])
+    
+    % Plot of baseline [I]
+    subplot(4,1,4)
+    plot(relativeValues, baseLinesI./const.Vp)
+    ylabel('[I]_B (mU/\mu L)')
     xlabel(param)
     xlim([relativeValues(1) relativeValues(end)])
     
@@ -156,7 +145,7 @@ parfor j=1:length(paramList)
     saveas(h, strcat(path, param, '.png'))
     
     % Save data
-    parsave(strcat(path, param, '.mat'), return1, return2, baseLines)
+    parsave(strcat(path, param, '.mat'), return1, maxG, baseLines, baseLinesI)
 end
 toc()
 
@@ -164,6 +153,6 @@ toc()
 delete(poolobj)
 
 %% Function to save variables inside parfor loop
-function parsave(fname, return1, return2, baseLines) %#ok<INUSD>
-save(fname, 'return1', 'return2', 'baseLines')
+function parsave(fname, return1, maxG, baseLines, baseLinesI) %#ok<INUSD>
+save(fname, 'return1', 'maxG', 'baseLines', 'baseLinesI')
 end
