@@ -47,12 +47,12 @@ tmin = 3000;
 warning('off', 'MATLAB:mir_warning_maybe_uninitialized_temporary');
 
 % Path to results output
-%path = '../../simResults/paramExplore/sim05/';
-path ='../scratch/';
+path = '../../simResults/paramExplore/sim06/';
+%path ='../scratch/';
 %path = 'C:\Users\ethan\scratch\';
 
 % Create Parallel pool with 10 workers.
-poolobj = parpool(2);
+poolobj = parpool(10);
 
 %% Simulations
 % Loop over parameters and then loop over parameter values.
