@@ -47,7 +47,7 @@ tmin = 3000;
 warning('off', 'MATLAB:mir_warning_maybe_uninitialized_temporary');
 
 % Path to results output
-path = '../../simResults/paramExplore/sim06/';
+path = '../simResults/paramExplore/sim07/';
 %path ='../scratch/';
 %path = 'C:\Users\ethan\scratch\';
 
