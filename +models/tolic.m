@@ -3,7 +3,7 @@ function out = tolic(~, in, const)
     
     % Constant Parameters
     Vp=const.Vp; Vi=const.Vi; E=const.E; 
-    tp=const.tp; ti=const.ti; td=const.td;
+    tp=const.tpT; ti=const.ti; td=const.td;
     
     Gin = const.Gin;
     
@@ -15,7 +15,7 @@ function out = tolic(~, in, const)
     out(1) = models.funcs.f1(G,const) -E*(Ip/Vp-Ii/Vi)-Ip/tp;
     out(2) = E*(Ip/Vp-Ii/Vi)-Ii/ti;
     out(3) = Gin-models.funcs.f2(G,const)-models.funcs.f3(G,const)*...
-        models.funcs.f4(Ii,const)+models.funcs.f5(in(6))*...
+        models.funcs.f4(Ii,const)+models.funcs.f5(in(6),const,'Tolic')*...
         models.funcs.f6(G,const)-models.funcs.f7(G,const);
     out(4) = 3/td*(Ip-in(4));
     out(5) = 3/td*(in(4)-in(5));
