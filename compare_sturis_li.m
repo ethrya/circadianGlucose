@@ -7,19 +7,19 @@ const = models.constants;
 const.tau1 = 7;
 const.tau2 = 36;
 const.td = 36;
-const.Gin = 0;
-const.C3 = 550;
+const.Gin = 216;
+%const.C3 = 550;
 %const.tp = 4;
 %const.alpha = 0.41;
 
 % Initial conditions Li 
-liState = [15000; % Glucose
+liState = [10000; % Glucose
          30]; % Insulin
 
 % Initial condition Sturis and Tolic
 sturisState = [30; % Ip
                0; % Ii
-               15000; % G
+               10000; % G
                0; % x1
                0; % x2
                0]; % x3
@@ -61,11 +61,15 @@ hold off
 xlabel('Time (min)')
 ylabel('Glucose (mg/dl)')
 
+
+%% Phase plane
 % Plot phase plane of I vs G for three models
 figure
 hold on
-plot(solLi.y(1,:)/(10*const.Vg), solLi.y(2,:)/const.Vp)
-plot(G, Ip)
-plot(yT(:,3)/(10*const.Vg), yT(:,1)/const.Vp)
+plot(solLi.y(1,:)/(10*const.Vg), solLi.y(2,:)/const.Vp, 'LineWidth', 1.5)
+plot(G, Ip, 'LineWidth', 1.5)
+plot(yT(:,3)/(10*const.Vg), yT(:,1)/const.Vp, 'LineWidth', 1.5)
+xlabel('[G] (mg/dl)')
+ylabel('[I_p] (\muU/ml)')
 legend('Li et al. (2006)', 'Sturis et al. (1991)', 'Tolic et al. (2000)')
 hold off

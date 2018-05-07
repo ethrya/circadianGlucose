@@ -5,6 +5,7 @@ classdef constants
         % Degradation times (min)
         ti = 100;
         tp = 6;
+        tpT = 4; %tp from Tolic
         td = 36;
         tdLi = 12; % The degradation time used in Li et al (2006)
         
@@ -19,6 +20,7 @@ classdef constants
         C3 = 1000; %mg/l
         C4 = 80; %mU/l
         C5 = 26; %mU/l
+        C5T = 29;
         C7 = 2.0;
         C6 = 2.0;
         
@@ -34,6 +36,7 @@ classdef constants
         Rm = 210; %mU/min
         Rg = 180; %mg/min
         alpha = 0.29; %1/mU
+        alphaT = 0.41;
         beta=1.77;
         a1 = 300; % mg/l
 
