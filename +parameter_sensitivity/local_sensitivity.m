@@ -7,9 +7,9 @@ tic()
 % Create Cell array with parameter nales
 %paramList = cellstr(['C1   '; 'C2   '; 'C3   '; 'alpha']);
 paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
-                    'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
-                    'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
-                    'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
+                     'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
+                     'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
+                     'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
 
 
 % Default paramter values
@@ -23,7 +23,7 @@ default.C1 = 2000; default.C2 = 144; default.C3 = 1000; default.C4 = 80;
 default.C5 = 26;
 
 % Range and resolution of parameter values. Relative to default value.
-step = 0.01;
+step = 0.1;
 
 % Initial conditions for Li
 liState = [14000; % Glucose
@@ -98,10 +98,14 @@ parfor j=1:length(paramList)
                 
         baseLine2 = [mean(solLi.y(1, solLi.x>tmin)), mean(ySt(tSt>tmin, 3)),...
                     mean(yT(tT>tmin, 3))];
-        Si(j,:) = (baseLine2-baseLine1)./(default.(param)*step);
-             
+        Si(j,:) = (baseLine2-baseLine1)./step;      
 end
 
 %%
+
+Si = Si/max(max(Si));
 figure()
-bar(categorical(paramList), abs(Si))
+bar(categorical(paramList), Si)
+xlabel('Parameter')
+ylabel('S_i')
+legend('Li', 'Sturis', 'Tolic')
