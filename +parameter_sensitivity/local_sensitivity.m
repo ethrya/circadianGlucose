@@ -5,11 +5,11 @@ tic()
 
 %% Preliminaries
 % Create Cell array with parameter nales
-%paramList = cellstr(['C1   '; 'C2   '; 'C3   '; 'alpha']);
-paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
-                     'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
-                     'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
-                     'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
+paramList = cellstr(['C5   '; 'C2   '; 'C3   '; 'alpha']);
+%paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
+%                     'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
+%                     'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
+%                     'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
 
 
 % Default paramter values
@@ -20,7 +20,7 @@ default.a1 = 300;
 default.Ub = 72; default.U0 = 40; default.Um = 940;
 default.beta = 1.77; default.alpha = 0.29;
 default.C1 = 2000; default.C2 = 144; default.C3 = 1000; default.C4 = 80;
-default.C5 = 26;
+default.C5 = 26; default.C5T = 29; default.alphaT = 0.41;
 
 % Range and resolution of parameter values. Relative to default value.
 step = 0.1;
@@ -55,7 +55,7 @@ Sj = zeros(length(paramList),3);
 
 %% Simulations
 % Loop over parameters and then loop over parameter values.
-parfor j=1:length(paramList)
+for j=1:length(paramList)
     % Name of parameter
     param = char(paramList(j));
     % Loop over interesting parameter values
@@ -70,11 +70,16 @@ parfor j=1:length(paramList)
         
         % Select value of changing parameter
         const.(param) = default.(param);
-
+        if string(param)=="alpha" || string(param)=="C5"
+             const.(strcat(param,'T')) = default.(strcat(param,'T'));
+        end
+        
         % Solve equations
         solLi = liSolver(liState, const, time);
         [tSt, ySt] = sturisSolver(sturisState, const, time);
         [tT, yT] = tolicSolver(sturisState, const, time);
+
+
 
         % Vector of baseline values for Li, Sturis, Tolic
         baseLine1 = [mean(solLi.y(1, solLi.x>tmin)), mean(ySt(tSt>tmin, 3)),...
@@ -89,7 +94,11 @@ parfor j=1:length(paramList)
         
         % Select value of changing parameter
         const.(param) = default.(param)+default.(param)*step;
-
+        if string(param)=="alpha" || string(param)=="C5"
+             const.(strcat(param,'T')) = default.(strcat(param,'T')) + ...
+                                         default.(strcat(param,'T'))*step;
+        end
+        
         % Solve equations
         solLi = liSolver(liState, const, time);
         [tSt, ySt] = sturisSolver(sturisState, const, time);
@@ -103,7 +112,7 @@ end
 
 %%
 
-Si = Si/max(max(Si));
+Si = Si;%/max(max(Si));
 figure()
 bar(categorical(paramList), Si)
 xlabel('Parameter')
