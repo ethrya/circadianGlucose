@@ -13,4 +13,4 @@ else
     C5 = const.C5;
 end
 
-f = const.Rg/(1+exp(const.alpha*(x3/const.Vp-const.C5)));
+f = const.Rg/(1+exp(alpha*(x3/const.Vp-C5)));
