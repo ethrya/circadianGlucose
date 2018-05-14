@@ -23,3 +23,39 @@ function testF1Alternative(testCase)
     verifyEqual(testCase,actSolution,expSolution)
 end
 
+function testF2Default(testCase)
+    const = models.constants;
+    G = 10000;
+    actSolution = models.funcs.f2(G, const);
+    expSolution = const.Ub*(1-exp(-G/(const.C2*const.Vg)));
+    verifyEqual(testCase,actSolution,expSolution)
+end
+
+function testF2Alternative(testCase)
+    const = models.constants;
+    const.Vg = 5; const.Ub = 100; C2 = -3000;
+    G = -10000;
+    actSolution = models.funcs.f2(G, const);
+    expSolution = const.Ub*(1-exp(-G/(const.C2*const.Vg)));
+    verifyEqual(testCase,actSolution,expSolution)
+end
+
+function testF3Default(testCase)
+    const = models.constants;
+    G = 10000;
+    actSolution = models.funcs.f3(G, const);
+    expSolution = G/(const.C3*const.Vg);
+    verifyEqual(testCase,actSolution,expSolution)
+end
+
+function testF3Alternative(testCase)
+    const = models.constants;
+    const.Vg = 5; C3 = -3000;
+    G = 10;
+    actSolution = models.funcs.f3(G, const);
+    expSolution = G/(const.C3*const.Vg);
+    verifyEqual(testCase,actSolution,expSolution)
+end
+
+function testODESolver(testCase)
+end

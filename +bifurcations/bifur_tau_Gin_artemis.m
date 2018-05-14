@@ -63,7 +63,6 @@ parfor i=1:nGin
                              min(yT(tT>tmin,1)), max(yT(tT>tmin,1))];
     end
 end
-toc
 
 %% Save Output
 save('../simResults/bifurcation/2018-05-07_bf',...
@@ -72,5 +71,5 @@ save('../simResults/bifurcation/2018-05-07_bf',...
 %save('/suphys/erya7975/results/bifur02',...
 
 delete(poolobj)
-
+toc
 exit

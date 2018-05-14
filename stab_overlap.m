@@ -1,7 +1,7 @@
 % Code to create plot of locations where models are stable/limit cycles
 
 % Load data
-data = load('../simResults/bifur06');
+data = load('~/scratch/bf_res_02');
 
 liStab = abs(data.LiResults(:,:,1)-data.LiResults(:,:,2))<1;
 sturisStab = abs(data.SturisResults(:,:,1)-data.SturisResults(:,:,2))<1;
