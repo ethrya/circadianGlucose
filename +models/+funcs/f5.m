@@ -13,4 +13,9 @@ else
     C5 = const.C5;
 end
 
-f = const.Rg/(1+exp(alpha*(x3/const.Vp-C5)));
+if length(const.C)==0
+    f = const.Rg/(1+exp(alpha*(x3/const.Vp-C5)));
+else
+    f = models.funcs.sinCirc(const.C,const.g)*const.Rg/(1+exp(alpha*(x3/const.Vp-C5)));
+end
+end

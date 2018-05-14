@@ -12,6 +12,8 @@ const.Gin = 100;
 %const.tp = 4;
 %const.alpha = 0.41;
 
+const.g = 1;
+
 % Initial conditions Li 
 liState = [10000; % Glucose
          30]; % Insulin
@@ -30,7 +32,7 @@ time = [0, 5000];
 
 %% Solve equations
 solLi = liSolver(liState, const, time);
-[tSt, ySt] = ODESolver(@models.sturis, sturisState, const, time);
+[tSt, ySt] = ODESolver(@models.sturisCirc, sturisState, const, time);
 [tT, yT] = ODESolver(@models.tolic, sturisState, const, time);
 
 
@@ -45,20 +47,20 @@ figure()
 % Plot [G]
 subplot(2,1,1)
 hold on
-plot(solLi.x, solLi.y(2,:)/const.Vp)
-plot(tSt,Ip)
-plot(tT, yT(:,1)/const.Vp)
+plot(solLi.x/60, solLi.y(2,:)/const.Vp)
+plot(tSt/60,Ip)
+plot(tT/60, yT(:,1)/const.Vp)
 hold off
 ylabel('Insulin (\muU/ml)')
 legend('Li et al. (2006)', 'Sturis et al. (1991)', 'Tolic et al. (2000)')
 % Plot [I]
 subplot(2,1,2)
 hold on
-plot(solLi.x, solLi.y(1,:)/(10*const.Vg));
-plot(tSt,G)
-plot(tT, yT(:,3)/(10*const.Vg))
+plot(solLi.x/60, solLi.y(1,:)/(10*const.Vg));
+plot(tSt/60,G)
+plot(tT/60, yT(:,3)/(10*const.Vg))
 hold off
-xlabel('Time (min)')
+xlabel('Time (h)')
 ylabel('Glucose (mg/dl)')
 
 

@@ -53,6 +53,8 @@ classdef constants
         delta = -2.4;
         gamma = 5.0;
         
+        C %Circadian phase
+        g = 0.01; %Coupling strength
     end
     
     properties
