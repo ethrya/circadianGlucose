@@ -30,8 +30,8 @@ time = [0, 5000];
 
 %% Solve equations
 solLi = liSolver(liState, const, time);
-[tSt, ySt] = sturisSolver(sturisState, const, time);
-[tT, yT] = tolicSolver(sturisState, const, time);
+[tSt, ySt] = ODESolver(@models.sturis, sturisState, const, time);
+[tT, yT] = ODESolver(@models.tolic, sturisState, const, time);
 
 
 %% Plotting
