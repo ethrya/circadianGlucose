@@ -57,5 +57,24 @@ function testF3Alternative(testCase)
     verifyEqual(testCase,actSolution,expSolution)
 end
 
-function testODESolver(testCase)
+function testBaselineMonotonic(testCase)
+    % Find first time e^(-x)+1 is within 1% of 1.
+    % Need t_min s.t. 0.99<e^(-t)+1<1.01
+    % => t_min = 4.605
+    t = 0:0.01:100;
+    G = exp(-t)+1;
+    funcRes = utils.baseline_return(t, G, 50);
+    actSolution = 4.605;
+    verifyEqual(testCase,funcRes, actSolution, 'AbsTol', 0.01)
+end
+
+function testBaselineMonotonic(testCase)
+    % Find first time e^(-x)+1 is within 1% of 1.
+    % Need t_min s.t. 0.99<e^(-t)+1<1.01
+    % => t_min = 4.605
+    t = 0:0.01:100;
+    G = exp(-t)sin(0.5t);
+    funcRes = utils.baseline_return(t, G, 50);
+    actSolution = 4.605;
+    verifyEqual(testCase,funcRes, actSolution, 'AbsTol', 0.01)
 end
