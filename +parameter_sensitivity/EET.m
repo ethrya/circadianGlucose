@@ -1,19 +1,13 @@
 %% Note code requires MATLAB 2017a or higher
-clear all;
+%clear all;
 
 %% Preliminaries
 % Create Cell array with parameter nales
 %paramList = cellstr(['C1   '; 'C2   '; 'C3   '; 'alpha']);
 paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
-<<<<<<< HEAD
                      'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
                      'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
                      'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
-=======
-    'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
-    'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
-    'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
->>>>>>> 63912c010ce59900b0b669a183f2b669c76487fb
 
 
 % Default paramter values
@@ -29,7 +23,7 @@ default.C5 = 26; default.C5T = 29; default.alphaT = 0.41;
 % Define parameter space
 k = length(paramList); % Number of parameters
 p = 4; % Number of levels
-r = 100; % Number of trajectories
+r = 2; % Number of trajectories
 c = 0.2; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
 delta = 2*c/p; % spacing of trajectories
 
@@ -62,7 +56,8 @@ path ='~/scratch/';
 Sj = zeros(length(paramList),3);
 
 EEs = zeros(k, r, 3);
-
+EEsReturnTime  = zeros(k, r, 3);
+EEsReturnAmplitude  = zeros(k, r, 3);
 %% Simulations
 % Loop over trajectories then parameters and then loop over parameter values.
 for i=1:r
@@ -99,6 +94,12 @@ for i=1:r
     % Vector of baseline values for Li, Sturis, Tolic
     baseLineOld = [mean(solLi.y(1, solLi.x>tmin)), mean(ySt(tSt>tmin, 3)),...
         mean(yT(tT>tmin, 3))];
+    returnTimeOld = [utils.baseline_return(solLi.x, solLi.y(1,:), tmin),...
+                     utils.baseline_return(tSt, ySt(:,3), tmin),...
+                     utils.baseline_return(tT, yT(:,3), tmin)];
+    returnAmplitudeOld = [utils.baselineAmplitude(solLi.x, solLi.y(1,:), tmin),...
+                     utils.baselineAmplitude(tSt, ySt(:,3), tmin),...
+                     utils.baselineAmplitude(tT, yT(:,3), tmin)];
     
     for j=1:k
         % Name of parameter
@@ -117,10 +118,22 @@ for i=1:r
         
         baseLine = [mean(solLi.y(1, solLi.x>tmin)), mean(ySt(tSt>tmin, 3)),...
             mean(yT(tT>tmin, 3))];
+        returnTime = [utils.baseline_return(solLi.x, solLi.y(1,:), tmin),...
+                     utils.baseline_return(tSt, ySt(:,3), tmin),...
+                     utils.baseline_return(tT, yT(:,3), tmin)];
+        returnTimeAmplitude = [utils.baselineAmplitude(solLi.x, solLi.y(1,:), tmin),...
+                     utils.baselineAmplitude(tSt, ySt(:,3), tmin),...
+                     utils.baselineAmplitude(tT, yT(:,3), tmin)];
         
-        EEs(j,i,:) = (baseLine-baseLineOld)./delta;
+        
+        EEs(j,i,:) = (baseLine-baseLineOld)/delta;
+        
+        EEsReturnTime(j,i,:) = (returnTime-returnTimeOld)/delta;
+        EEsReturnAmplitude(j,i,:) = (returnTimeAmplitude-returnAmplitudeOld)/delta;
         
         baseLineOld=baseLine;
+        returnTimeOld=returnTime; returnAmplitudeOld=returnTimeAmplitude;
+        
     end
 end
 
@@ -184,3 +197,51 @@ for j=1:model
     legend(paramList)
 end
 xlabel('\mu^*')
+
+
+%%
+%%
+model = 3;
+muStar = zeros(k,3); mu = zeros(k,3); sigma = zeros(k,3);
+
+for i=1:k
+    muStar(i,:) = mean(abs(EEsReturnAmplitude(i,:,:)));
+    mu(i,:) = mean(EEsReturnAmplitude(i,:,:));
+    sigma(i,:) = std(EEsReturnAmplitude(i, :,:));
+end
+%%
+figure()
+subplot(2,1,1)
+bar(categorical(paramList),muStar)
+ylabel('\mu^*')
+%set(gca, 'YScale', 'log')
+legend('Li et al.', 'Sturis et al.', 'Tolic et al.')
+subplot(2,1,2)
+bar(categorical(paramList),sigma)
+
+xlabel('Parameter')
+ylabel('\sigma')
+%set(gca, 'YScale', 'log')
+
+%%
+model = 3;
+muStar = zeros(k,3); mu = zeros(k,3); sigma = zeros(k,3);
+
+for i=1:k
+    muStar(i,:) = mean(abs(EEsReturnTime(i,:,:)));
+    mu(i,:) = mean(EEsReturnTime(i,:,:));
+    sigma(i,:) = std(EEsReturnTime(i, :,:));
+end
+%%
+figure()
+subplot(2,1,1)
+bar(categorical(paramList),muStar)
+ylabel('\mu^*')
+%set(gca, 'YScale', 'log')
+legend('Li et al.', 'Sturis et al.', 'Tolic et al.')
+subplot(2,1,2)
+bar(categorical(paramList),sigma)
+
+xlabel('Parameter')
+ylabel('\sigma')
+%set(gca, 'YScale', 'log')
