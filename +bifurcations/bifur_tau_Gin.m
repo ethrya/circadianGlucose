@@ -1,10 +1,10 @@
 clear all
 tic
 % Bifurification parameter arrays
-Gin = 0:5:5;
+Gin = 0:2:400;
 nGin = length(Gin);
 
-tau = 1:5:500;
+tau = 11:2:30;
 nTau = length(tau);
 
 %Constants for all trials
@@ -63,7 +63,7 @@ end
 toc
 
 %% Save Output
-save('~/scratch/bf_res_02',...
+save('~/scratch/bf_res_t-1-10',...
      'LiResults','SturisResults','TolicResults','Gin', 'tau');
 
 

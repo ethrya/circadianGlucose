@@ -7,24 +7,24 @@ const = models.constants;
 const.tau1 = 7;
 const.tau2 = 36;
 const.td = 36;
-const.Gin = 100;
-%const.C3 = 550;
-%const.tp = 4;
+const.Gin = 0;
+const.C3 = 1100;
+%const.tp = 8;
 %const.alpha = 0.41;
 
 const.g = 1;
 
-% Initial conditions Li 
-liState = [10000; % Glucose
-         30]; % Insulin
+% Initial conditions for Li
+liState = [14000; % Glucose
+    40]; % Insulin
 
-% Initial condition Sturis and Tolic
-sturisState = [30; % Ip
-               0; % Ii
-               10000; % G
-               0; % x1
-               0; % x2
-               0]; % x3
+% Initial condition for Sturis and Tolic
+sturisState = [40; % Ip
+    40; % Ii
+    14000; % G
+    0; % x1
+    0; % x2
+    0]; % x3
 
 % Integration time (min)
 time = [0, 5000];
@@ -32,7 +32,7 @@ time = [0, 5000];
 
 %% Solve equations
 solLi = liSolver(liState, const, time);
-[tSt, ySt] = ODESolver(@models.sturisCirc, sturisState, const, time);
+[tSt, ySt] = ODESolver(@models.sturis, sturisState, const, time);
 [tT, yT] = ODESolver(@models.tolic, sturisState, const, time);
 
 
@@ -59,6 +59,7 @@ hold on
 plot(solLi.x/60, solLi.y(1,:)/(10*const.Vg));
 plot(tSt/60,G)
 plot(tT/60, yT(:,3)/(10*const.Vg))
+plot([0 max(tT)/60], [mean(solLi.y(1,solLi.x>600)) mean(solLi.y(1,solLi.x>600))]/(10*const.Vg))
 hold off
 xlabel('Time (h)')
 ylabel('Glucose (mg/dl)')
