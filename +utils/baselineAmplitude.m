@@ -18,9 +18,9 @@ else
     % Test if critically or uncritically damped
     if isempty(tPeak)
         % For critically damped, just use time with 0.01 of 0
-        reasonableG = t(abs(G-stableMean)<0.01);
+        reasonableG = t(abs(G-stableMean)<0.05);
     else
-        reasonableG = tPeak(gPeak<0.01);        
+        reasonableG = tPeak(gPeak<0.05);        
     end
     tMin = reasonableG(1);
 end
