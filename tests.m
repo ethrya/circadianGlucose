@@ -57,7 +57,8 @@ function testF3Alternative(testCase)
     verifyEqual(testCase,actSolution,expSolution)
 end
 
-function testBaselineMonotonic(testCase)
+function testBaselineCritical(testCase)
+    %Test baseline for critically damped case
     % Find first time e^(-x)+1 is within 1% of 1.
     % Need t_min s.t. 0.99<e^(-t)+1<1.01
     % => t_min = 4.605
@@ -68,13 +69,60 @@ function testBaselineMonotonic(testCase)
     verifyEqual(testCase,funcRes, actSolution, 'AbsTol', 0.01)
 end
 
-function testBaselineMonotonic(testCase)
+function testBaselineDamped(testCase)
+    % Test baseline for (uncrticially) damped case
+    % Find first time e^(-0.1t)cos(0.5t) is within 1% of 0.
+    % Need t_min s.t. |e^(-0.1t)cos(0.5t)|<0.01
+    % => t_min = \pi
+    t = 0:0.01:100;
+    G = exp(-0.1*t).*cos(0.5*t);
+    funcRes = utils.baseline_return(t, G, 50);
+    actSolution = pi;
+    verifyEqual(testCase,funcRes, actSolution, 'AbsTol', 0.01)
+end
+
+function testBaselineLimit(testCase)
+    % Test baseline for limit cycle
+    % Find first time (e^(-0.1t)+1)cos(0.5t) is within 1% of 1.
+    % t_min =\pi/2
+    t = 0:0.01:100;
+    G = (exp(-0.1*t)+1).*cos(t);
+    funcRes = utils.baseline_return(t, G, 50);
+    actSolution = pi/2;
+    verifyEqual(testCase,funcRes, actSolution, 'AbsTol', 0.01)
+end
+
+function testAmplitudeBaselineCritical(testCase)
+    % Test baseline for critically damped case
     % Find first time e^(-x)+1 is within 1% of 1.
     % Need t_min s.t. 0.99<e^(-t)+1<1.01
     % => t_min = 4.605
-    t = 0:0.01:100;
-    G = exp(-t)sin(0.5t);
-    funcRes = utils.baseline_return(t, G, 50);
+    t = 0:0.01:200;
+    G = exp(-t)+1;
+    funcRes = utils.baselineAmplitude(t, G, 100);
     actSolution = 4.605;
+    verifyEqual(testCase,funcRes, actSolution, 'AbsTol', 0.01)
+end
+
+function testAmplitudeBaselineLimit(testCase)
+    % Test baseline for limit cycle
+    % Find first time peak of (e^(-0.1t)+1)cos(0.5t) is within 1% of 1.
+    % t_min =16*pi
+    t = 0:0.01:200;
+    G = (exp(-0.1*t)+1).*cos(t);
+    funcRes = utils.baselineAmplitude(t, G, 100);
+    actSolution = 16*pi;
+    verifyEqual(testCase,funcRes, actSolution, 'AbsTol', 0.01)
+end
+
+function testAmplitudeBaselineDamped(testCase)
+    % Test baseline for (uncrticially) damped case
+    % Find first time peak of e^(-0.1t)cos(0.5t) is within 1% of 0.
+    % Need t_min s.t. |e^(-0.1t)cos(0.5t)|<0.01 and cos(0.5t)=1
+    % => t_min = 49.87 (determined using plot)
+    t = 0:0.01:200;
+    G = exp(-0.1*t).*cos(0.5*t);
+    funcRes = utils.baselineAmplitude(t, G, 100);
+    actSolution = 49.87;
     verifyEqual(testCase,funcRes, actSolution, 'AbsTol', 0.01)
 end
