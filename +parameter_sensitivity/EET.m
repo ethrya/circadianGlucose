@@ -1,6 +1,6 @@
 %% Note code requires MATLAB 2017a or higher
-%clear all;
-
+clear all;
+tic
 %% Preliminaries
 % Create Cell array with parameter nales
 %paramList = cellstr(['C1   '; 'C2   '; 'C3   '; 'alpha']);
@@ -23,7 +23,7 @@ default.C5 = 26; default.C5T = 29; default.alphaT = 0.41;
 % Define parameter space
 k = length(paramList); % Number of parameters
 p = 4; % Number of levels
-r = 2; % Number of trajectories
+r = 200; % Number of trajectories
 c = 0.2; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
 delta = 2*c/p; % spacing of trajectories
 
@@ -245,3 +245,4 @@ bar(categorical(paramList),sigma)
 xlabel('Parameter')
 ylabel('\sigma')
 %set(gca, 'YScale', 'log')
+toc
