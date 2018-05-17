@@ -6,7 +6,7 @@ function tMin = baselineAmplitude(t, G, tMax)
 gSteady = G(t>tMax);
 stableMean = mean(gSteady);
 if (max(gSteady)-min(gSteady))>0.1
-    % if it is a limit cycle. Find peaks in G
+    % If it is a limit cycle. Find peaks in G
     [gPeak, tPeak] = findpeaks(G, t);
     % Find mean max value of steady peaks
     peakLimit = mean(gPeak(tPeak>tMax));
@@ -14,12 +14,14 @@ if (max(gSteady)-min(gSteady))>0.1
     peaks_near_limit = tPeak(abs(gPeak-peakLimit)/peakLimit<0.01);
     tMin = peaks_near_limit(1);
 else
-    [~, tPeak] = findpeaks((G-stableMean)/(stableMean),...
-        t, 'MinPeakHeight', 0.01);
+    [gPeak, tPeak] = findpeaks((G-stableMean), t);
+    % Test if critically or uncritically damped
     if isempty(tPeak)
-        tPeak = 0;
+        % For critically damped, just use time with 0.01 of 0
+        reasonableG = t(abs(G-stableMean)<0.01);
+    else
+        reasonableG = tPeak(gPeak<0.01);        
     end
-    reasonableG = t(abs(G-stableMean)/stableMean<0.01 & t>max(tPeak));
     tMin = reasonableG(1);
 end
 end
