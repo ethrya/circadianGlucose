@@ -52,7 +52,9 @@ warning('off', 'MATLAB:mir_warning_maybe_uninitialized_temporary');
 
 path ='~/scratch/';
 
-Sj = zeros(length(paramList),3);
+Si = zeros(length(paramList),3);
+SiReturn = zeros(length(paramList),3);
+SiReturnAmp = zeros(length(paramList),3);
 
 %% Simulations
 % Loop over parameters and then loop over parameter values.
@@ -85,6 +87,13 @@ for j=1:length(paramList)
         % Vector of baseline values for Li, Sturis, Tolic
         baseLine1 = [mean(solLi.y(1, solLi.x>tmin)), mean(ySt(tSt>tmin, 3)),...
                     mean(yT(tT>tmin, 3))];
+        returnTime = [utils.baseline_return(solLi.x, solLi.y(1,:), tmin),...
+                     utils.baseline_return(tSt, ySt(:,3), tmin),...
+                     utils.baseline_return(tT, yT(:,3), tmin)];
+        returnTimeAmplitude = [utils.baselineAmplitude(solLi.x, solLi.y(1,:), tmin),...
+                     utils.baselineAmplitude(tSt, ySt(:,3), tmin),...
+                     utils.baselineAmplitude(tT, yT(:,3), tmin)];
+        
 
         const = models.constants;
         % Change constants from default values
@@ -108,14 +117,37 @@ for j=1:length(paramList)
                 
         baseLine2 = [mean(solLi.y(1, solLi.x>tmin)), mean(ySt(tSt>tmin, 3)),...
                     mean(yT(tT>tmin, 3))];
-        Si(j,:) = (baseLine2-baseLine1)./step;      
+        returnTime2 = [utils.baseline_return(solLi.x, solLi.y(1,:), tmin),...
+                     utils.baseline_return(tSt, ySt(:,3), tmin),...
+                     utils.baseline_return(tT, yT(:,3), tmin)];
+        returnTimeAmplitude2 = [utils.baselineAmplitude(solLi.x, solLi.y(1,:), tmin),...
+                     utils.baselineAmplitude(tSt, ySt(:,3), tmin),...
+                     utils.baselineAmplitude(tT, yT(:,3), tmin)];
+        
+        Si(j,:) = (baseLine2-baseLine1)./step;
+        SiReturn(j,:) = (returnTime2-returnTime)./step;
+        SiReturnAmp(j,:) = (returnTimeAmplitude2-returnTimeAmplitude)./step;
 end
 
 %%
 paramPlot = categorical(paramList);
-Si = Si;%/max(max(Si));
+%Si = Si;%/max(max(Si));
 figure()
 bar(categorical(paramList), Si)
 xlabel('Parameter')
 ylabel('S_i')
+legend('Li', 'Sturis', 'Tolic')
+
+%%
+figure()
+bar(categorical(paramList), SiReturn)
+xlabel('Parameter')
+ylabel('S_i Return time')
+legend('Li', 'Sturis', 'Tolic')
+
+%%
+figure()
+bar(categorical(paramList), SiReturnAmp)
+xlabel('Parameter')
+ylabel('S_i Return time ampltiude')
 legend('Li', 'Sturis', 'Tolic')
