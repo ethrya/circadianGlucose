@@ -59,13 +59,13 @@ end
 
 function testBaselineCritical(testCase)
     %Test baseline for critically damped case
-    % Find first time e^(-x)+1 is within 1% of 1.
-    % Need t_min s.t. 0.99<e^(-t)+1<1.01
-    % => t_min = 4.605
-    t = 0:0.01:100;
+    % Find first time e^(-x)+1 is within 0.1% of 1.
+    % Need t_min s.t. 0.999<e^(-t)+1<1.001
+    % => t_min = 6.908
+    t = 0:0.001:100;
     G = exp(-t)+1;
     funcRes = utils.baseline_return(t, G, 50);
-    actSolution = 4.605;
+    actSolution = 6.908;
     verifyEqual(testCase,funcRes, actSolution, 'AbsTol', 0.01)
 end
 
