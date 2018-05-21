@@ -4,7 +4,7 @@ tic
 Gin = 0:2:400;
 nGin = length(Gin);
 
-tau = 11:2:30;
+tau = 11:2:19;
 nTau = length(tau);
 
 %Constants for all trials
@@ -63,7 +63,7 @@ end
 toc
 
 %% Save Output
-save('~/scratch/bf_res_t-1-10',...
+save('~/scratch/bf_res_t-11-19',...
      'LiResults','SturisResults','TolicResults','Gin', 'tau');
 
 
