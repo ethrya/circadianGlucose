@@ -1,13 +1,13 @@
 %% Note code requires MATLAB 2017a or higher
-clear all;
+clear
 tic
 %% Preliminaries
 % Create Cell array with parameter nales
-%paramList = cellstr(['C1   '; 'C2   '; 'C3   '; 'alpha']);
-paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
-                     'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
-                     'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
-                     'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
+paramList = cellstr(['C1   '; 'C2   '; 'C3   ']);%; 'alpha']);
+%paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
+%                     'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
+%                     'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
+%                     'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
 
 
 % Default paramter values
@@ -22,19 +22,19 @@ default.C5 = 26; default.C5T = 29; default.alphaT = 0.41;
 
 % Define parameter space
 k = length(paramList); % Number of parameters
-p = 4; % Number of levels
-r = 200; % Number of trajectories
-c = 0.2; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
+p = 9; % Number of levels
+r = 10; % Number of trajectories
+c = 0.02; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
 delta = 2*c/p; % spacing of trajectories
 
-% Initial conditions for Li
-liState = [14000; % Glucose
+% Initial conditions for Liz
+liState = [17000; % Glucose
     40]; % Insulin
 
 % Initial condition for Sturis and Tolic
 sturisState = [40; % Ip
-    0; % Ii
-    14000; % G
+    40; % Ii
+    17000; % G
     0; % x1
     0; % x2
     0]; % x3
@@ -90,6 +90,7 @@ for i=1:r
     solLi = liSolver(liState, const, time);
     [tSt, ySt] = sturisSolver(sturisState, const, time);
     [tT, yT] = tolicSolver(sturisState, const, time);
+
     
     % Vector of baseline values for Li, Sturis, Tolic
     baseLineOld = [mean(solLi.y(1, solLi.x>tmin)), mean(ySt(tSt>tmin, 3)),...
@@ -117,7 +118,7 @@ for i=1:r
         [tT, yT] = tolicSolver(sturisState, const, time);
         
         baseLine = [mean(solLi.y(1, solLi.x>tmin)), mean(ySt(tSt>tmin, 3)),...
-            mean(yT(tT>tmin, 3))];
+                    mean(yT(tT>tmin, 3))];
         returnTime = [utils.baseline_return(solLi.x, solLi.y(1,:), tmin),...
                      utils.baseline_return(tSt, ySt(:,3), tmin),...
                      utils.baseline_return(tT, yT(:,3), tmin)];
@@ -148,17 +149,17 @@ for i=1:k
 end
 
 
-%% Bootstrap
-model = 3;
-muStarCI = zeros(k,3,2); muCI = zeros(k,3,2); sigmaCI = zeros(k,3,2);
-
-for j=1:model
-    for i=1:k
-        muStarCI(i,j,:) = bootci(1000,@(x) mean(abs(x)), EEs(i,:,j));
-        muCI(i,j,:) = bootci(1000,@(x) mean(x), EEs(i,:,j));
-        sigmaCI(i,j,:) = bootci(1000,@(x) mean(x), EEs(i,:,j));
-    end
-end
+% %% Bootstrap
+% model = 3;
+% muStarCI = zeros(k,3,2); muCI = zeros(k,3,2); sigmaCI = zeros(k,3,2);
+% 
+% for j=1:model
+%     for i=1:k
+%         muStarCI(i,j,:) = bootci(1000,@(x) mean(abs(x)), EEs(i,:,j));
+%         muCI(i,j,:) = bootci(1000,@(x) mean(x), EEs(i,:,j));
+%         sigmaCI(i,j,:) = bootci(1000,@(x) mean(x), EEs(i,:,j));
+%     end
+% end
 %%
 figure()
 subplot(2,1,1)
@@ -175,28 +176,28 @@ ylabel('\sigma')
 
 
 %%
-model = 1;
-figure()
-for j=1:model
-    subplot(3,1,j)
-    set(gca, 'YScale', 'log')
-    set(gca, 'XScale', 'log')
-    muPlot = muStar(:,j);%(muStar(:,model)>10^(-10) & sigma(:,model)>10^(-10));
-    sigmaPlot = sigma(:,j);%(muStar(:,model)>10^(-10) & sigma(:,model)>10^(-10));
-    
-    cmap = jet(2); % Make 1000 colors.
-    
-    hold on
-    for i=1:k
-        scatter(muPlot(i), sigmaPlot(i), 100, '.')
-        errorbar(muPlot(i), sigmaPlot(i), sigmaPlot(i,j)-sigmaCI(i,j,1),...
-            sigmaCI(i,j,2)-sigmaPlot(i,j), muPlot(i,j)-muStarCI(i,j,1),...
-            muStarCI(i,j,2)-muPlot(i,j))
-    end
-    ylabel('\sigma^*')
-    legend(paramList)
-end
-xlabel('\mu^*')
+% model = 1;
+% figure()
+% for j=1:model
+%     subplot(3,1,j)
+%     set(gca, 'YScale', 'log')
+%     set(gca, 'XScale', 'log')
+%     muPlot = muStar(:,j);%(muStar(:,model)>10^(-10) & sigma(:,model)>10^(-10));
+%     sigmaPlot = sigma(:,j);%(muStar(:,model)>10^(-10) & sigma(:,model)>10^(-10));
+%     
+%     cmap = jet(2); % Make 1000 colors.
+%     
+%     hold on
+%     for i=1:k
+%         scatter(muPlot(i), sigmaPlot(i), 100, '.')
+%         errorbar(muPlot(i), sigmaPlot(i), sigmaPlot(i,j)-sigmaCI(i,j,1),...
+%             sigmaCI(i,j,2)-sigmaPlot(i,j), muPlot(i,j)-muStarCI(i,j,1),...
+%             muStarCI(i,j,2)-muPlot(i,j))
+%     end
+%     ylabel('\sigma^*')
+%     legend(paramList)
+% end
+% xlabel('\mu^*')
 
 
 %%
