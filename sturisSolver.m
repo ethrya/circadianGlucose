@@ -2,7 +2,7 @@
 function [t, y] = sturisSolver(state, const, time)
 
 %% Solve ODE using stiff solver
-opts = odeset('RelTol',1e-10);
-[t, y] = ode15s(@(t,y) models.sturis(t, y, const), time, state, opts);
+opts = odeset('RelTol',1e-13, 'AbsTol', 1e-14);
+[t, y] = ode113(@(t,y) models.sturis(t, y, const), time, state, opts);
 
 end
