@@ -4,7 +4,7 @@ tic
 %% Preliminaries
 % Create Cell array with parameter nales
 paramList = cellstr(['C1   '; 'C2   '; 'C3   ']);%; 'alpha']);
-%paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
+% paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
 %                     'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
 %                     'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
 %                     'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
@@ -163,6 +163,7 @@ end
 %%
 figure()
 subplot(2,1,1)
+title('[G]_B')
 bar(categorical(paramList),muStar)
 ylabel('\mu^*')
 %set(gca, 'YScale', 'log')
@@ -212,6 +213,7 @@ for i=1:k
 end
 %%
 figure()
+
 subplot(2,1,1)
 bar(categorical(paramList),muStar)
 ylabel('\mu^*')
