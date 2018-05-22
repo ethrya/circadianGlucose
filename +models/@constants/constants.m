@@ -7,7 +7,7 @@ classdef constants
         tp = 6;
         tpT = 4; %tp from Tolic
         td = 36;
-        tdLi = 12; % The degradation time used in Li et al (2006)
+        tdLi = 36; % The degradation time used in Li et al (2006)
         
         % Volume of spaces (l)
         Vi = 11;
@@ -42,7 +42,7 @@ classdef constants
 
         % Li Delays (min)
         tau1 = 7; 
-        tau2 = 12;
+        tau2 = 36;
         
         % Insulin Degradation rate (1/min)
         di = 0.06;
