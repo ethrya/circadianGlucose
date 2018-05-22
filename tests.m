@@ -127,3 +127,42 @@ function testAmplitudeBaselineDamped(testCase)
     actSolution = 53.01;
     verifyEqual(testCase,funcRes, actSolution, 'AbsTol', 0.01)
 end
+
+function testExponFitDamped(testCase)
+    % Test baseline for (uncrticially) damped case
+    % Find first time peak of e^(-0.1t)cos(0.5t) is within 1% of 0.
+    % Need t_min, s.t. G<0.001 of 0, after the final peak>0.001
+    % i.e. first G<0.001, after final |e^(-0.1t)cos(0.5t)|>0.001, cos(0.5t)=1
+    % => t_min = 49.87 (determined using plot)
+    t = 0:0.01:200;
+    G = exp(-0.1*t)*0.5.*cos(0.5*t)+1;
+    fit = utils.expon_fit(t, G, 100);
+    actSolution = -0.1;
+    verifyEqual(testCase,fit.b, actSolution, 'AbsTol', 0.01)
+end
+
+function testExponFitCritial(testCase)
+    % Test baseline for (uncrticially) damped case
+    % Find first time peak of e^(-0.1t)cos(0.5t) is within 1% of 0.
+    % Need t_min, s.t. G<0.001 of 0, after the final peak>0.001
+    % i.e. first G<0.001, after final |e^(-0.1t)cos(0.5t)|>0.001, cos(0.5t)=1
+    % => t_min = 49.87 (determined using plot)
+    t = 0:0.01:200;
+    G = exp(-0.1*t)+1;
+    fit = utils.expon_fit(t, G, 100);
+    actSolution = -0.1;
+    verifyEqual(testCase,fit.b, actSolution, 'AbsTol', 0.01)
+end
+
+function testExponFitLimit(testCase)
+    % Test baseline for (uncrticially) damped case
+    % Find first time peak of e^(-0.1t)cos(0.5t) is within 1% of 0.
+    % Need t_min, s.t. G<0.001 of 0, after the final peak>0.001
+    % i.e. first G<0.001, after final |e^(-0.1t)cos(0.5t)|>0.001, cos(0.5t)=1
+    % => t_min = 49.87 (determined using plot)
+    t = 0:0.01:200;
+    G = (exp(-0.1*t)+1)*0.5.*cos(0.5*t);
+    fit = utils.expon_fit(t, G, 100);
+    actSolution = -0.1;
+    verifyEqual(testCase,fit.b, actSolution, 'AbsTol', 0.01)
+end
