@@ -161,7 +161,7 @@ function testExponFitLimit(testCase)
     % i.e. first G<0.001, after final |e^(-0.1t)cos(0.5t)|>0.001, cos(0.5t)=1
     % => t_min = 49.87 (determined using plot)
     t = 0:0.01:200;
-    G = (exp(-0.1*t)+1)*0.5.*cos(0.5*t);
+    G = (20000*exp(-0.1*t)+1).*cos(0.5*t);
     fit = utils.expon_fit(t, G, 100);
     actSolution = -0.1;
     verifyEqual(testCase,fit.b, actSolution, 'AbsTol', 0.01)
