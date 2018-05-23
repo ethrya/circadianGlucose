@@ -24,7 +24,7 @@ default.C5 = 26; default.C5T = 29; default.alphaT = 0.41;
 k = length(paramList); % Number of parameters
 p = 9; % Number of levels
 r = 100; % Number of trajectories
-c = 0.2; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
+c = 0.1; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
 delta = 2*c/p; % spacing of trajectories
 
 % Initial conditions for Liz
