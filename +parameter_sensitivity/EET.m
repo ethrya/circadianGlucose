@@ -3,11 +3,11 @@ clear
 tic
 %% Preliminaries
 % Create Cell array with parameter nales
-%paramList = cellstr(['C1   '; 'C2   '; 'C3   ']);%; 'alpha']);
+%paramList = cellstr(['C1   '; 'C2   ']);%; 'C3   '; 'alpha']);
 paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
-                    'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
-                    'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
-                    'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
+                   'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
+                   'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
+                   'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
 
 
 % Default paramter values
@@ -24,17 +24,17 @@ default.C5 = 26; default.C5T = 29; default.alphaT = 0.41;
 k = length(paramList); % Number of parameters
 p = 9; % Number of levels
 r = 100; % Number of trajectories
-c = 0.2; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
+c = 0.1; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
 delta = 2*c/p; % spacing of trajectories
 
 % Initial conditions for Liz
-liState = [17000; % Glucose
+liState = [20000; % Glucose
     40]; % Insulin
 
 % Initial condition for Sturis and Tolic
 sturisState = [40; % Ip
     40; % Ii
-    17000; % G
+    20000; % G
     0; % x1
     0; % x2
     0]; % x3
@@ -101,9 +101,9 @@ for i=1:r
 %     returnAmplitudeOld = [utils.baselineAmplitude(solLi.x, solLi.y(1,:), tmin),...
 %                      utils.baselineAmplitude(tSt, ySt(:,3), tmin),...
 %                      utils.baselineAmplitude(tT, yT(:,3), tmin)];
-    returnAmplitudeOld = [utils.expon_fit(solLi.x, solLi.y(1,:), tmin).b,...
-                          utils.expon_fit(tSt, ySt(:,3), tmin).b,...
-                          utils.expon_fit(tT, yT(:,3), tmin).b];
+    returnAmplitudeOld = [1/utils.expon_fit(solLi.x, solLi.y(1,:), tmin).b,...
+                          1/utils.expon_fit(tSt, ySt(:,3), tmin).b,...
+                          1/utils.expon_fit(tT, yT(:,3), tmin).b];
     for j=1:k
         % Name of parameter
         param = char(paramList(j));
@@ -124,12 +124,9 @@ for i=1:r
         returnTime = [utils.baseline_return(solLi.x, solLi.y(1,:), tmin),...
                      utils.baseline_return(tSt, ySt(:,3), tmin),...
                      utils.baseline_return(tT, yT(:,3), tmin)];
-%         returnTimeAmplitude = [utils.baselineAmplitude(solLi.x, solLi.y(1,:), tmin),...
-%                      utils.baselineAmplitude(tSt, ySt(:,3), tmin),...
-%                      utils.baselineAmplitude(tT, yT(:,3), tmin)];
-        returnTimeAmplitude = [utils.expon_fit(solLi.x, solLi.y(1,:), tmin).b,...
-                          utils.expon_fit(tSt, ySt(:,3), tmin).b,...
-                          utils.expon_fit(tT, yT(:,3), tmin).b];
+        returnTimeAmplitude = [1/utils.expon_fit(solLi.x, solLi.y(1,:), tmin).b,...
+                          1/utils.expon_fit(tSt, ySt(:,3), tmin).b,...
+                          1/utils.expon_fit(tT, yT(:,3), tmin).b];
         
         
         EEs(j,i,:) = (baseLine-baseLineOld)/delta;
@@ -148,23 +145,11 @@ model = 3;
 muStar = zeros(k,3); mu = zeros(k,3); sigma = zeros(k,3);
 
 for i=1:k
-    muStar(i,:) = mean(abs(EEs(i,:,:)));
-    mu(i,:) = mean(EEs(i,:,:));
-    sigma(i,:) = std(EEs(i, :,:));
+    muStar(i,:) = mean(abs(EEs(i,:,:)),2);
+    mu(i,:) = mean(EEs(i,:,:),2);
+    sigma(i,:) = std(EEs(i, :,:),0,2);
 end
 
-
-% %% Bootstrap
-% model = 3;
-% muStarCI = zeros(k,3,2); muCI = zeros(k,3,2); sigmaCI = zeros(k,3,2);
-% 
-% for j=1:model
-%     for i=1:k
-%         muStarCI(i,j,:) = bootci(1000,@(x) mean(abs(x)), EEs(i,:,j));
-%         muCI(i,j,:) = bootci(1000,@(x) mean(x), EEs(i,:,j));
-%         sigmaCI(i,j,:) = bootci(1000,@(x) mean(x), EEs(i,:,j));
-%     end
-% end
 %%
 figure()
 subplot(2,1,1)
@@ -211,10 +196,11 @@ ylabel('\sigma')
 model = 3;
 muStar = zeros(k,3); mu = zeros(k,3); sigma = zeros(k,3);
 
+
 for i=1:k
-    muStar(i,:) = mean(abs(EEsReturnAmplitude(i,:,:)));
-    mu(i,:) = mean(EEsReturnAmplitude(i,:,:));
-    sigma(i,:) = std(EEsReturnAmplitude(i, :,:));
+    muStar(i,:) = mean(abs(EEsReturnAmplitude(i,:,:)),2);
+    mu(i,:) = mean(EEsReturnAmplitude(i,:,:),2);
+    sigma(i,:) = std(EEsReturnAmplitude(i, :,:),0,2);
 end
 %%
 figure()
@@ -236,9 +222,9 @@ model = 3;
 muStar = zeros(k,3); mu = zeros(k,3); sigma = zeros(k,3);
 
 for i=1:k
-    muStar(i,:) = mean(abs(EEsReturnTime(i,:,:)));
-    mu(i,:) = mean(EEsReturnTime(i,:,:));
-    sigma(i,:) = std(EEsReturnTime(i, :,:));
+    muStar(i,:) = mean(abs(EEsReturnTime(i,:,:)),2);
+    mu(i,:) = mean(EEsReturnTime(i,:,:),2);
+    sigma(i,:) = std(EEsReturnTime(i, :,:),0,2);
 end
 %%
 figure()
