@@ -23,7 +23,7 @@ default.C5 = 26; default.C5T = 29; default.alphaT = 0.41;
 % Define parameter space
 k = length(paramList); % Number of parameters
 p = 9; % Number of levels
-r = 100; % Number of trajectories
+r = 1; % Number of trajectories
 c = 0.1; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
 delta = 2*c/p; % spacing of trajectories
 
@@ -140,103 +140,16 @@ for i=1:r
     end
 end
 
-%%
-model = 3;
-muStar = zeros(k,3); mu = zeros(k,3); sigma = zeros(k,3);
-
-for i=1:k
-    muStar(i,:) = mean(abs(EEs(i,:,:)),2);
-    mu(i,:) = mean(EEs(i,:,:),2);
-    sigma(i,:) = std(EEs(i, :,:),0,2);
-end
-
-%%
-figure()
-subplot(2,1,1)
-title('[G]_B')
-bar(categorical(paramList),muStar)
-ylabel('\mu^*')
-%set(gca, 'YScale', 'log')
-legend('Li et al.', 'Sturis et al.', 'Tolic et al.')
-subplot(2,1,2)
-bar(categorical(paramList),sigma)
-
-xlabel('Parameter')
-ylabel('\sigma')
-%set(gca, 'YScale', 'log')
-
-
-%%
-% model = 1;
-% figure()
-% for j=1:model
-%     subplot(3,1,j)
-%     set(gca, 'YScale', 'log')
-%     set(gca, 'XScale', 'log')
-%     muPlot = muStar(:,j);%(muStar(:,model)>10^(-10) & sigma(:,model)>10^(-10));
-%     sigmaPlot = sigma(:,j);%(muStar(:,model)>10^(-10) & sigma(:,model)>10^(-10));
-%     
-%     cmap = jet(2); % Make 1000 colors.
-%     
-%     hold on
-%     for i=1:k
-%         scatter(muPlot(i), sigmaPlot(i), 100, '.')
-%         errorbar(muPlot(i), sigmaPlot(i), sigmaPlot(i,j)-sigmaCI(i,j,1),...
-%             sigmaCI(i,j,2)-sigmaPlot(i,j), muPlot(i,j)-muStarCI(i,j,1),...
-%             muStarCI(i,j,2)-muPlot(i,j))
-%     end
-%     ylabel('\sigma^*')
-%     legend(paramList)
-% end
-% xlabel('\mu^*')
-
 
 %%
 %%
-model = 3;
-muStar = zeros(k,3); mu = zeros(k,3); sigma = zeros(k,3);
+%% [G]_B
+[muStar, mu, sigma] = parameter_sensitivity.EET_means(EEs, k);
+parameter_sensitivity.plot_EET(paramList, muStar, sigma)
+%% mean life
+[muStar, mu, sigma] = parameter_sensitivity.EET_means(EEsReturnAmplitude, k);
+parameter_sensitivity.plot_EET(paramList, muStar, sigma)
 
-
-for i=1:k
-    muStar(i,:) = mean(abs(EEsReturnAmplitude(i,:,:)),2);
-    mu(i,:) = mean(EEsReturnAmplitude(i,:,:),2);
-    sigma(i,:) = std(EEsReturnAmplitude(i, :,:),0,2);
-end
-%%
-figure()
-
-subplot(2,1,1)
-bar(categorical(paramList),muStar)
-ylabel('\mu^*')
-%set(gca, 'YScale', 'log')
-legend('Li et al.', 'Sturis et al.', 'Tolic et al.')
-subplot(2,1,2)
-bar(categorical(paramList),sigma)
-
-xlabel('Parameter')
-ylabel('\sigma')
-%set(gca, 'YScale', 'log')
-
-%%
-model = 3;
-muStar = zeros(k,3); mu = zeros(k,3); sigma = zeros(k,3);
-
-for i=1:k
-    muStar(i,:) = mean(abs(EEsReturnTime(i,:,:)),2);
-    mu(i,:) = mean(EEsReturnTime(i,:,:),2);
-    sigma(i,:) = std(EEsReturnTime(i, :,:),0,2);
-end
-%%
-figure()
-subplot(2,1,1)
-bar(categorical(paramList),muStar)
-ylabel('\mu^*')
-%set(gca, 'YScale', 'log')
-legend('Li et al.', 'Sturis et al.', 'Tolic et al.')
-subplot(2,1,2)
-bar(categorical(paramList),sigma)
-
-xlabel('Parameter')
-ylabel('\sigma')
-%set(gca, 'YScale', 'log')
-toc
+%% t1 Return time
+[muStar, mu, sigma] = parameter_sensitivity.EET_means(EEsReturnTime, k);
+parameter_sensitivity.plot_EET(paramList, muStar, sigma)
