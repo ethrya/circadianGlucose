@@ -1,4 +1,4 @@
-clear all;
+clear;
 %% Preliminaries
 % Import constants class
 const = models.constants;
@@ -7,7 +7,7 @@ const = models.constants;
 const.Gin = 0;
 
 const.g = 0.00;
-
+const.tau2 = 36;
 % Initial conditions for Li
 liState = [20000; % Glucose
     40]; % Insulin
@@ -46,7 +46,7 @@ plot(tSt/60,Ip)
 plot(tT/60, yT(:,1)/const.Vp)
 hold off
 ylabel('Insulin (\muU/ml)')
-%legend('Li et al. (2006)', 'Sturis et al. (1991)', 'Tolic et al. (2000)')
+legend('Li et al. (2006)', 'Sturis et al. (1991)', 'Tolic et al. (2000)')
 % Plot [I]
 subplot(2,1,2)
 hold on
