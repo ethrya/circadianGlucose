@@ -3,11 +3,11 @@ clear
 tic
 %% Preliminaries
 % Create Cell array with parameter nales
-%paramList = cellstr(['C1   '; 'C2   ']);%; 'C3   '; 'alpha']);
+%paramList = cellstr(['C1   ']);%; 'C2   ']);%; 'C3   '; 'alpha']);
 paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
-                   'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
-                   'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
-                   'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
+                  'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
+                  'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
+                  'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
 
 
 % Default paramter values
@@ -22,14 +22,17 @@ default.C5 = 26; default.C5T = 29; default.alphaT = 0.41;
 
 % Define parameter space
 k = length(paramList); % Number of parameters
-p = 9; % Number of levels
-r = 1; % Number of trajectories
-c = 0.1; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
+p = 2; % Number of levels
+r = 40; % Number of trajectories
+c = 0.02; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
 delta = 2*c/p; % spacing of trajectories
+
+runNo = 0;
 
 % Initial conditions for Liz
 liState = [20000; % Glucose
     40]; % Insulin
+
 
 % Initial condition for Sturis and Tolic
 sturisState = [40; % Ip
@@ -104,6 +107,9 @@ for i=1:r
     returnAmplitudeOld = [1/utils.expon_fit(solLi.x, solLi.y(1,:), tmin).b,...
                           1/utils.expon_fit(tSt, ySt(:,3), tmin).b,...
                           1/utils.expon_fit(tT, yT(:,3), tmin).b];
+    
+    utils.save_Sim(solLi,tSt, ySt, tT, yT, const, outStr(date, runNo, i, 0));
+                   
     for j=1:k
         % Name of parameter
         param = char(paramList(j));
@@ -129,14 +135,16 @@ for i=1:r
                           1/utils.expon_fit(tT, yT(:,3), tmin).b];
         
         
-        EEs(j,i,:) = (baseLine-baseLineOld)/delta;
+        EEs(j,i,:) = (baseLine-baseLineOld)/(delta);
         
-        EEsReturnTime(j,i,:) = (returnTime-returnTimeOld)/delta;
-        EEsReturnAmplitude(j,i,:) = (returnTimeAmplitude-returnAmplitudeOld)/delta;
+        EEsReturnTime(j,i,:) = (returnTime-returnTimeOld)/(delta);
+        EEsReturnAmplitude(j,i,:) = (returnTimeAmplitude-returnAmplitudeOld)/(delta);
         
         baseLineOld=baseLine;
         returnTimeOld=returnTime; returnAmplitudeOld=returnTimeAmplitude;
-        
+                   
+        utils.save_Sim(solLi,tSt, ySt, tT, yT, const, outStr(date, runNo, i, j));
+
     end
 end
 
@@ -144,12 +152,21 @@ end
 %%
 %%
 %% [G]_B
-[muStar, mu, sigma] = parameter_sensitivity.EET_means(EEs, k);
-parameter_sensitivity.plot_EET(paramList, muStar, sigma)
+[muStarGb, muGb, sigmaGb] = parameter_sensitivity.EET_means(EEs, k);
+parameter_sensitivity.plot_EET(paramList, muStarGb, sigmaGb)
 %% mean life
-[muStar, mu, sigma] = parameter_sensitivity.EET_means(EEsReturnAmplitude, k);
-parameter_sensitivity.plot_EET(paramList, muStar, sigma)
+[muStarTau, muTau, sigmaTau] = parameter_sensitivity.EET_means(EEsReturnAmplitude, k);
+parameter_sensitivity.plot_EET(paramList, muStarTau, sigmaTau)
 
 %% t1 Return time
-[muStar, mu, sigma] = parameter_sensitivity.EET_means(EEsReturnTime, k);
-parameter_sensitivity.plot_EET(paramList, muStar, sigma)
+[muStarT1, muT1, sigmaT1] = parameter_sensitivity.EET_means(EEsReturnTime, k);
+parameter_sensitivity.plot_EET(paramList, muStarT1, sigmaT1)
+toc
+
+%% Function to create path for saving
+function path = outStr(date, runNo, i, j)
+    formatOut = 'yyyy-mm-dd';
+    dateForm = datestr(date, formatOut);
+    path = strcat("../simResults/",dateForm,"/run_", num2str(runNo.','%02d'),...
+        "/i-",num2str(i.','%03d'),"_j-",num2str(j.','%03d'));
+end

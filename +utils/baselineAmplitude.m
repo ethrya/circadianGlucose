@@ -17,7 +17,7 @@ if (max(gSteady)-min(gSteady))>0.1
     tMin = peaks_near_limit(1);
 else
     % Find peaks with amplitude>0.005
-    [gPeak, tPeak] = findpeaks((G-stableMean), t, 'MinPeakHeight', 0.005*stableMean);
+    [~, tPeak] = findpeaks((G-stableMean), t, 'MinPeakHeight', 0.005*stableMean);
     % Test if critically or uncritically damped (i.e are there peaks?)
     if isempty(tPeak)
         % For critically damped, just use time within

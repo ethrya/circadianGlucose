@@ -11,7 +11,5 @@ bar(categorical(paramList),sigma)
 xlabel('Parameter')
 ylabel('\sigma')
 %set(gca, 'YScale', 'log')
-toc
-
 end
 

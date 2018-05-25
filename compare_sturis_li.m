@@ -5,6 +5,7 @@ const = models.constants;
 
 %Change constants from default values
 const.Gin = 0;
+const.C1 = 2200;
 
 const.g = 0.00;
 const.tau2 = 36;

@@ -15,9 +15,9 @@ if length(tPeak)>0
         warning("No peaks after tMax")
     end
     %gPeak = gPeak-gBase;
-    f = fit(tPeak', gPeak', exponConst, 'StartPoint', [G(1), -0.01, gBase]);
+    f = fit(tPeak', gPeak', exponConst, 'StartPoint', [G(1)-gBase, -0.02, gBase]);
 else
     gBase = mean(G(tIp>tMax));
     %G = G - gBase;
-    f = fit(tIp', G', exponConst, 'StartPoint', [G(1), -0.01, gBase]);
+    f = fit(tIp', G', exponConst, 'StartPoint', [G(1)-gBase, -0.02, gBase]);
 end
