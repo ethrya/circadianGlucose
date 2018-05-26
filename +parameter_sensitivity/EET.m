@@ -25,7 +25,7 @@ k = length(paramList); % Number of parameters
 p = 4; % Number of levels
 r = 20; % Number of trajectories
 c = 0.1; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
-delta = c/p; % spacing of trajectories
+delta = 2*c/p; % spacing of trajectories
 
 runNo = 0;
 
