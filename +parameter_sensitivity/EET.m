@@ -22,10 +22,10 @@ default.C5 = 26; default.C5T = 29; default.alphaT = 0.41;
 
 % Define parameter space
 k = length(paramList); % Number of parameters
-p = 2; % Number of levels
-r = 40; % Number of trajectories
-c = 0.02; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
-delta = 2*c/p; % spacing of trajectories
+p = 4; % Number of levels
+r = 20; % Number of trajectories
+c = 0.1; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
+delta = c/p; % spacing of trajectories
 
 runNo = 0;
 
@@ -73,8 +73,10 @@ for i=1:r
     const.Gin = 0;
     
     % Compute initial parameter values
-    % Choose discrete values on U[-c,c-2c/p]
-    noise = (2*c-2*c/p)*rand(k,1)-c;
+    % Choose discrete values on U[1, p+1]
+    randNum = unidrnd(p+1, [k 1]);
+    % Convert from U[0, p+1] to U[-c, c-delta]
+    noise = 2*c/p*(randNum-1)-c;
     % Update initial parameter values
     for j=1:length(paramList)
         % Name of parameter
