@@ -23,11 +23,11 @@ default.C5 = 26; default.C5T = 29; default.alphaT = 0.41;
 % Define parameter space
 k = length(paramList); % Number of parameters
 p = 4; % Number of levels
-r = 20; % Number of trajectories
+r = 5; % Number of trajectories
 c = 0.1; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
 delta = 2*c/p; % spacing of trajectories
 
-runNo = 0;
+runNo = 1;
 
 % Initial conditions for Liz
 liState = [20000; % Glucose
@@ -64,6 +64,7 @@ EEsReturnAmplitude  = zeros(k, r, 3);
 %% Simulations
 % Loop over trajectories then parameters and then loop over parameter values.
 for i=1:r
+    
     % Import constants
     const = models.constants;
     % Change constants from default values
