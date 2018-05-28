@@ -3,11 +3,11 @@ clear
 tic
 %% Preliminaries
 % Create Cell array with parameter nales
-%paramList = cellstr(['C1   ']);%; 'C2   ']);%; 'C3   '; 'alpha']);
+%paramList = cellstr(['C1   '; 'C2   ']);%; 'C3   '; 'alpha']);
 paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
-                  'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
-                  'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
-                  'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
+                   'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
+                   'Ub   '; 'U0   '; 'Um   '; 'beta '; 'alpha';...
+                   'C1   '; 'C2   '; 'C3   '; 'C4   '; 'C5   ']);
 
 
 % Default paramter values
@@ -22,14 +22,12 @@ default.C5 = 26; default.C5T = 29; default.alphaT = 0.41;
 
 % Define parameter space
 k = length(paramList); % Number of parameters
-
 p = 4; % Number of levels
-r = 5; % Number of trajectories
-
+r = 100; % Number of trajectories
 c = 0.1; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
 delta = 2*c/p; % spacing of trajectories
 
-runNo = 1;
+runNo = 2;
 
 % Initial conditions for Liz
 liState = [20000; % Glucose
@@ -77,7 +75,7 @@ for i=1:r
     
     % Compute initial parameter values
     % Choose discrete values on U[1, p+1]
-    randNum = unidrnd(p+1, [k 1]);
+    randNum = unidrnd(p, [k 1]);
     % Convert from U[0, p+1] to U[-c, c-delta]
     noise = 2*c/p*(randNum-1)-c;
     % Update initial parameter values
@@ -109,9 +107,9 @@ for i=1:r
 %     returnAmplitudeOld = [utils.baselineAmplitude(solLi.x, solLi.y(1,:), tmin),...
 %                      utils.baselineAmplitude(tSt, ySt(:,3), tmin),...
 %                      utils.baselineAmplitude(tT, yT(:,3), tmin)];
-    returnAmplitudeOld = [1/utils.expon_fit(solLi.x, solLi.y(1,:), tmin).b,...
-                          1/utils.expon_fit(tSt, ySt(:,3), tmin).b,...
-                          1/utils.expon_fit(tT, yT(:,3), tmin).b];
+    returnAmplitudeOld = [log(20)/utils.expon_fit(solLi.x, solLi.y(1,:), tmin).b,...
+                          log(20)/utils.expon_fit(tSt, ySt(:,3), tmin).b,...
+                          log(20)/utils.expon_fit(tT, yT(:,3), tmin).b];
     
     utils.save_Sim(solLi,tSt, ySt, tT, yT, const, outStr(date, runNo, i, 0));
                    
@@ -135,9 +133,9 @@ for i=1:r
         returnTime = [utils.baseline_return(solLi.x, solLi.y(1,:), tmin),...
                      utils.baseline_return(tSt, ySt(:,3), tmin),...
                      utils.baseline_return(tT, yT(:,3), tmin)];
-        returnTimeAmplitude = [1/utils.expon_fit(solLi.x, solLi.y(1,:), tmin).b,...
-                          1/utils.expon_fit(tSt, ySt(:,3), tmin).b,...
-                          1/utils.expon_fit(tT, yT(:,3), tmin).b];
+        returnTimeAmplitude = [log(20)/utils.expon_fit(solLi.x, solLi.y(1,:), tmin).b,...
+                          log(20)/utils.expon_fit(tSt, ySt(:,3), tmin).b,...
+                          log(20)/utils.expon_fit(tT, yT(:,3), tmin).b];
         
         
         EEs(j,i,:) = (baseLine-baseLineOld)/(delta);
