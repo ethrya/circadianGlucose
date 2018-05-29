@@ -1,5 +1,5 @@
 clear
-load("../simResults/2018-05-29/run_00/i-000_j-000_EET")
+load("../simResults/2018-05-30/run_01/i-000_j-000_EET")
 
 delta = 2*c/p;
 
@@ -24,3 +24,10 @@ parameter_sensitivity.plot_EET(paramList, muStarTau, sigmaTau)
 %% t1 Return time
 [muStarT1, muT1, sigmaT1] = parameter_sensitivity.EET_means(EEsReturnTime, k);
 parameter_sensitivity.plot_EET(paramList, muStarT1, sigmaT1)
+
+%% Histograms
+for i=2:k+1
+    subplot(4,5,i-1)
+    hist(EEs(:,i,1))
+    title(paramList(i-1))
+end
