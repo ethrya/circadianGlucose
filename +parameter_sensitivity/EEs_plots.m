@@ -26,8 +26,27 @@ parameter_sensitivity.plot_EET(paramList, muStarTau, sigmaTau)
 parameter_sensitivity.plot_EET(paramList, muStarT1, sigmaT1)
 
 %% Histograms
+model = 1;
 for i=2:k+1
     subplot(4,5,i-1)
-    hist(EEs(:,i,1))
+    hist(EEs(:,i,model))
     title(paramList(i-1))
+end
+
+%% Convergence plot
+muStar = zeros(k, 3, r);mu = zeros(k, 3, r); sigma = zeros(k, 3, r);
+for i=1:r
+    [muStar(:,:,i), mu(:,:,i), sigma(:,:,i)] = parameter_sensitivity.EET_means(EEs(1:i,:,:), k);
+end
+figure()
+hold on
+for j = 1:3
+    subplot(2,3,2*j-1)
+    for i = 1:k
+        plot(1:r, muStar(i,j,:))
+    end
+    subplot(2,3,2*j)
+    for i = 1:k
+        plot(1:r, sigma(i,j,:))
+    end
 end
