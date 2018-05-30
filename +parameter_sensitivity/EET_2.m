@@ -22,12 +22,12 @@ default.C5 = 26; default.C5T = 29; default.alphaT = 0.41;
 
 % Define parameter space
 k = length(paramList); % Number of parameters
-p = 4; % Number of levels
-r = 100; % Number of trajectories
+p = 40; % Number of levels
+r = 400; % Number of trajectories
 c = 0.1; % fraction of default value to sample (e.g. c=0.2 => [0.8,1.2])
 delta = 2*c/p; % spacing of trajectories
 
-runNo = 2;
+runNo = 4;
 
 % Initial conditions for Li
 liState = [20000; % Glucose
@@ -53,7 +53,7 @@ warning('off', 'MATLAB:mir_warning_maybe_uninitialized_temporary');
 
 % Path to results output
 %path = '../../simResults/paramExplore/sim05/';
-
+today = date;
 path ='~/scratch/';
 
 Sj = zeros(length(paramList),3);
@@ -150,10 +150,10 @@ function path = outStr(date, runNo, i, j, text)
     formatOut = 'yyyy-mm-dd';
     dateForm = datestr(date, formatOut);
     if nargin == 4
-        path = strcat("../simResults/",dateForm,"/run_", num2str(runNo.','%02d'),...
+        path = strcat("/import/suphys1/erya7975/simResults/",dateForm,"/run_", num2str(runNo.','%02d'),...
         "/i-",num2str(i.','%03d'),"_j-",num2str(j.','%03d'));
     elseif nargin==5
-         path = strcat("../simResults/",dateForm,"/run_", num2str(runNo.','%02d'),...
+         path = strcat("/import/suphys1/erya7975/simResults/",dateForm,"/run_", num2str(runNo.','%02d'),...
         "/i-",num2str(i.','%03d'),"_j-",num2str(j.','%03d'), text);
     end
 end
