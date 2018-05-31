@@ -1,7 +1,7 @@
 clear
-load("/import/suphys1/erya7975/simResults/2018-05-30/run_00/i-000_j-000_EET")
+load("/import/suphys1/erya7975/simResults/2018-05-30/run_03/i-000_j-000_EET")
 
-runNo = 1;
+runNo = 3;
 delta = 2*c/p;
 
 %% Calculate EEs
