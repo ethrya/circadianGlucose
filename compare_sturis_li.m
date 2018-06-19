@@ -4,19 +4,18 @@ clear;
 const = models.constants;
 
 %Change constants from default values
-const.Gin = 0;
-const.C1 = 2200;
+const.Gin = 200;
 
 const.g = 0.00;
 const.tau2 = 36;
 % Initial conditions for Li
-liState = [20000; % Glucose
+liState = [10000; % Glucose
     40]; % Insulin
 
 % Initial condition for Sturis and Tolic
 sturisState = [40; % Ip
     40; % Ii
-    20000; % G
+    10000; % G
     0; % x1
     0; % x2
     0]; % x3

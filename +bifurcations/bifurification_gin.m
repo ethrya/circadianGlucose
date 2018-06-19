@@ -1,14 +1,14 @@
 clear all;
 tic
 % Bifurification parameter
-Gin = 50:2:200;
+Gin = 0:5:400;
 nValues = length(Gin);
 
 %Constants for all trials
 const = models.constants;
 const.tau1 = 7;
-const.tau2 = 46;
-const.td = 46;
+const.tau2 = 36;
+const.td = 36;
 
 constArray(1:nValues) = const;
 
@@ -61,9 +61,9 @@ end
 toc
 
 %% Experimental results (Gin, min, max)
-amplitude = [200 11200 7400; % Simon 87
-             300 10800 18000; % Shapiro 88 - 1 subject
-             243 10000 13000]; % Van Cauter 89 1 subject
+% amplitude = [200 11200 7400; % Simon 87
+%              300 10800 18000; % Shapiro 88 - 1 subject
+%              243 10000 13000]; % Van Cauter 89 1 subject
 
 
 %% 
@@ -75,8 +75,8 @@ plot(Gin, SturisResults(:,1), 'r')
 plot(Gin, SturisResults(:,2), 'r')
 plot(Gin, TolicResults(:,1), 'y')
 plot(Gin, TolicResults(:,2), 'y')
-plot(amplitude(:,1), amplitude(:,2),'kx')
-plot(amplitude(:,1), amplitude(:,3),'kx')
+% plot(amplitude(:,1), amplitude(:,2),'kx')
+% plot(amplitude(:,1), amplitude(:,3),'kx')
 xlabel('Gin (mg/min)')
 ylabel('G_p (mg)')
 hold off
