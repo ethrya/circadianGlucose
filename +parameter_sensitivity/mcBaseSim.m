@@ -1,7 +1,8 @@
 % Monte Carlo Estimate of Distribution of Glucose and Insulin Distr. 
 
 clear
-path = "C:/Users/ethan/Documents/Uni/simResults/MC/2018-06-19/run_01/";
+%path = "C:/Users/ethan/Documents/Uni/simResults/MC/2018-06-19/run_01/";
+path = "/import/suphys1/erya7975/simResults/2018-06-19/run_01/";
 %% Parameters and ICs
 paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
                     'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
@@ -23,7 +24,7 @@ default.C5 = 26;
 I0 = 40;
 G0 = 10000;
 
-nSims = 10;
+nSims = 100;
 
 randomNumbers = 0.1*(randn(length(paramList), nSims));
 
@@ -31,4 +32,5 @@ randomNumbers = 0.1*(randn(length(paramList), nSims));
 % Loop over parameters and then loop over parameter values.
 [baseG, baseI] = parameter_sensitivity.simulateBase(const, paramList,...
                     randomNumbers, path, I0, G0);
-                
+%% Plots
+parameter_sensitivity.baseHist(baseG, baseI)
