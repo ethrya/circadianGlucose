@@ -12,7 +12,7 @@ allfiles = dir('simulations/*.mat');
 model = {'Sturis','Tolic','Li'};
 
 for j = 1:length(model)
-    for i = 1:length(allfiles)
+    for i = 22:23
         % create filenames to read
         filename{i} = sprintf('simulations/%s',allfiles(i).name);
         % load a file
