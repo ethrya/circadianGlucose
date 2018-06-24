@@ -1,5 +1,5 @@
 % Program to simulate the Sturis et al. 1991 model
-function [t, y] = ODESolver(model, state, const, time)
+function [t, y] = ODESolver(model, state, const, time, circ)
 
 %% Solve ODE using stiff solver
 opts = odeset('RelTol',1e-13, 'AbsTol', 1e-14);

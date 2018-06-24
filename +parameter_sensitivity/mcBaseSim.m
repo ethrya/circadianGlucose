@@ -3,7 +3,7 @@
 clear
 tic
 %path = "C:/Users/ethan/Documents/Uni/simResults/MC/2018-06-19/test/";
-path = "/import/suphys1/erya7975/simResults/2018-06-19/test/";
+path = "/import/suphys1/erya7975/simResults/2018-06-20/run_01/";
 %% Parameters and ICs
 paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
                     'ti   '; 'td   '; 'Rm   '; 'Rg   '; 'a1   ';...
@@ -16,7 +16,7 @@ const = models.constants;
 I0 = 40;
 G0 = 10000;
 
-nSims = 10;
+nSims = 1000;
 
 randomNumbers = 0.1*(randn(length(paramList), nSims));
 
@@ -24,8 +24,9 @@ randomNumbers = 0.1*(randn(length(paramList), nSims));
 % Loop over parameters and then loop over parameter values.
 [baseG, baseI] = parameter_sensitivity.simulateBase(const, paramList,...
                     randomNumbers, path, I0, G0);
-utils.save_Sim(baseG,baseI, const, strcat(path,"baselines"))
+%% Save
+                save(strcat(path,"baselines"), 'baseG', 'baseI', 'const')
 %% Plots
 parameter_sensitivity.baseHist(baseG, baseI)
-saveas(gcf,strcat('/suphys/erya7975/Dropbox (Sydney Uni Student)/Circadian Glucose Dynamics/Sim_results/baselineHists/2018-06-19_test.fig'))
+saveas(gcf,strcat('/suphys/erya7975/Dropbox (Sydney Uni Student)/Circadian Glucose Dynamics/Sim_results/baselineHists/2018-06-20_run_01.fig'))
 toc
