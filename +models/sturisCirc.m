@@ -10,7 +10,8 @@ function out = sturisCirc(t, in, const)
     % Insulin and Glucose amounts
     Ip = in(1); Ii = in(2); G = in(3);
     
-    const.C = mod(t/60,24);
+    % Convert t into circadian frequency
+    const.C = 2*pi*t/1440;
     
     %% Model Equations
     out = zeros(6,1);

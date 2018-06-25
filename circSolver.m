@@ -6,7 +6,7 @@ const = models.constants;
 %Change constants from default values
 const.Gin = 0;
 
-const.g = 0.40;
+const.g = 0.05;
 const.tau2 = 10;
 
 % Initial condition for Sturis and Tolic
