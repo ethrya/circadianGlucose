@@ -1,5 +1,4 @@
 % Monte Carlo Estimate of Distribution of Glucose and Insulin Distr. 
-
 clear
 tic
 %path = "C:/Users/ethan/Documents/Uni/simResults/MC/2018-06-19/test/";
@@ -28,5 +27,5 @@ randomNumbers = 0.1*(randn(length(paramList), nSims));
                 save(strcat(path,"baselines"), 'baseG', 'baseI', 'const')
 %% Plots
 parameter_sensitivity.baseHist(baseG, baseI)
-saveas(gcf,strcat('/suphys/erya7975/Dropbox (Sydney Uni Student)/Circadian Glucose Dynamics/Sim_results/baselineHists/2018-06-20_run_01.fig'))
+%saveas(gcf,strcat('/suphys/erya7975/Dropbox (Sydney Uni Student)/Circadian Glucose Dynamics/Sim_results/baselineHists/2018-06-20_run_01.fig'))
 toc
