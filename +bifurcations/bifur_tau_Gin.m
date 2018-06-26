@@ -1,10 +1,28 @@
-clear all
-tic
-% Bifurification parameter arrays
-Gin = 0:2:400;
-nGin = length(Gin);
+function bifur_tau_Gin(Gin, tau, outPath, nCores)
+%% Function to calculate areas where the models display limit cycles.
+% Inputs:
+% Gin: Vector of glucose infusion values (mg/min) (e.g. 0:5:200)
+% tau: Vector of HGP time delays (min) (must be positive e.g. 1:5:100)
+% outPath: location to save results (string)
+% nCores: Number of cores for computations (default=3)
+% Output:
+% Saves arrays of binary limit/no-limit outcomes, Gin and Tau values to
+% outPath.
 
-tau = 11:2:19;
+tic
+% Set default number of cores
+if nargin==3
+    nCores = 3;
+end
+
+% Check output path exists
+splitPath = strsplit(outPath, '/');
+if 7~=exist(string(join(splitPath(1:end-1), '/')), 'dir')
+    error('Output path does not exist')
+end
+
+% Lengths of Bifurification parameter arrays
+nGin = length(Gin);
 nTau = length(tau);
 
 %Constants for all trials
@@ -37,9 +55,17 @@ TolicResults = zeros(nGin, nTau, 4);
 
 fprintf('Starting Simulations \n');
 
+% Create parallel pool (if one doesn't already exist)
+try
+    poolobj = parpool(nCores);
+catch
+    delete(gcp('nocreate'))
+    poolobj = parpool(nCores);
+end
+
 %% Find Values
 parfor i=1:nGin
-    fprintf('Completed %i of %i Gin Values \n', i, nGin);
+    fprintf('Completing %i of %i Gin Values \n', i, nGin);
     for j=1:nTau
         % Update Gin value
         constArray(i,j).Gin = Gin(i);
@@ -63,17 +89,16 @@ end
 toc
 
 %% Save Output
-save('~/scratch/bf_res_t-11-19',...
-     'LiResults','SturisResults','TolicResults','Gin', 'tau');
+save(outPath,'LiResults','SturisResults','TolicResults','Gin', 'tau');
 
-
+end
 
 %% Plotting
-hold on
-plot(Gin, LiResults(:,3,1), 'b')
-plot(Gin, LiResults(:,3,2), 'b')
-plot(Gin, SturisResults(:,3,1), 'r')
-plot(Gin, SturisResults(:,3,2), 'r')
-plot(Gin, TolicResults(:,3,1), 'y')
-plot(Gin, TolicResults(:,3,2), 'y')
-hold off
+% hold on
+% plot(Gin, LiResults(:,3,1), 'b')
+% plot(Gin, LiResults(:,3,2), 'b')
+% plot(Gin, SturisResults(:,3,1), 'r')
+% plot(Gin, SturisResults(:,3,2), 'r')
+% plot(Gin, TolicResults(:,3,1), 'y')
+% plot(Gin, TolicResults(:,3,2), 'y')
+% hold off
