@@ -1,5 +1,9 @@
-% Monte Carlo Estimate of Distribution of Glucose and Insulin Distr. 
 function mcBaseSim(nSims, outPath, nCores)
+% Monte Carlo Estimate of Distribution of Glucose and Insulin Distr. 
+% Inputs:
+%    nSims: number of MC simulations
+%    outPath: location of directory to save sims and baseline values
+%    nCores (default = 3)
 tic
 % Set default number of cores
 if nargin==3
@@ -7,8 +11,7 @@ if nargin==3
 end
 
 % Check output path exists
-splitPath = strsplit(outPath, '/');
-if 7~=exist(string(join(splitPath(1:end-1), '/')), 'dir')
+if 7~=exist(outPath, 'dir')
     error('Output path does not exist')
 end
 
@@ -36,10 +39,11 @@ end
 
 %% Simulations
 % Loop over parameters and then loop over parameter values.
+disp('Starting Simulations')
 [baseG, baseI] = parameter_sensitivity.simulateBase(const, paramList,...
-                    randomNumbers, path, I0, G0);
+                    randomNumbers, outPath, I0, G0, nSims);
 %% Save
-                save(strcat(path,"baselines"), 'baseG', 'baseI', 'const')
+                save(strcat(outPath,"baselines"), 'baseG', 'baseI', 'const')
 %% Plots
 parameter_sensitivity.baseHist(baseG, baseI)
 %saveas(gcf,strcat('/suphys/erya7975/Dropbox (Sydney Uni Student)/Circadian Glucose Dynamics/Sim_results/baselineHists/2018-06-25_run_01.fig'))

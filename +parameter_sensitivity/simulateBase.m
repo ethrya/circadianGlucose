@@ -1,4 +1,4 @@
-function [baseG, baseI] = simulateBase(const,paramList,parDelta,path,I0,G0)
+function [baseG, baseI] = simulateBase(const,paramList,parDelta,path,I0,G0,nSims)
 % Function to calculate baseline for multiple paramater values
 % Inputs:
 % Const- class of constants
@@ -23,7 +23,7 @@ tmin = 3000;
 baseG = zeros(nSims, 3, 'single'); baseI= zeros(nSims, 3,'single');
 
 nSims = size(parDelta,2);
-parfor i=1:nSims
+for i=1:nSims
     % Create new constant class with default values
     constSim = const;
     % Update Constant values for simulation run
