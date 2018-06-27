@@ -20,6 +20,8 @@ sturisState = [I0; % Ip
 time = [0 5000];
 tmin = 3000;
 
+baseG = zeros(nSims, 3, 'single'); baseI= zeros(nSims, 3,'single');
+
 nSims = size(parDelta,2);
 parfor i=1:nSims
     % Create new constant class with default values
