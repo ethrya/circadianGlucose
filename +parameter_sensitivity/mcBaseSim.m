@@ -6,7 +6,7 @@ function mcBaseSim(nSims, outPath, nCores)
 %    nCores (default = 3)
 tic
 % Set default number of cores
-if nargin==3
+if nargin==2
     nCores = 3;
 end
 
@@ -23,17 +23,20 @@ paramList = cellstr(['Vp   '; 'Vi   '; 'Vg   '; 'E    '; 'tp   ';...
 
 
 const = models.constants;
+const.Gin = 0;
 
 I0 = 40;
 G0 = 10000;
 
-randomNumbers = 0.1*(randn(length(paramList), nSims, 'single'));
+randomNumbers = 0.1*(randn(length(paramList), nSims));
 
+if nCores>1
 try
     poolobj = parpool(nCores);
 catch
     delete(gcp('nocreate'))
     poolobj = parpool(nCores);
+end
 end
 
 
@@ -47,5 +50,6 @@ disp('Starting Simulations')
 %% Plots
 parameter_sensitivity.baseHist(baseG, baseI)
 %saveas(gcf,strcat('/suphys/erya7975/Dropbox (Sydney Uni Student)/Circadian Glucose Dynamics/Sim_results/baselineHists/2018-06-25_run_01.fig'))
+%%
 toc
 end
