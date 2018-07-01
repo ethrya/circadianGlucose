@@ -1,8 +1,8 @@
 function baseHist(baseG, baseI)
 
-baseG = baseG/100;
-baseI = baseI/10;
-subplot(3,1,1)
+baseG = real(baseG)/100;
+baseI = real(baseI)/10;
+subplot(2,1,1)
 hold on
 modelColors = [0.74 .45 0; 0 0 0;  0 0.45 0.74];
 minG = min(min(min(baseG))); maxG = max(max(max(baseG)));
@@ -13,7 +13,7 @@ rectangle('Position',[100,0,25,maxN+10], 'FaceColor', [1 1 0 0.15],'LineStyle','
 rectangle('Position',[125,0,maxG,maxN+10], 'FaceColor', [1 0 0 0.15],'LineStyle','none')
 
 for model = 1:3
-    h = histogram(real(baseG(:,model)), 0:5:200);
+    h = histogram(baseG(:,model), 0:5:200);
     h.FaceColor = 'none';
     h.LineWidth = 2;
     h.DisplayStyle = 'stairs';
@@ -54,34 +54,34 @@ hold off
 % legend(LH, L)%, 'Normal', 'High Risk', 'Diabetes')
 % hold off
 
-subplot(3,1,2)
+subplot(2,1,2)
 hold on
 for model = 1:3
-    h = histogram(real(baseI(:,model)).*real(baseG(:,model))/402, 0:.1:5);
+    h = histogram(baseI(:,model).*baseG(:,model)/402, 0:.1:5);
     %h = histogram(360*real(baseI(:,model))./(real(baseG(:,model))-63), 0:5:200);
     h.LineWidth = 2;
     h.DisplayStyle = 'stairs';
     h.EdgeColor = modelColors(model,:);
 end
 ylabel('n')
-xlim([0 5])
+xlim([0 2.5])
 xlabel('HOMA-IR')
 %xlabel('[I]_B (\mu U/ml)')
 hold off
 
 
-subplot(3,1,3)
-
-hold on
-for model = 1:3
-    %h = histogram(real(baseI(:,model)).*real(baseG(:,model))/402);%, 0:.5:200);
-    h = histogram(360*real(baseI(:,model))./(real(baseG(:,model))-63), 0:5:200);
-    h.LineWidth = 2;
-    h.DisplayStyle = 'stairs';
-    h.EdgeColor = modelColors(model,:);
-end
-ylabel('n')
-xlim([0 200])
-xlabel('\beta cell functionality (%)')
-%xlabel('[I]_B (\mu U/ml)')
-hold off
+% subplot(3,1,3)
+% 
+% hold on
+% for model = 1:3
+%     %h = histogram(real(baseI(:,model)).*real(baseG(:,model))/402);%, 0:.5:200);
+%     h = histogram(360*baseI(:,model)./(baseG(:,model)-63), -400:5:400);
+%     h.LineWidth = 2;
+%     h.DisplayStyle = 'stairs';
+%     h.EdgeColor = modelColors(model,:);
+% end
+% ylabel('n')
+% %xlim([0 200])
+% xlabel('\beta cell functionality (%)')
+% %xlabel('[I]_B (\mu U/ml)')
+% hold off
