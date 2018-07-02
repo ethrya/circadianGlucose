@@ -2,7 +2,11 @@ function baseHist(baseG, baseI)
 
 baseG = real(baseG)/100;
 baseI = real(baseI)/3;
-subplot(2,1,1)
+
+diabeticIdx = baseG>125;
+normalIdx = baseG>70 & baseG<100;
+
+subplot(3,2,1:2)
 hold on
 modelColors = [0.74 .45 0; 0 0 0;  0 0.45 0.74];
 minG = min(min(min(baseG))); maxG = max(max(max(baseG)));
@@ -54,10 +58,25 @@ hold off
 % legend(LH, L)%, 'Normal', 'High Risk', 'Diabetes')
 % hold off
 
-subplot(2,1,2)
+subplot(2,2,3)
 hold on
 for model = 1:3
-    h = histogram(baseI(:,model).*baseG(:,model)/402, 0:.2:9);
+    h = histogram(baseI(normalIdx(:,model),model).*baseG(normalIdx(:,model),model)/402, 0:.2:9);
+    %h = histogram(360*real(baseI(:,model))./(real(baseG(:,model))-63), 0:5:200);
+    h.LineWidth = 2;
+    h.DisplayStyle = 'stairs';
+    h.EdgeColor = modelColors(model,:);
+end
+ylabel('n')
+%xlim([0 2.5])
+xlabel('HOMA-IR')
+%xlabel('[I]_B (\mu U/ml)')
+hold off
+
+subplot(2,2,4)
+hold on
+for model = 1:3
+    h = histogram(baseI(diabeticIdx(:,model),model).*baseG(diabeticIdx(:,model),model)/402, 0:.2:9);
     %h = histogram(360*real(baseI(:,model))./(real(baseG(:,model))-63), 0:5:200);
     h.LineWidth = 2;
     h.DisplayStyle = 'stairs';
@@ -70,18 +89,34 @@ xlabel('HOMA-IR')
 hold off
 
 
-% subplot(3,1,3)
+% subplot(3,2,5)
 % 
 % hold on
 % for model = 1:3
-%     %h = histogram(real(baseI(:,model)).*real(baseG(:,model))/402);%, 0:.5:200);
-%     h = histogram(360*baseI(:,model)./(baseG(:,model)-63), -400:5:400);
+%     h = histogram(real(baseI(:,model)).*real(baseG(:,model))/402);%, 0:.5:200);
+%     h = histogram(360*baseI(normalIdx(:,model),model)./(baseG(normalIdx(:,model),model)-63), 0:10:400);
 %     h.LineWidth = 2;
 %     h.DisplayStyle = 'stairs';
 %     h.EdgeColor = modelColors(model,:);
 % end
 % ylabel('n')
-% %xlim([0 200])
+% xlim([0 200])
 % xlabel('\beta cell functionality (%)')
-% %xlabel('[I]_B (\mu U/ml)')
+% xlabel('[I]_B (\mu U/ml)')
+% hold off
+% 
+% subplot(3,2,6)
+% 
+% hold on
+% for model = 1:3
+%     h = histogram(real(baseI(:,model)).*real(baseG(:,model))/402);%, 0:.5:200);
+%     h = histogram(360*baseI(diabeticIdx(:,model),model)./(baseG(diabeticIdx(:,model),model)-63), 0:10:400);
+%     h.LineWidth = 2;
+%     h.DisplayStyle = 'stairs';
+%     h.EdgeColor = modelColors(model,:);
+% end
+% ylabel('n')
+% xlim([0 200])
+% xlabel('\beta cell functionality (%)')
+% xlabel('[I]_B (\mu U/ml)')
 % hold off
