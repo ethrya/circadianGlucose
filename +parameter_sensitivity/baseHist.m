@@ -1,7 +1,7 @@
 function baseHist(baseG, baseI)
 
 baseG = real(baseG)/100;
-baseI = real(baseI)/10;
+baseI = real(baseI)/3;
 subplot(2,1,1)
 hold on
 modelColors = [0.74 .45 0; 0 0 0;  0 0.45 0.74];
@@ -57,14 +57,14 @@ hold off
 subplot(2,1,2)
 hold on
 for model = 1:3
-    h = histogram(baseI(:,model).*baseG(:,model)/402, 0:.1:5);
+    h = histogram(baseI(:,model).*baseG(:,model)/402, 0:.2:9);
     %h = histogram(360*real(baseI(:,model))./(real(baseG(:,model))-63), 0:5:200);
     h.LineWidth = 2;
     h.DisplayStyle = 'stairs';
     h.EdgeColor = modelColors(model,:);
 end
 ylabel('n')
-xlim([0 2.5])
+%xlim([0 2.5])
 xlabel('HOMA-IR')
 %xlabel('[I]_B (\mu U/ml)')
 hold off
