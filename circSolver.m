@@ -4,7 +4,7 @@ clear;
 const = models.constants;
 
 %Change constants from default values
-const.Gin =200;
+const.Gin = 0;
 
 const.g = 0.1;
 const.phi0 = pi;
@@ -21,7 +21,7 @@ sturisState = [40; % Ip
     0]; % x3
 
 % Integration time (min)
-time = [0, 5000];
+time = [0, 10000];
   
 
 %% Solve equations
@@ -69,4 +69,8 @@ legend('Normal', 'Circadian')
 hold off
 
 %% Periodogram
-periods.ft_solution()
+[freqSC, P1] = periods.ft_solution(tStC, yStC, 1440);
+figure;
+plot(freqSC, P1)
+xlabel('Frequency (1/min)')
+ylabel('Power')
