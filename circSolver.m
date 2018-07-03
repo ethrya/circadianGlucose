@@ -7,6 +7,7 @@ const = models.constants;
 const.Gin = 0;
 
 const.g = 0.1;
+const.phi0
 %const.tau2 = 10;
 %const.Vg = 5;
 %const.Vp = 5;

@@ -54,7 +54,7 @@ classdef constants
         gamma = 5.0;
         
         C %Circadian phase
-        phi0 = 0; % Initial phase (in minutes)
+        phi0 = 0; % Initial phase (in rad)
         g = 0.01; %Coupling strength
     end
     
