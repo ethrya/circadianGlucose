@@ -4,10 +4,10 @@ clear;
 const = models.constants;
 
 %Change constants from default values
-const.Gin = 0;
+const.Gin =200;
 
 const.g = 0.1;
-const.phi0
+const.phi0 = pi;
 %const.tau2 = 10;
 %const.Vg = 5;
 %const.Vp = 5;
@@ -67,3 +67,6 @@ xlabel('[G] (mg/dl)')
 ylabel('[I_p] (\muU/ml)')
 legend('Normal', 'Circadian')
 hold off
+
+%% Periodogram
+periods.ft_solution()

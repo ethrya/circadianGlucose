@@ -1,5 +1,8 @@
 function out = sturisCirc(t, in, const)
-    % Model based on Sturis et al. (1991)
+    % Model based on Sturis et al. (1991) with circadian effects.
+    % t - time of calculation
+    % in - vector of input state [Ip ,Ii, G, x1, x2, x3] at t
+    % const - constants object
     
     % Constant Parameters
     Vp=const.Vp; Vi=const.Vi; E=const.E; 
