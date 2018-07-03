@@ -1,4 +1,13 @@
 function [freq, P1] = ft_solution(t,y,tmin)
+    % Function to calculate the FT of sturis/tolic results, by linearly
+    % interpolating results.
+    % INPUTS:
+    % t - vector of times corresponding to y
+    % y - array of solutions at times t
+    % tmin - minimum time to begin FT
+    % OUTPUTS:
+    % freq - vector of frequencies in units 1/[t]
+    % P1 - power of frequencies given by freq
     %% FFT preliminaries
     % Define sampling frequency and eqully spaced time vector
     t = t(t>tmin);
