@@ -4,8 +4,10 @@ clear;
 const = models.constants;
 
 %Change constants from default values
-
+const.Gin = 108;
 const.g = 0;
+const.tau2 = 12;
+const.td = 12;
 % Initial conditions for Li
 liState = [10000; % Glucose
     40]; % Insulin

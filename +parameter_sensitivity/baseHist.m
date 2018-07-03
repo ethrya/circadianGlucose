@@ -8,7 +8,7 @@ normalIdx = baseG>70 & baseG<100;
 
 subplot(3,2,1:2)
 hold on
-modelColors = [0.74 .45 0; 0 0 0;  0 0.45 0.74];
+modelColors = [0 0.45 0.74; 0 0 0; 0.74 .45 0];
 minG = min(min(min(baseG))); maxG = max(max(max(baseG)));
 maxN = 120;
 rectangle('Position',[minG, 0, 70-minG, maxN+10], 'FaceColor', [1 .5 0 0.15],'LineStyle','none')
@@ -61,7 +61,7 @@ hold off
 subplot(2,2,3)
 hold on
 for model = 1:3
-    h = histogram(baseI(normalIdx(:,model),model).*baseG(normalIdx(:,model),model)/402, 0:.2:9);
+    h = histogram(baseI(normalIdx(:,model),model).*baseG(normalIdx(:,model),model)/402, 0:.5:9);
     %h = histogram(360*real(baseI(:,model))./(real(baseG(:,model))-63), 0:5:200);
     h.LineWidth = 2;
     h.DisplayStyle = 'stairs';
@@ -76,13 +76,12 @@ hold off
 subplot(2,2,4)
 hold on
 for model = 1:3
-    h = histogram(baseI(diabeticIdx(:,model),model).*baseG(diabeticIdx(:,model),model)/402, 0:.2:9);
+    h = histogram(baseI(diabeticIdx(:,model),model).*baseG(diabeticIdx(:,model),model)/402, 0:.5:9);
     %h = histogram(360*real(baseI(:,model))./(real(baseG(:,model))-63), 0:5:200);
     h.LineWidth = 2;
     h.DisplayStyle = 'stairs';
     h.EdgeColor = modelColors(model,:);
 end
-ylabel('n')
 %xlim([0 2.5])
 xlabel('HOMA-IR')
 %xlabel('[I]_B (\mu U/ml)')
