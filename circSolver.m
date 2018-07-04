@@ -7,9 +7,10 @@ const = models.constants;
 %Change constants from default values
 [const.times, const.Gin] = protocols.IdenticalMeals(100, nDays);
 
-const.g = 0.1;
+const.g = 0;
 const.phi0 = pi;
-%const.tau2 = 10;
+const.Vg = 5;
+const.tau2 = 10;
 %const.Vg = 5;
 %const.Vp = 5;
 
@@ -26,7 +27,8 @@ time = [0, 1440*nDays];
   
 
 %% Solve equations
-[tSt, ySt] = ODESolver(@models.sturis, sturisState, const, time);
+tSt = 0:1440*nDays;
+ySt = utils.rk4Fixed(@models.sturis, sturisState, const, tSt);
 [tStC, yStC] = ODESolver(@models.sturisCirc, sturisState, const, time);
 
 
