@@ -61,6 +61,8 @@ classdef constants
     properties
         % Exogeneous glucose infusion (mg/min)
         Gin = 108;
+        % Times corrsponding to Gin values
+        times
     end
 end
 

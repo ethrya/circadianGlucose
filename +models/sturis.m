@@ -1,11 +1,17 @@
-function out = sturis(~, in, const)
+function out = sturis(t, in, const)
     % Model based on Sturis et al. (1991)
     
     % Constant Parameters
     Vp=const.Vp; Vi=const.Vi; E=const.E; 
     tp=const.tp; ti=const.ti; td=const.td;
     
-    Gin = const.Gin;
+    % see if Gin is a constant and either use the constant value or linear
+    % interpolation of the vector of values.
+    if length(const.Gin)==1
+        Gin = const.Gin;
+    elseif length(const.Gin)>1
+        Gin = interp1(const.times, const.Gin, t);
+    end
     
     % Insulin and Glucose amounts
     Ip = in(1); Ii = in(2); G = in(3);

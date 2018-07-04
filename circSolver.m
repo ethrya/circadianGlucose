@@ -1,10 +1,11 @@
 clear;
 %% Preliminaries
+nDays = 2;
 % Import constants class
 const = models.constants;
 
 %Change constants from default values
-const.Gin = 0;
+[const.times, const.Gin] = protocols.IdenticalMeals(100, nDays);
 
 const.g = 0.1;
 const.phi0 = pi;
@@ -21,7 +22,7 @@ sturisState = [40; % Ip
     0]; % x3
 
 % Integration time (min)
-time = [0, 10000];
+time = [0, 1440*nDays];
   
 
 %% Solve equations
