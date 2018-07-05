@@ -1,11 +1,12 @@
 clear;
 %% Preliminaries
 nDays = 2;
+deltaT = 0.5;
 % Import constants class
 const = models.constants;
 
 %Change constants from default values
-[const.times, const.Gin] = protocols.IdenticalMeals(100, nDays);
+[const.times, const.Gin] = protocols.IdenticalMeals(100, nDays, deltaT);
 
 const.g = 0;
 const.phi0 = pi;
@@ -27,9 +28,10 @@ time = [0, 1440*nDays];
   
 
 %% Solve equations
-tSt = 0:1440*nDays;
+tSt = 0:1440*nDays; tStC = 0:1440*nDays;
+
 ySt = utils.rk4Fixed(@models.sturis, sturisState, const, tSt);
-[tStC, yStC] = ODESolver(@models.sturisCirc, sturisState, const, time);
+yStC = utils.rk4Fixed(@models.sturisCirc, sturisState, const, tSt);
 
 
 %% Plotting
