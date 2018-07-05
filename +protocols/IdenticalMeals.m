@@ -8,13 +8,13 @@ function [times, Gin] = IdenticalMeals(mealSize, nDays, dT)
 % Gin: glucose infusion rate (mg/min)
 % times: times corresponding to Gin values (min)
 
-tConst = 120;
-mealTimes = [7 14 20];
+tConst = 60;
+mealTimes = [10 14 20];
 
 times = 0:dT:1440*nDays;
 Gin = zeros(1, length(times));
 
-for day = 0:nDays-1
+for day = 1:nDays-1
     mealIdx = [mealTimes(1)*60+day*1440 mealTimes(2)*60+day*1440 ...
                 mealTimes(3)*60+day*1440]/dT;
     % Simulate 1st meal
@@ -22,6 +22,7 @@ for day = 0:nDays-1
     % Simulate 2nd Meal
     Gin(mealIdx(2):mealIdx(3))= mealSize*exp(-(0:mealIdx(3)-mealIdx(2))/tConst);
     % Simulate 3rd Meal (4 hours)
-    Gin(mealIdx(3):mealIdx(3)+4*60)= mealSize*exp(-(0:4*60)/tConst);
+    tRemaining = 24-mealTimes(3);
+    Gin(mealIdx(3):mealIdx(3)+tRemaining*60/dT) = mealSize*exp(-(0:dT:tRemaining*60)/tConst);
 end
 
