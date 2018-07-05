@@ -5,12 +5,16 @@ function out = sturis(t, in, const)
     Vp=const.Vp; Vi=const.Vi; E=const.E; 
     tp=const.tp; ti=const.ti; td=const.td;
     
-    % see if Gin is a constant and either use the constant value or linear
-    % interpolation of the vector of values.
+    % see if Gin is a constant and either use the constant value, the exact
+    % time series value, or linear interpolation of the vector of values.
     if length(const.Gin)==1
         Gin = const.Gin;
     elseif length(const.Gin)>1
-        Gin = interp1(const.times, const.Gin, t);
+        try
+            Gin = const.Gin(const.times==t);
+        catch
+            Gin = interp1(const.times, const.Gin, t);
+        end
     end
     
     % Insulin and Glucose amounts
