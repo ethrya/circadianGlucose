@@ -1,4 +1,4 @@
-function [times, Gin] = IdenticalMeals(mealSize, nDays)
+function [times, Gin] = IdenticalMeals(mealSize, nDays, deltaT)
 %% Function to simulate decaying meals. Meals consumed at 0700, 1200, 1900
 % Assume meal decays exponentially and time starts at midnight
 % INPUTS
@@ -11,7 +11,7 @@ function [times, Gin] = IdenticalMeals(mealSize, nDays)
 tConst = 120;
 mealTimes = [7 14 20];
 
-times = 0:1440*nDays;
+times = 0:deltaT:1440*nDays;
 Gin = zeros(1, length(times));
 
 for day = 0:nDays-1
