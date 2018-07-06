@@ -13,8 +13,13 @@ function out = sturisCirc(t, in, const)
     if length(const.Gin)==1
         Gin = const.Gin;
     elseif length(const.Gin)>1
-        Gin = interp1(const.times, const.Gin, t);
+        try
+            Gin = const.Gin(const.times==t);
+        catch
+            Gin = interp1(const.times, const.Gin, t);
+        end
     end
+    
     
     % Insulin and Glucose amounts
     Ip = in(1); Ii = in(2); G = in(3);
