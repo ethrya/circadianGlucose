@@ -17,12 +17,23 @@ jones = [4.9973, 116.9733;
 7.9777, 351.6774;
 8.9846, 442.6949];
 
+% Brandt 2001
+brandt = [18.4632, 927.273;
+15.685, 735.1398;
+10.9868, 475.5897;
+7.458, 255.6699;
+4.6825, 71.6183];
+
+
 hold on
-scatter(jones(:,1)*18, jones(:,2)/6)
-scatter(byrne(:,1)*18, byrne(:,2)*20/6)
-G = 0:300;
+scatter(jones(:,1)*18, jones(:,2)/6.91, '.')
+scatter(byrne(:,1)*18, byrne(:,2)*20/6.91, '.')
+scatter(brandt(:,1)*18, brandt(:,2)/6.91, '.')
+G = 0:350;
 const = models.constants;
-plot(G, models.funcs.f1(G, const))
+plot(G, models.funcs.f1(G*100, const))
+plot(G, 127.7./(1+exp((17.2-G/10)/4.644)))
 xlabel('[G] (mg/dl)')
 ylabel('ISR (\mu U/min)')
+legend('Jones', 'Byrne', 'Brandt', 'f_1', 'New f_1')
 hold off
