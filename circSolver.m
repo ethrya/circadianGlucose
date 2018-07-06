@@ -6,11 +6,12 @@ deltaT = 0.5;
 const = models.constants;
 
 %Change constants from default values
-[const.times, const.Gin] = protocols.IdenticalMeals(50, nDays, deltaT);
+%[const.times, const.Gin] = protocols.IdenticalMeals(50, nDays, deltaT);
 %%
-%const.Gin = 0;
+const.Gin = 150;
 
-const.g = 0.1;
+
+const.g = 0.2;
 const.phi0 = 0;
 
 % Initial condition for Sturis and Tolic
