@@ -9,7 +9,7 @@ function [times, Gin] = IdenticalMeals(mealSize, nDays, dT)
 % times: times corresponding to Gin values (min)
 
 tConst = 60;
-mealTimes = [10 14 20];
+mealTimes = [7 12 19];
 
 times = 0:dT:1440*nDays;
 Gin = zeros(1, length(times));
@@ -23,6 +23,6 @@ for day = 1:nDays-1
     Gin(mealIdx(2):mealIdx(3))= mealSize*exp(-(0:mealIdx(3)-mealIdx(2))/tConst);
     % Simulate 3rd Meal (4 hours)
     tRemaining = 24-mealTimes(3);
-    Gin(mealIdx(3):mealIdx(3)+tRemaining*60/dT) = mealSize*exp(-(0:dT:tRemaining*60)/tConst);
+    Gin(mealIdx(3):mealIdx(3)+tRemaining*60) = mealSize*exp(-(0:tRemaining*60)/tConst);
 end
 
