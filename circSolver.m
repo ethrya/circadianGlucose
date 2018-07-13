@@ -6,13 +6,12 @@ deltaT = 0.5;
 const = models.constants;
 
 %Change constants from default values
-%[const.times, const.Gin] = protocols.IdenticalMeals(50, nDays, deltaT);
+[const.times, const.Gin] = protocols.IdenticalMeals(50, nDays, deltaT);
 %%
-const.Gin = 150;
-const.C5 = 18.6; const.Rm = 181.5; const.alpha = 0.1168;
-const.
+%const.Gin = 0;
+%const.C1 = 1720; const.Rm = 127.7; const.a1 = 464.4;
 
-const.g = 0.2;
+const.g = 0;
 const.phi0 = 0;
 
 % Initial condition for Sturis and Tolic
@@ -31,6 +30,8 @@ time = [0, 1440*nDays];
 tSt = 0:1440*nDays; tStC = 0:1440*nDays;
 
 ySt = utils.rk4Fixed(@models.sturis, sturisState, const, tSt);
+%const.C1 = 1720; const.Rm = 127.7; const.a1 = 464.4;
+%const.C5 = 18.6; const.Rg = 181.5; const.alpha = 0.1168;
 yStC = utils.rk4Fixed(@models.sturisCirc, sturisState, const, tSt);
 
 
@@ -50,7 +51,7 @@ plot(tSt/60,Ip)
 plot(tStC/60,IpC)
 hold off
 ylabel('Insulin (\muU/ml)')
-legend('Normal', 'Circadian')
+legend('Original', 'New')
 % Plot [G]
 subplot(3,1,2)
 hold on
@@ -82,7 +83,7 @@ plot(G, Ip, 'LineWidth', 1.5)
 plot(GC, IpC, 'LineWidth', 1.5)
 xlabel('[G] (mg/dl)')
 ylabel('[I_p] (\muU/ml)')
-legend('Normal', 'Circadian')
+legend('Original', 'New')
 hold off
 
 %% Periodogram
