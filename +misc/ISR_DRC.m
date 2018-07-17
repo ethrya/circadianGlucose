@@ -32,7 +32,7 @@ scatter(brandt(:,1)*18, brandt(:,2)/6.91, '.')
 G = 0:350;
 const = models.constants;
 plot(G, models.funcs.f1(G*100, const))
-plot(G, 127.7./(1+exp((17.2-G/10)/4.644)))
+plot(G, 150./(1+exp((17.2-G/10)/3.5)))
 xlabel('[G] (mg/dl)')
 ylabel('ISR (\mu U/min)')
 legend('Jones', 'Byrne', 'Brandt', 'f_1', 'New f_1')

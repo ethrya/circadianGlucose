@@ -1,6 +1,6 @@
 clear;
 %% Preliminaries
-nDays = 3;
+nDays = 10;
 deltaT = 0.5;
 % Import constants class
 const = models.constants;
@@ -11,8 +11,8 @@ const = models.constants;
 const.Gin = 0;
 %const.C1 = 1720; const.Rm = 127.7; const.a1 = 464.4;
 
-const.g = 0.1;
-const.phi0 = 180;
+const.g = 0;
+const.phi0 = 0;
 
 % Initial condition for Sturis and Tolic
 sturisState = [40; % Ip
@@ -30,8 +30,9 @@ time = [0, 1440*nDays];
 tSt = 0:1440*nDays; tStC = 0:1440*nDays;
 
 ySt = utils.rk4Fixed(@models.sturis, sturisState, const, tSt);
-%const.C1 = 1720; const.Rm = 127.7; const.a1 = 464.4;
-%const.C5 = 18.6; const.Rg = 181.5; const.alpha = 0.1168;
+const.C1 = 1720; const.Rm = 150; const.a1 = 350;
+const.C5 = 18.6; const.Rg = 181.5; const.alpha = 0.1168;
+
 yStC = utils.rk4Fixed(@models.sturisCirc, sturisState, const, tSt);
 
 
@@ -47,10 +48,43 @@ figure()
 % Plot [I]
 subplot(3,1,1)
 hold on
+plot(tSt/60, Ip)
+plot(tStC/60, IpC)
+hold off
+ylabel('[I] (\muU/ml)')
+legend('Original', 'New')
+% Plot [G]
+subplot(3,1,2)
+hold on
+plot(tSt/60, G)
+plot(tStC/60, GC)
+%plot([0 max(tT)/60], [mean(solLi.y(1,solLi.x>600)) mean(solLi.y(1,solLi.x>600))]/(10*const.Vg))
+hold off
+xlabel('Time (h)')
+ylabel('[G] (mg/dl)')
+
+subplot(3,1,3)
+hold on
+try
+    plot(const.times/60,const.Gin)
+catch
+    plot(time, [const.Gin const.Gin])
+end
+
+%plot([0 max(tT)/60], [mean(solLi.y(1,solLi.x>600)) mean(solLi.y(1,solLi.x>600))]/(10*const.Vg))
+hold off
+xlabel('Time (h)')
+ylabel('G_{in} (mg/min)')
+
+%% Plot [G] and [I] (in % of baseline units) vs t for all 3 models.
+figure()
+% Plot [I]
+subplot(3,1,1)
+hold on
 plot(tSt/60, utils.meanPercent(Ip, 1440/deltaT))
 plot(tStC/60,utils.meanPercent(IpC, 1440/deltaT))
 hold off
-ylabel('Insulin (% of mean)')
+ylabel('[I] (% of mean)')
 legend('Original', 'New')
 % Plot [G]
 subplot(3,1,2)
@@ -60,7 +94,7 @@ plot(tStC/60, utils.meanPercent(GC, 1440/deltaT))
 %plot([0 max(tT)/60], [mean(solLi.y(1,solLi.x>600)) mean(solLi.y(1,solLi.x>600))]/(10*const.Vg))
 hold off
 xlabel('Time (h)')
-ylabel('Glucose (% of mean)')
+ylabel('[G] (% of mean)')
 
 subplot(3,1,3)
 hold on
@@ -92,3 +126,4 @@ figure;
 plot(freqSC, P1)
 xlabel('Frequency (1/min)')
 ylabel('Power')
+xlim([0 0.02])
