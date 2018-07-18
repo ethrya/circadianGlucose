@@ -1,18 +1,20 @@
 clear;
 %% Preliminaries
-nDays = 10;
+nDays = 2;
 deltaT = 0.5;
 % Import constants class
 const = models.constants;
 
 %Change constants from default values
 %[const.times, const.Gin] = protocols.IdenticalMeals(50, nDays, deltaT);
+const.times = 0:deltaT:2*1440;
+const.Gin = protocols.saad12(deltaT);
 %%
-const.Gin = 0;
-%const.C1 = 1720; const.Rm = 127.7; const.a1 = 464.4;
+const.Gin = 173;
 
-const.g = 0;
-const.phi0 = 0;
+const.g = 0.1;
+const.phi0 = 90;
+const.td = 10;
 
 % Initial condition for Sturis and Tolic
 sturisState = [40; % Ip
@@ -30,8 +32,8 @@ time = [0, 1440*nDays];
 tSt = 0:1440*nDays; tStC = 0:1440*nDays;
 
 ySt = utils.rk4Fixed(@models.sturis, sturisState, const, tSt);
-const.C1 = 1720; const.Rm = 150; const.a1 = 350;
-const.C5 = 18.6; const.Rg = 181.5; const.alpha = 0.1168;
+%const.C1 = 1720; const.Rm = 150; const.a1 = 350;
+%const.C5 = 18.6; const.Rg = 181.5; const.alpha = 0.1168;
 
 yStC = utils.rk4Fixed(@models.sturisCirc, sturisState, const, tSt);
 
