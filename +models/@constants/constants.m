@@ -56,6 +56,8 @@ classdef constants
         C %Circadian phase
         phi0 = 0; % Initial phase (in rad)
         g = 0.01; %Coupling strength
+        g1 = 0;
+        g2 = 0;
     end
     
     properties
