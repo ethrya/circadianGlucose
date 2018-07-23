@@ -20,8 +20,8 @@ rizza = [12.554310424342344, 2.021630456417559;
 206.62037322894446, 0.013167363312051261;
 652.9566585223614, 0.01741613461332392];
 
-height = 1.8;
-weight= 80;
+height = 1.75;
+weight= 90;
 %%
 allData = [campbell(:,1), campbell(:,2)*height;
         %basu(:,1)/6.9, basu(:,2)*.18*weight;
@@ -30,9 +30,9 @@ allData = [campbell(:,1), campbell(:,2)*height;
 %%
 hold on
 plot(campbell(:,1), campbell(:,2)*height,'.')
-plot(basu(:,1)/6.9, basu(:,2)*.18*70,'.')
+plot(basu(:,1)/6.9, basu(:,2)*.18*weight,'.')
 plot(fernannini(:,1)+10, fernannini(:,2)*height,'.')
-plot(rizza(:,1), rizza(:,2)*80,'.')
+plot(rizza(:,1), rizza(:,2)*weight,'.')
 
 const = models.constants;
 I = 1:100000;
