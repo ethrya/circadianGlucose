@@ -10,11 +10,12 @@ const = models.constants;
 const.times = 0:deltaT:2*1440;
 const.Gin = protocols.saad12(deltaT);
 %%
-const.Gin = 173;
+%const.Gin = 0;
 
-const.g = 0.1;
-const.phi0 = 90;
-const.td = 10;
+const.g1 = 0;
+const.g2 = 0.3;
+const.phi0 = 3*pi/4;
+%const.td = 12;
 
 % Initial condition for Sturis and Tolic
 sturisState = [40; % Ip
@@ -60,22 +61,23 @@ subplot(3,1,2)
 hold on
 plot(tSt/60, G)
 plot(tStC/60, GC)
+xticks(0:6:48)
+xticklabels(0:0.25:2)
 %plot([0 max(tT)/60], [mean(solLi.y(1,solLi.x>600)) mean(solLi.y(1,solLi.x>600))]/(10*const.Vg))
 hold off
-xlabel('Time (h)')
+xlabel('Time (days)')
 ylabel('[G] (mg/dl)')
 
 subplot(3,1,3)
 hold on
 try
-    plot(const.times/60,const.Gin)
+    plot(const.times/1440,const.Gin)
 catch
-    plot(time, [const.Gin const.Gin])
+    plot(time/1440, [const.Gin const.Gin])
 end
-
 %plot([0 max(tT)/60], [mean(solLi.y(1,solLi.x>600)) mean(solLi.y(1,solLi.x>600))]/(10*const.Vg))
 hold off
-xlabel('Time (h)')
+xlabel('Time (days)')
 ylabel('G_{in} (mg/min)')
 
 %% Plot [G] and [I] (in % of baseline units) vs t for all 3 models.
@@ -83,32 +85,37 @@ figure()
 % Plot [I]
 subplot(3,1,1)
 hold on
-plot(tSt/60, utils.meanPercent(Ip, 1440/deltaT))
-plot(tStC/60,utils.meanPercent(IpC, 1440/deltaT))
+plot(tSt/60, utils.meanPercent(Ip, 1440))
+plot(tStC/60,utils.meanPercent(IpC, 1440))
 hold off
 ylabel('[I] (% of mean)')
 legend('Original', 'New')
+xticks([0:6:48])
+xticklabels([0:0.25:2])
 % Plot [G]
 subplot(3,1,2)
 hold on
-plot(tSt/60, utils.meanPercent(G, 1440/deltaT))
-plot(tStC/60, utils.meanPercent(GC, 1440/deltaT))
+plot(tSt/60, utils.meanPercent(G, 1440))
+plot(tStC/60, utils.meanPercent(GC, 1440))
 %plot([0 max(tT)/60], [mean(solLi.y(1,solLi.x>600)) mean(solLi.y(1,solLi.x>600))]/(10*const.Vg))
 hold off
-xlabel('Time (h)')
+xlabel('Time (days)')
 ylabel('[G] (% of mean)')
+xticks([0:6:48])
+xticklabels([0:0.25:2])
 
 subplot(3,1,3)
 hold on
 try
-    plot(const.times/60,const.Gin)
+    plot(const.times/1440,const.Gin)
 catch
-    plot(time, [const.Gin const.Gin])
+    plot(time/1440, [const.Gin const.Gin])
 end
 
 %plot([0 max(tT)/60], [mean(solLi.y(1,solLi.x>600)) mean(solLi.y(1,solLi.x>600))]/(10*const.Vg))
 hold off
-xlabel('Time (h)')
+
+xlabel('Time (days)')
 ylabel('G_{in} (mg/min)')
 
 %% Phase plane
