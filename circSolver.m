@@ -14,8 +14,7 @@ const.Gin = protocols.saad12(deltaT);
 
 const.g1 = 0;
 const.g2 = 0.3;
-const.phi0 = 3*pi/4;
-%const.td = 12;
+const.phi0 = -3*pi/4;
 
 % Initial condition for Sturis and Tolic
 sturisState = [40; % Ip
@@ -90,8 +89,8 @@ plot(tStC/60,utils.meanPercent(IpC, 1440))
 hold off
 ylabel('[I] (% of mean)')
 legend('Original', 'New')
-xticks([0:6:48])
-xticklabels([0:0.25:2])
+xticks(0:6:48)
+xticklabels(0:0.25:2)
 % Plot [G]
 subplot(3,1,2)
 hold on
@@ -101,8 +100,8 @@ plot(tStC/60, utils.meanPercent(GC, 1440))
 hold off
 xlabel('Time (days)')
 ylabel('[G] (% of mean)')
-xticks([0:6:48])
-xticklabels([0:0.25:2])
+xticks(0:6:48)
+xticklabels(0:0.25:2)
 
 subplot(3,1,3)
 hold on
@@ -136,3 +135,5 @@ plot(freqSC, P1)
 xlabel('Frequency (1/min)')
 ylabel('Power')
 xlim([0 0.02])
+
+%% Meal response curve
