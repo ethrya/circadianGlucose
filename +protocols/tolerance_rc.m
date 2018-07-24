@@ -49,8 +49,10 @@ for mealNo = 1:length(mealTimes)
 end
 
 %% Plot peak glucose vs meal time
-plot(mealTimes, gPeak)
+plot(mealTimes, gPeak/100,'k')
 xlabel('Meal Time (zt)')
-ylabel('Peak Glucose')
+ylabel('Peak [G] (mg/dl)')
+xticks(0:4:24)
+xticklabels(0:4:24)
 xlim([0 24])
 end
