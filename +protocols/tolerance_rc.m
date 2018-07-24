@@ -1,14 +1,9 @@
 % Script to create a tolerance response curve for meals at different times
 % of the day
-function [gPeak, mealTimes] = tolerance_rc(mealSpace)
-
-const = models.constants;
-const.g2 = 0.3;
-const.phi0 = 3*pi/4;
-
+function [gPeak, mealTimes] = tolerance_rc(const, mealSpace)
 
 % Set a default mealSpace of 4 hours
-if nargin==0
+if nargin==1
     mealSpace = 4;
 end
 
@@ -57,4 +52,5 @@ end
 plot(mealTimes, gPeak)
 xlabel('Meal Time (zt)')
 ylabel('Peak Glucose')
+xlim([0 24])
 end
