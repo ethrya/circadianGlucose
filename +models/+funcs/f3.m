@@ -4,6 +4,6 @@ function f = f3(G, const)
     if length(const.C)==0
         f = G/(const.C3*const.Vg);
     else
-        f = (1+const.g*sin(const.C))*G/(const.C3*const.Vg);
+        f = G/(const.C3*const.Vg);
     end
 end

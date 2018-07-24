@@ -1,9 +1,13 @@
 %% Circadian Model test
-
+% Run a test of the current model with baseline glucose and create a meal
+% response curve
 %% prelimaries
+tic
 const = models.constants;
-const.g1 = 0;
-const.g2 = 0.3;
+const.g1 = 0.1;
+const.phi1 = -3*pi/4;
+const.g2 = 0;
+const.phi2 = -3*pi/4;
 
 % Initial condition for Sturis and Tolic
 sturisState = [40; % Ip
@@ -22,8 +26,6 @@ const.Gin = 0;
 tSt = 0:1440*2.5; tStC = 0:1440*2.5;
 
 ySt = utils.rk4Fixed(@models.sturis, sturisState, const, tSt);
-%const.C1 = 1720; const.Rm = 150; const.a1 = 350;
-%const.C5 = 18.6; const.Rg = 181.5; const.alpha = 0.1168;
 
 yStC = utils.rk4Fixed(@models.sturisCirc, sturisState, const, tSt);
 
@@ -37,22 +39,22 @@ GC = yStC(:,3)/(const.Vg*10); %[G]=G/Vg mg/dl
 
 figure()
 % Plot [I]
-subplot(2,1,1)
+subplot(3,1,1)
 hold on
 plot(tSt/60, utils.meanPercent(Ip, 1440))
-plot(tStC/60,utils.meanPercent(IpC, 1440))
+plot(tStC/60,utils.meanPercent(IpC, 1440),'k')
 hold off
 ylabel('[I] (% of mean)')
-legend('Original', 'Standard')
+legend('Original', 'Circadian')
 xticks([24:4:48])
 xticklabels([0:4:24])
 xlim([24 48])
+
 % Plot [G]
-subplot(2,1,2)
+subplot(3,1,2)
 hold on
 plot(tSt/60, utils.meanPercent(G, 1440))
-plot(tStC/60, utils.meanPercent(GC, 1440))
-%plot([0 max(tT)/60], [mean(solLi.y(1,solLi.x>600)) mean(solLi.y(1,solLi.x>600))]/(10*const.Vg))
+plot(tStC/60, utils.meanPercent(GC, 1440),'k')
 hold off
 xlabel('Time (hours)')
 ylabel('[G] (% of mean)')
@@ -61,5 +63,7 @@ xticklabels([0:4:24])
 xlim([24 48])
 
 %% Tolerance
-figure()
+subplot(3,1,3)
 protocols.tolerance_rc(const, 2);
+
+toc

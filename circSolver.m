@@ -135,5 +135,3 @@ plot(freqSC, P1)
 xlabel('Frequency (1/min)')
 ylabel('Power')
 xlim([0 0.02])
-
-%% Meal response curve
