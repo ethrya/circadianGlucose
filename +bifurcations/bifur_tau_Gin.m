@@ -64,7 +64,7 @@ catch
 end
 
 %% Find Values
-parfor i=1:nGin
+for i=1:nGin
     fprintf('Completing %i of %i Gin Values \n', i, nGin);
     for j=1:nTau
         % Update Gin value
