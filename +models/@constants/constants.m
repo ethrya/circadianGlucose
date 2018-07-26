@@ -57,9 +57,11 @@ classdef constants
         phi = 0; % Initial phase (in rad)
         phi1 = 0;
         phi2 = 0;
+        phi3 = 0;
         g = 0.0; %Coupling strength [0,1]
         g1 = 0;
         g2 = 0;
+        g3 = 0;
     end
     
     properties
