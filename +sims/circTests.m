@@ -5,12 +5,12 @@
 clear
 tic
 const = models.constants;
-const.g1 = 0.2;
+const.g1 = 0;
 const.phi1 = 0;
 const.g2 = 0;
 const.phi2 = 0;
-const.g3 = 0.2;
-const.phi3 = -pi/2;
+const.g3 = 0;
+const.phi3 = 0;
 
 % Initial condition for Sturis and Tolic
 sturisState = [40; % Ip
@@ -24,12 +24,11 @@ sturisState = [40; % Ip
 time = [0, 1440*2.5];
 
 %% Baseline Simulations
-const.Gin = 50;
+const.Gin = 0;
 
 tSt = 0:1440*2.5; tStC = 0:1440*2.5;
-
+const.td = 12;
 ySt = utils.rk4Fixed(@models.sturis, sturisState, const, tSt);
-
 yStC = utils.rk4Fixed(@models.sturisCirc, sturisState, const, tSt);
 
 %% Calculate ISR
@@ -63,4 +62,7 @@ utils.plots.plotDay(tSt,ISR,tStC,ISR_circ,'ISR (% of mean)')
 subplot(4,1,4)
 protocols.tolerance_rc(const, 4);
 
+
+%% Printout statistics
+sprintf('Circadian [G]_b: %.2f (mg/dl)',mean(GC(tStC/60>24 &tStC/60<48)))
 toc
