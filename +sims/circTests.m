@@ -5,10 +5,10 @@
 clear
 tic
 const = models.constants;
-const.g1 = 0;
-const.phi1 = 0;
-const.g2 = 0;
-const.phi2 = 0;
+const.g1 = 0.1;
+const.phi1 = -pi/4;
+const.g2 = 0.2;
+const.phi2 = -pi/4;
 const.g3 = 0;
 const.phi3 = 0;
 
@@ -45,24 +45,38 @@ IpC = yStC(:,1)/const.Vp; %[I]=I/Vp microU/ml
 GC = yStC(:,3)/(const.Vg*10); %[G]=G/Vg mg/dl
 
 figure()
+nPlots = 5;
 % Plot [I]
-subplot(4,1,1)
+subplot(nPlots,1,1)
 utils.plots.plotDay(tSt,Ip,tStC,IpC,'[I] (% of mean)')
 legend('Original', 'Circadian')
 
 % Plot [G]
-subplot(4,1,2)
+subplot(nPlots,1,2)
 utils.plots.plotDay(tSt,G,tStC, GC,'[G] (% of mean)')
 
 % Plot ISR f1
-subplot(4,1,3)
+subplot(nPlots,1,3)
 utils.plots.plotDay(tSt,ISR,tStC,ISR_circ,'ISR (% of mean)')
 
 %% Tolerance
-subplot(4,1,4)
-protocols.tolerance_rc(const, 4);
+[gPeak, gAUC, mealTimes] = protocols.tolerance_rc(const, 4);
 
+%% Plot peak glucose vs meal time
+subplot(nPlots,1,4)
+plot(mealTimes, gPeak/100,'k')
+ylabel('Peak [G] (mg/dl)')
+xticks(0:4:24)
+xticklabels(0:4:24)
+xlim([0 24])
 
+subplot(nPlots,1,5)
+plot(mealTimes, gAUC/gAUC(1),'k')
+xlabel('Meal Time (zt)')
+ylabel('AUC (A.U.)')
+xticks(0:4:24)
+xticklabels(0:4:24)
+xlim([0 24])
 %% Printout statistics
 sprintf('Circadian [G]_b: %.2f (mg/dl)',mean(GC(tStC/60>24 &tStC/60<48)))
 toc

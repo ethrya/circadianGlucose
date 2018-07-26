@@ -52,12 +52,4 @@ for mealNo = 1:length(mealTimes)
     gAUC(mealNo) = trapz(tInt(tMeal),ySt(tMeal, 3));
     
 end
-
-%% Plot peak glucose vs meal time
-plot(mealTimes, gPeak/100,'k')
-xlabel('Meal Time (zt)')
-ylabel('Peak [G] (mg/dl)')
-xticks(0:4:24)
-xticklabels(0:4:24)
-xlim([0 24])
 end
