@@ -48,38 +48,17 @@ GC = yStC(:,3)/(const.Vg*10); %[G]=G/Vg mg/dl
 figure()
 % Plot [I]
 subplot(4,1,1)
-hold on
-plot(tSt/60, utils.meanPercent(Ip, 1440))
-plot(tStC/60,utils.meanPercent(IpC, 1440),'k')
-hold off
-ylabel('[I] (% of mean)')
+utils.plots.plotDay(tSt,Ip,tStC,IpC,'[I] (% of mean)')
 legend('Original', 'Circadian')
-xticks([24:4:48])
-xticklabels([0:4:24])
-xlim([24 48])
 
 % Plot [G]
 subplot(4,1,2)
-hold on
-plot(tSt/60, utils.meanPercent(G, 1440))
-plot(tStC/60, utils.meanPercent(GC, 1440),'k')
-hold off
-ylabel('[G] (% of mean)')
-xticks([24:4:48])
-xticklabels([0:4:24])
-xlim([24 48])
+utils.plots.plotDay(tSt,G,tStC, GC,'[G] (% of mean)')
 
 % Plot ISR f1
 subplot(4,1,3)
-hold on
-plot(tSt/60, utils.meanPercent(ISR, 1440))
-plot(tStC/60, utils.meanPercent(ISR_circ, 1440),'k')
-hold off
-xlabel('Time (hours)')
-ylabel('ISR (% of mean)')
-xticks([24:4:48])
-xticklabels([0:4:24])
-xlim([24 48])
+utils.plots.plotDay(tSt,ISR,tStC,ISR_circ,'ISR (% of mean)')
+
 %% Tolerance
 subplot(4,1,4)
 protocols.tolerance_rc(const, 4);
