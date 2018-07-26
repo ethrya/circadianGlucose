@@ -1,6 +1,6 @@
 % Script to create a tolerance response curve for meals at different times
 % of the day
-function [gPeak, mealTimes] = tolerance_rc(const, mealSpace)
+function [gPeak, gAUC, mealTimes] = tolerance_rc(const, mealSpace)
 
 % Set a default mealSpace of 4 hours
 if nargin==1
@@ -28,6 +28,7 @@ tInt = time(1):deltaT:time(end);
 % Vector of initial meal times
 mealTimes = 0:mealSpace:24;
 gPeak = zeros(1,length(mealTimes));
+gAUC = zeros(1,length(mealTimes));
 
 % Calculate response to meals
 for mealNo = 1:length(mealTimes)
@@ -45,7 +46,11 @@ for mealNo = 1:length(mealTimes)
     
     % Calculate peak glucose within 250 idx of meal
     gPeak(mealNo) = max(ySt(tInt>mealIdx/2 & tInt<mealIdx/2+250,3));
-
+    
+    % Calculate AUC glucose 3h after meal
+    tMeal = mealIdx/2:mealIdx/2+180;
+    gAUC(mealNo) = trapz(tInt(tMeal),ySt(tMeal, 3));
+    
 end
 
 %% Plot peak glucose vs meal time
