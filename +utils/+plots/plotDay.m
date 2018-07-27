@@ -13,8 +13,8 @@ end
 hold on
 % Plot as relative or standard units
 if meanPercent==1
-    plot(t1/60, utils.meanPercent(y1, 1440))
-    plot(t2/60, utils.meanPercent(y2, 1440),'k')
+    plot(t1/60, utils.meanPercent(y1, 1440,2*1440))
+    plot(t2/60, utils.meanPercent(y2, 1440,2*1440),'k')
 elseif meanPercent==0
     plot(t1/60, y1)
     plot(t2/60, y2)
