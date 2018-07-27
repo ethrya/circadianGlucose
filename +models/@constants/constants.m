@@ -62,6 +62,9 @@ classdef constants
         g1 = 0;
         g2 = 0;
         g3 = 0;
+        
+        % Glucose clamp value (mg/dl)
+        clamp = nan;
     end
     
     properties

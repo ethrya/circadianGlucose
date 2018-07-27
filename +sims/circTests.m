@@ -5,17 +5,19 @@
 clear
 tic
 const = models.constants;
-const.g1 = 0.15;
+const.g1 = 0.05;
 const.phi1 = 0;
-const.g2 = 0.2;
+const.g2 = 0;
 const.phi2 = 0;
-const.g3 = 0.3;
-const.phi3 = 0;
+%const.g3 = 0.3;
+%const.phi3 = 0;
+
+const.clamp = 1;
 
 % Initial condition for Sturis and Tolic
 sturisState = [40; % Ip
     40; % Ii
-    10000; % G
+    22600; % G
     0; % x1
     0; % x2
     0]; % x3
