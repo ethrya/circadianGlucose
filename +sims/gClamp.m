@@ -3,13 +3,14 @@
 clear
 tic
 const = models.constants;
-const.g1 = 0.05;
-const.phi1 = 0;
+const.g1 = 0.02;
+const.phi1 = pi;
 
 const.clamp = 1; % Set glucose clamp
 
 % G clamp values used in Brody (5mM, 8.8mM, 12.6mM)
 gValues = [10000 16000 22700];
+%gValues = 22700*ones(1,3);
 
 % Integration time (min)
 time = [0, 1440*2.5];
@@ -27,7 +28,7 @@ for clampedG = 1:length(gValues)
         0; % x1
         0; % x2
         0]; % x3
-    
+    %const.C1 = 1720; const.Rm = 150; const.a1 = 350;
     yStC = utils.rk4Fixed(@models.sturisCirc, sturisState, const, tSt);
     
     %% Calculate ISR
@@ -36,9 +37,11 @@ for clampedG = 1:length(gValues)
     
     %% plot ISR
     plot(tStC/60, utils.meanPercent(ISR_circ,1440, 2*1440))
+    %plot(tStC/60, ISR_circ)
 end
 
-legend(num2str(gValues(1)), num2str(gValues(2)), num2str(gValues(3)))
+%legend(num2str(gValues(1)), num2str(gValues(2)), num2str(gValues(3)))
+legend('5mM','8.8mM', '12.6mM')
 xlabel('time (h)')
 ylabel('ISR (%)')
 xticks(24:4:48)

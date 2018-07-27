@@ -5,19 +5,18 @@
 clear
 tic
 const = models.constants;
-const.g1 = 0.05;
-const.phi1 = 0;
-const.g2 = 0;
-const.phi2 = 0;
+const.g1 = 0.02;
+const.phi1 = pi;
+const.g2 = .1;
+const.phi2 = pi;
 %const.g3 = 0.3;
 %const.phi3 = 0;
 
-const.clamp = 1;
 
 % Initial condition for Sturis and Tolic
 sturisState = [40; % Ip
     40; % Ii
-    22600; % G
+    10000; % G
     0; % x1
     0; % x2
     0]; % x3
@@ -29,7 +28,6 @@ time = [0, 1440*2.5];
 const.Gin = 0;
 
 tSt = 0:1440*2.5; tStC = 0:1440*2.5;
-const.td = 12;
 ySt = utils.rk4Fixed(@models.sturis, sturisState, const, tSt);
 yStC = utils.rk4Fixed(@models.sturisCirc, sturisState, const, tSt);
 
@@ -62,7 +60,7 @@ subplot(nPlots,1,3)
 utils.plots.plotDay(tSt,ISR,tStC,ISR_circ,'ISR (%)')
 
 %% Tolerance
-[gPeak, gAUC, mealTimes] = protocols.tolerance_rc(const, 4);
+[gPeak, gAUC, mealTimes] = protocols.tolerance_rc(const, 1);
 
 %% Plot peak glucose vs meal time
 subplot(nPlots,1,4)
