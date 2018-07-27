@@ -5,11 +5,11 @@
 clear
 tic
 const = models.constants;
-const.g1 = 0.1;
-const.phi1 = -pi/4;
+const.g1 = 0.15;
+const.phi1 = 0;
 const.g2 = 0.2;
-const.phi2 = -pi/4;
-const.g3 = 0;
+const.phi2 = 0;
+const.g3 = 0.3;
 const.phi3 = 0;
 
 % Initial condition for Sturis and Tolic
@@ -48,16 +48,16 @@ figure()
 nPlots = 5;
 % Plot [I]
 subplot(nPlots,1,1)
-utils.plots.plotDay(tSt,Ip,tStC,IpC,'[I] (% of mean)')
+utils.plots.plotDay(tSt,Ip,tStC,IpC,'[I] (%)')
 legend('Original', 'Circadian')
 
 % Plot [G]
 subplot(nPlots,1,2)
-utils.plots.plotDay(tSt,G,tStC, GC,'[G] (% of mean)')
+utils.plots.plotDay(tSt,G,tStC, GC,'[G] (%)')
 
 % Plot ISR f1
 subplot(nPlots,1,3)
-utils.plots.plotDay(tSt,ISR,tStC,ISR_circ,'ISR (% of mean)')
+utils.plots.plotDay(tSt,ISR,tStC,ISR_circ,'ISR (%)')
 
 %% Tolerance
 [gPeak, gAUC, mealTimes] = protocols.tolerance_rc(const, 4);
