@@ -13,7 +13,9 @@ Saad = [8.665207877461711, 20.178890876565305
 300.13129102844647, 3.148479427549205
 360.00000000000006, 3.0053667262969697];
 
-Gin = Saad(:,2)*180*70/1000;
+% Convert mumol/kg/min to mg/min
+
+Gin = Saad(:,2)*18*10*70/1000;
 
 fitFunc = fittype('k*(x-x0)^(n)/b^2*exp(-(x-x0)^n/(b^2))');
 
@@ -32,3 +34,10 @@ plot(x, f.k*(x-f.x0).^(f.n)./f.b^2.*exp(-(x-f.x0).^f.n/f.b^2))
 xlabel('Time (min)')
 ylabel('mg/min')
 hold off
+
+% Calculate total meal (AUC) in mg
+mealTotalSaad = trapz(Saad(:,1), Gin);
+sprintf('Total meal size in Saad et al. 2012 is %.2f g',mealTotalSaad/1000)
+
+mealTotalFunc = trapz(x, f.k*(x-f.x0).^(f.n)./f.b^2.*exp(-(x-f.x0).^f.n/f.b^2));
+sprintf('Total meal size of function is %.2f g',mealTotalFunc/1000)
