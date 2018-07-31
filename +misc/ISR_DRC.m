@@ -27,13 +27,15 @@ brandt = [18.4632, 927.273;
 
 hold on
 scatter(jones(:,1)*18, jones(:,2)/6.91, '.')
-scatter(byrne(:,1)*18, byrne(:,2)*20/6.91, '.')
+scatter(byrne(:,1)*18, byrne(:,2)*23/6.91, '.')
 scatter(brandt(:,1)*18, brandt(:,2)/6.91, '.')
 G = 0:350;
 const = models.constants;
 plot(G, models.funcs.f1(G*100, const))
 plot(G, 150./(1+exp((17.2-G/10)/3.5)))
+plot(G, 150./(1+exp((16.9-G/10)/3.8)))
+plot(G, 117*G.^4.2./(155^4.2+G.^4.2))
 xlabel('[G] (mg/dl)')
 ylabel('ISR (\mu U/min)')
-legend('Jones', 'Byrne', 'Brandt', 'f_1', 'New f_1')
+legend('Jones', 'Byrne', 'Brandt', 'f_1', 'New f_1', 'Koenig')
 hold off
