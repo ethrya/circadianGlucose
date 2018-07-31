@@ -39,7 +39,7 @@ for mealNo = 1:length(mealTimes)
     
     % Gin for fasting except 500 idx after a meal occuring
     const.Gin = zeros(1, length(const.times));
-    const.Gin(mealIdx:mealIdx+500) = protocols.chenMeal(0:500, 80, 5100);
+    const.Gin(mealIdx:mealIdx+500) = protocols.saadMeal(0:500);
     
     % Solve ODEs for meal
     ySt = utils.rk4Fixed(@models.sturisCirc, sturisState, const, tInt);

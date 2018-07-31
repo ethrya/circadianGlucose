@@ -9,7 +9,7 @@ function Gin = saad12(dT)
 %%
 t = 0:dT:2*24*60;
 
-k = 4300; b = 80;
+k = 5200; b = 80;
 
 % Calculate Idx of meal beginning
 mealIdx = [7*60/dT 13*60/dT 19*60/dT]+24*60/dT;
@@ -17,7 +17,7 @@ mealIdx = [7*60/dT 13*60/dT 19*60/dT]+24*60/dT;
 % Create array of each meal by looping over each (identical) meal
 meals = zeros(3, length(t));
 for i = 1:3
-meals(i, mealIdx(i):end) = protocols.chenMeal(0:length(t)-mealIdx(i),b, k);
+meals(i, mealIdx(i):end) = protocols.saadMeal(0:length(t)-mealIdx(i));
 end
 
 Gin = sum(meals, 1);
