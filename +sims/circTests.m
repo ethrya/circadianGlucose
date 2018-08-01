@@ -6,8 +6,8 @@ clear
 tic
 const = models.constants;
 const.g1 = 0.02;
-const.phi1 = pi;
-const.g2 = .1;
+const.phi1 = 0;
+const.g2 = 0.1;
 const.phi2 = pi;
 %const.g3 = 0.3;
 %const.phi3 = 0;
