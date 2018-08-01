@@ -167,7 +167,7 @@ function testExponFitLimit(testCase)
     verifyEqual(testCase,fit.b, actSolution, 'AbsTol', 0.01)
 end
 
-function rk4fixedStep(testcase)
+function rk4fixedStep(testCase)
 % Test rk4 solver on sine wave through equation
 % u'' = -u; y(0)=0
 % let v=u' then y = [u; v], y' =[v; -u] = [y(2) -y(1)] and y(0)=[0; 1]
@@ -176,4 +176,18 @@ dy = @(t, y, const) [y(2); -y(1)];
 yOut = utils.rk4Fixed(dy, [0 1], '', times, 2);
 solnExpected = sin(times);
     verifyEqual(testCase,yOut, solnExpected, 'AbsTol', 0.01)
+end
+
+function iAUCTest(testCase)
+% test iAUC function on function with 5 t<10 and exponential decay above 5
+% for t>10.
+
+% Expected area approx 5
+
+t = 0:0.1:30;
+y = 5*ones(1,length(t));
+y(t>10) = y(t>10)+5*exp(-(t(t>10)-10));
+
+iAUC = utils.iAUC(y, t, t>10);
+verifyEqual(testCase, iAUC, 5, 'AbsTol',1e-4)
 end

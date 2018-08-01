@@ -47,9 +47,7 @@ for mealNo = 1:length(mealTimes)
     % Calculate peak glucose within 250 idx of meal
     gPeak(mealNo) = max(ySt(tInt>mealIdx/2 & tInt<mealIdx/2+250,3));
     
-    % Calculate AUC glucose 3h after meal
-    tMeal = mealIdx/2:mealIdx/2+180;
-    gAUC(mealNo) = trapz(tInt(tMeal),ySt(tMeal, 3));
+   tMeal = mealIdx/2:mealIdx/2+180;
     
 end
 end
