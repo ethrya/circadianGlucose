@@ -1,23 +1,24 @@
 clear;
 %% Preliminaries
-nDays = 5;
+nDays = 2;
 deltaT = 0.5;
 % Import constants class
 const = models.constants;
 
 %Change constants from default values
 %[const.times, const.Gin] = protocols.IdenticalMeals(50, nDays, deltaT);
-%const.times = 0:deltaT:2*1440;
-%const.Gin = protocols.saad12(deltaT);
+const.times = 0:deltaT:2*1440;
+const.Gin = protocols.saad12(deltaT);
 %%
-const.Gin = 0;
+%const.Gin = 0;
 
-const.g1 = 0.2;
+const.g1 = 0.3;
 const.phi1 = 0;
-const.g2 = 0;
+const.g2 = 0.3;
 const.phi2 = 0;
-const.g3 = 0.5;
-const.phi3 = 0;
+%const.g3 = 0.5;
+%const.phi3 = 0;
+%const.td = 5;
 
 % Initial condition for Sturis and Tolic
 sturisState = [40; % Ip
