@@ -47,7 +47,8 @@ for mealNo = 1:length(mealTimes)
     % Calculate peak glucose within 250 idx of meal
     gPeak(mealNo) = max(ySt(tInt>mealIdx/2 & tInt<mealIdx/2+250,3));
     
-   tMeal = mealIdx/2:mealIdx/2+180;
+    tMeal = tInt>mealIdx/2 & tInt<(mealIdx/2+180);
     
+    gAUC(mealNo) = utils.iAUC(ySt(:,3)', tInt, tMeal);
 end
 end
