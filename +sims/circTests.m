@@ -60,7 +60,7 @@ subplot(nPlots,1,3)
 utils.plots.plotDay(tSt,ISR,tStC,ISR_circ,'ISR (%)')
 
 %% Tolerance
-[gPeak, gAUC, mealTimes] = protocols.tolerance_rc(const, 1);
+[gPeak, gAUC, mealTimes] = protocols.tolerance_rc(const, 4);
 
 %% Plot peak glucose vs meal time
 subplot(nPlots,1,4)
@@ -73,7 +73,7 @@ xlim([0 24])
 subplot(nPlots,1,5)
 plot(mealTimes, gAUC/gAUC(1),'k')
 xlabel('Meal Time (zt)')
-ylabel('AUC (A.U.)')
+ylabel('iAUC (A.U.)')
 xticks(0:4:24)
 xticklabels(0:4:24)
 xlim([0 24])
