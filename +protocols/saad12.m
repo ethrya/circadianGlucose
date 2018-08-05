@@ -17,7 +17,7 @@ mealIdx = [7*60/dT 13*60/dT 19*60/dT]+24*60/dT;
 % Create array of each meal by looping over each (identical) meal
 meals = zeros(3, length(t));
 for i = 1:3
-meals(i, mealIdx(i):end) = protocols.saadMeal(0:length(t)-mealIdx(i));
+meals(i, mealIdx(i):length(t)) = protocols.saadMeal([0:length(t)-mealIdx(i)]*dT);
 end
 
 Gin = sum(meals, 1);
