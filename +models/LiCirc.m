@@ -13,6 +13,9 @@ elseif length(const.Gin)>1
     end
 end
 
+% Convert t into circadian frequency
+const.C = 2*pi*t/1440;
+
 G = currentIn(1); I = currentIn(2);
 gLag = lag(:, 1); iLag = lag(:, 2);
 

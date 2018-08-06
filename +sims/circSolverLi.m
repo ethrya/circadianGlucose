@@ -1,7 +1,7 @@
 clear;
 %% Preliminaries
 nDays = 2;
-deltaT = 0.5;
+deltaT = 1;
 % Import constants class
 const = models.constants;
 
@@ -12,21 +12,16 @@ const.Gin = protocols.saad12(deltaT);
 %%
 %const.Gin = 0;
 
-const.g1 = 0.05;
+const.g1 = 0.1;
 const.phi1 = 0;
-const.g2 = 0.05;
+const.g2 = 0.2;
 const.phi2 = 0;
 const.g3 = 0;
 const.phi3 = 0;
-%const.td = 5;
+const.tau1 = 1e-10; const.tau2 = 1e-10;
 
-% Initial condition for Sturis and Tolic
-sturisState = [40; % Ip
-    40; % Ii
-    10000; % G
-    0; % x1
-    0; % x2 
-    0]; % x3
+% Initial condition for Li
+IC = [10000 40];
 
 % Integration time (min)
 time = [0, 1440*nDays];
@@ -34,20 +29,23 @@ time = [0, 1440*nDays];
 
 %% Solve equations
 tSt = 0:1440*nDays; tStC = 0:1440*nDays;
-
-ySt = utils.rk4Fixed(@models.sturis, sturisState, const, tSt);
+const.tau1 = 5; const.tau2 = 5;
+solLi = utils.DDESolver(@models.Li, IC, const, time);
 %const.C1 = 1720; const.Rm = 150; const.a1 = 350;
 %const.C5 = 18.6; const.Rg = 181.5; const.alpha = 0.1168;
 
-yStC = utils.rk4Fixed(@models.sturisCirc, sturisState, const, tSt);
+solLiCirc = utils.DDESolver(@models.LiCirc, IC, const, time);
 
 
 %% Plotting
 % Convert glucose amounts into concentrations
-Ip = ySt(:,1)/const.Vp; %[I]=I/Vp microU/ml
-G = ySt(:,3)/(const.Vg*10); %[G]=G/Vg mg/dl
-IpC = yStC(:,1)/const.Vp; %[I]=I/Vp microU/ml
-GC = yStC(:,3)/(const.Vg*10); %[G]=G/Vg mg/dl
+Ip = solLi.y(2,:)/const.Vp; %[I]=I/Vp microU/ml
+G = solLi.y(1,:)/(const.Vg*10); %[G]=G/Vg mg/dl
+IpC = solLiCirc.y(2,:)/const.Vp; %[I]=I/Vp microU/ml
+GC = solLiCirc.y(1,:)/(const.Vg*10); %[G]=G/Vg mg/dl
+
+tSt = solLi.x;
+tStC = solLiCirc.x;
 
 % Plot [G] and [I] vs t for all 3 models.
 figure()
@@ -120,7 +118,7 @@ hold off
 
 xlabel('Time (days)')
 ylabel('G_{in} (mg/min)')
-
+% 
 % %% Phase plane
 % % Plot phase plane of I vs G for three models
 % figure
@@ -131,11 +129,3 @@ ylabel('G_{in} (mg/min)')
 % ylabel('[I_p] (\muU/ml)')
 % legend('Original', 'New')
 % hold off
-% 
-% %% Periodogram
-% [freqSC, P1] = periods.ft_solution(tStC, yStC, 1440);
-% figure;
-% plot(freqSC, P1)
-% xlabel('Frequency (1/min)')
-% ylabel('Power')
-% xlim([0 0.02])
