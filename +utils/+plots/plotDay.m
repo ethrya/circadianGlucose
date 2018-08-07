@@ -12,9 +12,12 @@ end
 
 hold on
 % Plot as relative or standard units
+[~, tMin1] = min(abs(t1-1440)); [~, tMax1] = min(abs(t1-2*1440));
+[~, tMin2] = min(abs(t2-1440)); [~, tMax2] = min(abs(t2-2*1440));
+
 if meanPercent==1
-    plot(t1/60, utils.meanPercent(y1, 1440,2*1440))
-    plot(t2/60, utils.meanPercent(y2, 1440,2*1440),'k')
+    plot(t1/60, utils.meanPercent(y1, tMin1,tMax1))
+    plot(t2/60, utils.meanPercent(y2, tMin2,tMax2),'k')
 elseif meanPercent==0
     plot(t1/60, y1)
     plot(t2/60, y2)
