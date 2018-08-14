@@ -44,7 +44,7 @@ G = ySt(:,3)/(const.Vg*10); %[G]=G/Vg mg/dl
 IpC = yStC(:,1)/const.Vp; %[I]=I/Vp microU/ml
 GC = yStC(:,3)/(const.Vg*10); %[G]=G/Vg mg/dl
 
-figure()
+figure('name','Sturis Tests')
 nPlots = 5;
 % Plot [I]
 subplot(nPlots,1,1)

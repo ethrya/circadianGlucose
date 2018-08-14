@@ -120,22 +120,3 @@ hold off
 
 xlabel('Time (days)')
 ylabel('G_{in} (mg/min)')
-
-% %% Phase plane
-% % Plot phase plane of I vs G for three models
-% figure
-% hold on
-% plot(G, Ip, 'LineWidth', 1.5)
-% plot(GC, IpC, 'LineWidth', 1.5)
-% xlabel('[G] (mg/dl)')
-% ylabel('[I_p] (\muU/ml)')
-% legend('Original', 'New')
-% hold off
-% 
-% %% Periodogram
-% [freqSC, P1] = periods.ft_solution(tStC, yStC, 1440);
-% figure;
-% plot(freqSC, P1)
-% xlabel('Frequency (1/min)')
-% ylabel('Power')
-% xlim([0 0.02])

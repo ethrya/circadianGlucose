@@ -43,7 +43,7 @@ GC = solLiCirc.y(1,:)/(const.Vg*10); %[G]=G/Vg mg/dl
 tSt = solLi.x;
 tStC = solLiCirc.x;
 
-figure()
+figure('name', 'Li Tests')
 nPlots = 5;
 % Plot [I]
 subplot(nPlots,1,1)
