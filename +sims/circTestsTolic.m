@@ -28,8 +28,8 @@ time = [0, 1440*2.5];
 const.Gin = 0;
 
 tSt = 0:1440*2.5; tStC = 0:1440*2.5;
-ySt = utils.rk4Fixed(@models.sturis, sturisState, const, tSt);
-yStC = utils.rk4Fixed(@models.sturisCirc, sturisState, const, tSt);
+ySt = utils.rk4Fixed(@models.tolic, sturisState, const, tSt);
+yStC = utils.rk4Fixed(@models.tolicCirc, sturisState, const, tSt);
 
 %% Calculate ISR
 ISR = models.funcs.f1(ySt(:,3),const);
