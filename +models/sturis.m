@@ -10,9 +10,9 @@ tp=const.tp; ti=const.ti; td=const.td;
 if length(const.Gin)==1
     Gin = const.Gin;
 elseif length(const.Gin)>1
-    try
+    if sum(const.times==t)>1
         Gin = const.Gin(const.times==t);
-    catch
+    else
         Gin = interp1(const.times, const.Gin, t);
     end
 end
