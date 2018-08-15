@@ -1,8 +1,5 @@
-function [G, I]= discreteMealSampler(mealTime, timeSample)
+function [G, I]= discreteMealSampler(const, mealTime, timeSample)
 % Simulate a meal at a given time with descrete sample points
-
-const = models.constants;
-
 
 % Create default values for sample points
 if nargin==1
@@ -32,10 +29,8 @@ const.Gin = zeros(1, length(const.times));
 const.Gin(mealIdx:mealIdx+500) = protocols.saadMeal(0:500);
 
 % Solve ODEs for meal
-ySt = utils.rk4Fixed(@models.sturis, sturisState, const, tInt);
+ySt = utils.rk4Fixed(@models.sturisCirc, sturisState, const, tInt);
 
 G = ySt(mealIdx+timeSample,3);
 I = ySt(mealIdx+timeSample,1);
-
-
 end
