@@ -1,4 +1,4 @@
-function [G, I]= discreteMealSampler(const, mealTime, timeSample)
+function [G, I, Gin]= discreteMealSampler(const, mealTime, timeSample)
 % Simulate a meal at a given time with descrete sample points
 
 % Create default values for sample points
@@ -27,6 +27,7 @@ mealIdx = (mealTime+24)*60;
 % Gin for fasting except 500 idx after a meal occuring
 const.Gin = zeros(1, length(const.times));
 const.Gin(mealIdx:mealIdx+500) = protocols.saadMeal(0:500);
+Gin = const.Gin;
 
 % Solve ODEs for meal
 ySt = utils.rk4Fixed(@models.sturisCirc, sturisState, const, tInt);
