@@ -1,6 +1,6 @@
 % Simulation of discrete plot in Saad et al 2012
 
-mealTimes = [7 14 20];
+mealTimes = [7 13 19];
 sampleTimes = [0, 5, 10, 20, 30, 60, 90, 120, 150, 180, 270, 360];
 
 G = zeros(3, length(sampleTimes));
@@ -23,7 +23,8 @@ end
 figure()
 hold on
 for i = 1:length(mealTimes)
-plot(sampleTimes, G(i,:))
+plot(sampleTimes, G(i,:),'o-')
 end
-
+xlabel('Time (min)')
+ylabel('Glucose (mg)')
 legend('Breakfast', 'Lunch', 'Dinner')
