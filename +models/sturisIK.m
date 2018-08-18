@@ -1,4 +1,4 @@
-function out = sturis(t, in, const)
+function out = sturisIK(t, in, const)
 % Model based on Sturis et al. (1991)
 
 % Constant Parameters
@@ -33,7 +33,7 @@ if isnan(const.clamp)==1
 else
     out(3) = 0;
 end
-out(4) = Ip;%3/td*(Ip-in(4));
-out(5) = Ip;%3/td*(in(4)-in(5));
-out(6) = Ip;%3/td*(in(5)-in(6));
+out(4) = 3/td*(Ip-in(4));
+out(5) = 3/td*(in(4)-in(5));
+out(6) = 3/td*(in(5)-in(6));
 end
