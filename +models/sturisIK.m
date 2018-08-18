@@ -4,7 +4,7 @@ function out = sturis(t, in, const)
 % Constant Parameters
 Vp=const.Vp; Vi=const.Vi; E=const.E;
 tp=const.tp; ti=const.ti; td=const.td;
-nc = const.nc; ni=const.ni; nL = const.nL;
+nc = const.nc; ni=const.ni; nL = const.nL; nK = const.nK;
 alphaI=const.alphaI; alphaG=const.alphaG;
 % see if Gin is a constant and either use the constant value, the exact
 % time series value, or linear interpolation of the vector of values.
@@ -23,17 +23,17 @@ Ip = in(1); Ii = in(2); G = in(3);
 
 %% Model Equations
 out = zeros(6,1);
-out(1) = models.funcs.f1(G,const)-ni*Vp*(Ip/Vp-Ii/Vi)-Ip*nc-...
+out(1) = models.funcs.f1(G,const)-ni*Vp*(Ip/Vp-Ii/Vi)-Ip*nK-...
          nL*Ip/(1+alphaI*Ip);
 out(2) = ni*Vi*(Ip/Vp-Ii/Vi)-nc*Ii/(1+alphaG*Ip);
 % Either calculate the value or use a glucose clamp
 if isnan(const.clamp)==1
     out(3) = Gin-models.funcs.f2(G,const)-models.funcs.f3(G,const)*...
-        models.funcs.f4(Ii,const)+models.funcs.f5(in(6), const);
+        models.funcs.f4(Ii,const)+models.funcs.f5(Ip, const);
 else
     out(3) = 0;
 end
-out(4) = 3/td*(Ip-in(4));
-out(5) = 3/td*(in(4)-in(5));
-out(6) = 3/td*(in(5)-in(6));
+out(4) = Ip;%3/td*(Ip-in(4));
+out(5) = Ip;%3/td*(in(4)-in(5));
+out(6) = Ip;%3/td*(in(5)-in(6));
 end

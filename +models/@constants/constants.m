@@ -65,6 +65,14 @@ classdef constants
         
         % Glucose clamp value (mg/dl)
         clamp = nan;
+        
+        % Parameters for Lin et al. 2011 insulin model
+        nc = 0.006; % (Pretty et al.)
+        ni = 0.006; % = nc
+        nL = 0.157
+        nK = 0.0542;
+        alphaG = 0.0154;
+        alphaI = 0.0017;
     end
     
     properties
