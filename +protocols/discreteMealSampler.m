@@ -30,7 +30,7 @@ const.Gin(mealIdx:mealIdx+500) = protocols.saadMeal(0:500);
 Gin = const.Gin;
 
 % Solve ODEs for meal
-ySt = utils.rk4Fixed(@models.sturisCirc, sturisState, const, tInt);
+ySt = utils.rk4Fixed(@models.sturisIKCirc, sturisState, const, tInt);
 
 G = ySt(mealIdx+timeSample,3);
 I = ySt(mealIdx+timeSample,1);

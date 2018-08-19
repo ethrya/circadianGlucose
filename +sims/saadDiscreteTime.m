@@ -14,6 +14,10 @@ const.phi2 = 0;
 const.g3 = 0.3;
 const.phi3 = 0;
 
+const.C1 = 1720; const.Rm = 150; const.a1 = 350;
+const.C5 = 18.6; const.Rg = 181.5; const.alpha = 0.1168;
+const.Vg = 13.3; const.Vi = 3.15; const.Vp = 5;
+
 for i = 1:length(mealTimes)
     [G(i,:), I(i,:), Gin] = protocols.discreteMealSampler(const,...
         mealTimes(i), sampleTimes);
