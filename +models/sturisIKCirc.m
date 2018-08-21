@@ -23,12 +23,12 @@ Ip = in(1); Ii = in(2); G = in(3);
 
 % Convert t into circadian frequency
 const.C = 2*pi*t/1440;
-
+C = (1+const.g1*sin(const.C+const.phi1));
 %% Model Equations
 out = zeros(6,1);
-out(1) = models.funcs.f1(G,const)-ni*Vp*(Ip/Vp-Ii/Vi)-Ip*nK-...
+out(1) = models.funcs.f1(G,const)-ni*Vp*(Ip/Vp-Ii/Vi)-C*Ip*nK-...
          nL*Ip/(1+alphaI*Ip);
-out(2) = ni*Vi*(Ip/Vp-Ii/Vi)-nc*Ii/(1+alphaG*Ip);
+out(2) = ni*Vi*(Ip/Vp-Ii/Vi)-nc*Ii/(1+alphaG*Ii);
 % Either calculate the value or use a glucose clamp
 if isnan(const.clamp)==1
     out(3) = Gin-models.funcs.f2(G,const)-models.funcs.f3(G,const)*...
