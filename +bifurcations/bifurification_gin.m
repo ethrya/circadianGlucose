@@ -67,28 +67,31 @@ toc
 
 
 %% 
+% Tolic Sturis Li
+modelColors = [0.6350 0.0780 0.1840; 0.9290 0.6940 0.1250; 0 0.4470 0.7410];
+
 subplot(2,1,1)
 hold on
-plot(Gin, LiResults(:,1), 'b')
-plot(Gin, LiResults(:,2), 'b')
-plot(Gin, SturisResults(:,1), 'r')
-plot(Gin, SturisResults(:,2), 'r')
-plot(Gin, TolicResults(:,1), 'y')
-plot(Gin, TolicResults(:,2), 'y')
+plot(Gin, LiResults(:,1)/100, 'color', modelColors(1,:))
+plot(Gin, LiResults(:,2)/100, 'color', modelColors(1,:))
+plot(Gin, SturisResults(:,1)/100, 'color', modelColors(2,:))
+plot(Gin, SturisResults(:,2)/100, 'color', modelColors(2,:))
+plot(Gin, TolicResults(:,1)/100, 'color', modelColors(3,:))
+plot(Gin, TolicResults(:,2)/100, 'color', modelColors(3,:))
 % plot(amplitude(:,1), amplitude(:,2),'kx')
 % plot(amplitude(:,1), amplitude(:,3),'kx')
 xlabel('Gin (mg/min)')
-ylabel('G_p (mg)')
+ylabel('[G] (mg/dl)')
 hold off
 
 subplot(2,1,2)
 hold on
-plot(Gin, LiResults(:,3), 'b')
-plot(Gin, LiResults(:,4), 'b')
-plot(Gin, SturisResults(:,3), 'r')
-plot(Gin, SturisResults(:,4), 'r')
-plot(Gin, TolicResults(:,3), 'y')
-plot(Gin, TolicResults(:,4), 'y')
+plot(Gin, LiResults(:,3)/3, 'color', modelColors(1,:))
+plot(Gin, LiResults(:,4)/3, 'color', modelColors(1,:))
+plot(Gin, SturisResults(:,3)/3, 'color', modelColors(2,:))
+plot(Gin, SturisResults(:,4)/3, 'color', modelColors(2,:))
+plot(Gin, TolicResults(:,3)/3, 'color', modelColors(3,:))
+plot(Gin, TolicResults(:,4)/3, 'color', modelColors(3,:))
 xlabel('Gin (mg/min)')
-ylabel('I_p (\mu U)')
+ylabel('[I_p] (\mu U/ml)')
 hold off
