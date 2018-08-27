@@ -25,7 +25,7 @@ end
 Ip = in(1); Ii = in(2); G = in(3);
 
 % Convert t into circadian frequency
-const.C = 2*pi*t/1440;
+const.C = utils.skewSine(t/60);
 
 %% Model Equations
 out = zeros(6,1);
