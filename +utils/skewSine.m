@@ -1,6 +1,7 @@
 function C = skewSine(t,ps,wc,Ac)
-%skewSine function.
-%Takes a vector of times and either all 3 parameters, or uses defaults
+%skewed sinusoidal function
+%Takes a vector of times (hours) and either all 3 parameters,
+    % or uses defaults
 % Author: Svetlana Postnova
 if nargin==1
     ps = 0.2168*pi; % phase shift
