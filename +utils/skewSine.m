@@ -1,8 +1,8 @@
-function C = skewSine(ps,wc,Ac)
+function C = skewSine(t,ps,wc,Ac)
 %skewSine function.
-% Either takes all 3 arguements, or uses defaults
+%Takes a vector of times and either all 3 parameters, or uses defaults
 % Author: Svetlana Postnova
-if nargin==0
+if nargin==1
     ps = 0.2168*pi; % phase shift
     wc = 2*pi/(24); % s^(-1)
     Ac = 1; % amplitude
