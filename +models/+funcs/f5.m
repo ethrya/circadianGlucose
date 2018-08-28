@@ -16,7 +16,7 @@ end
 if length(const.C)==0
     f = const.Rg./(1+exp(alpha*(x3/const.Vp-C5)));
 else
-    C = (1+const.g3*sin(const.C+const.phi3));
+    C = 1;%(1+const.g3*sin(const.C+const.phi3));
     f = C*const.Rg./(1+exp(alpha*(x3/const.Vp-C5)));
 end
 end

@@ -10,10 +10,10 @@ const = models.constants;
 %const.times = 0:deltaT:2*1440;
 %const.Gin = protocols.saad12(deltaT);
 %%
-const.Gin = 243;
+const.Gin = 0;
 
 const.g1 = 0.3;
-const.phi1 = pi;
+const.phi1 = 0;
 const.g2 = 0;
 const.phi2 = 0;
 const.g3 = 0;
