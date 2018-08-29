@@ -4,7 +4,7 @@ function C = skewSine(t,ps,Ac)
     % or uses defaults
 % Author: Svetlana Postnova
 if nargin==1
-    ps = 0.2168*pi; % phase shift
+    ps = -pi/5; % phase shift
     Ac = 1; % amplitude
 end
 

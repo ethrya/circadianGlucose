@@ -1,6 +1,6 @@
 clear;
 %% Preliminaries
-nDays = 2;
+nDays = 3;
 deltaT = 0.5;
 % Import constants class
 const = models.constants;
@@ -12,7 +12,7 @@ const = models.constants;
 %%
 const.Gin = 0;
 
-const.g1 = 0.3;
+const.g1 = 0.15;
 const.phi1 = 0;
 const.g2 = 0;
 const.phi2 = 0;
@@ -43,6 +43,10 @@ ySt = utils.rk4Fixed(@models.sturis, sturisState, const, tSt);
 
 yStC = utils.rk4Fixed(@models.sturisCirc, sturisState, const, tSt);
 
+
+ISR = models.funcs.f1(ySt(:,3), const);
+const.C = utils.skewSine(tStC/60)';
+ISR_circ = models.funcs.f1(yStC(:,3),const);
 
 %% Plotting
 % Convert glucose amounts into concentrations
@@ -102,11 +106,11 @@ hold on
 plot(tSt/60, utils.meanPercent(Ip, 1440))
 plot(tStC/60,utils.meanPercent(IpC, 1440))
 hold off
-ylabel('[I] (% of mean)')
+ylabel('[I] (%)')
 legend('Original', 'New')
-xlim([24 48])
-xticks(0:6:48)
-xticklabels(-24:6:24)
+xlim([24 24*nDays])
+xticks(0:6:24*nDays)
+xticklabels(-24:6:24*(nDays-1))
 % Plot [G]
 subplot(3,1,2)
 hold on
@@ -115,23 +119,37 @@ plot(tStC/60, utils.meanPercent(GC, 1440))
 %plot([0 max(tT)/60], [mean(solLi.y(1,solLi.x>600)) mean(solLi.y(1,solLi.x>600))]/(10*const.Vg))
 hold off
 xlabel('Time (days)')
-ylabel('[G] (% of mean)')
-xlim([24 48])
-xticks(0:6:48)
-xticklabels(-24:6:24)
+ylabel('[G] (%)')
+xlim([24 24*nDays])
+xticks(0:6:24*nDays)
+xticklabels(-24:6:24*(nDays-1))
 
+% Plot ISR
 subplot(3,1,3)
 hold on
-try
-    plot(const.times/1440,const.Gin)
-catch
-    plot(time/1440, [const.Gin const.Gin])
-end
+plot(tSt/60, utils.meanPercent(ISR,1440))
 
+plot(tStC/60, utils.meanPercent(ISR_circ,1440))
 %plot([0 max(tT)/60], [mean(solLi.y(1,solLi.x>600)) mean(solLi.y(1,solLi.x>600))]/(10*const.Vg))
 hold off
-xlim([1 2])
-xticks(1:0.25:2)
-xticklabels(0:6:24)
 xlabel('Time (days)')
-ylabel('G_{in} (mg/min)')
+ylabel('ISR (%)')
+xlim([24 24*nDays])
+xticks(0:6:nDays*24)
+xticklabels(-24:6:24*(nDays-1))
+
+%subplot(3,1,3)
+%hold on
+%try
+%    plot(const.times/1440,const.Gin)
+%catch
+%    plot(time/1440, [const.Gin const.Gin])
+%end
+
+%plot([0 max(tT)/60], [mean(solLi.y(1,solLi.x>600)) mean(solLi.y(1,solLi.x>600))]/(10*const.Vg))
+% hold off
+% xlim([1 2])
+% xticks(1:0.25:2)
+% xticklabels(0:6:24)
+% xlabel('Time (days)')
+% ylabel('G_{in} (mg/min)')
