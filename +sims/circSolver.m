@@ -1,7 +1,7 @@
 clear;
 %% Preliminaries
-nDays = 3;
-deltaT = 0.5;
+nDays = 4;
+deltaT = 1;
 % Import constants class
 const = models.constants;
 
@@ -10,9 +10,9 @@ const = models.constants;
 %const.times = 0:deltaT:2*1440;
 %const.Gin = protocols.saad12(deltaT);
 %%
-const.Gin = 0;
+const.Gin = 243;
 
-const.g1 = 0.15;
+const.g1 = .25;
 const.phi1 = 0;
 const.g2 = 0;
 const.phi2 = 0;
@@ -33,7 +33,7 @@ time = [0, 1440*nDays];
   
 
 %% Solve equations
-tSt = 0:1440*nDays; tStC = 0:1440*nDays;
+tSt = 0:deltaT:1440*nDays; tStC = 0:deltaT:1440*nDays;
 
 %const.C1 = 1720; const.Rm = 150; const.a1 = 350;
 %const.C5 = 18.6; const.Rg = 181.5; const.alpha = 0.1168;
@@ -108,9 +108,9 @@ plot(tStC/60,utils.meanPercent(IpC, 1440))
 hold off
 ylabel('[I] (%)')
 legend('Original', 'New')
-xlim([24 24*nDays])
+xlim([48 24*nDays])
 xticks(0:6:24*nDays)
-xticklabels(-24:6:24*(nDays-1))
+xticklabels(-48:6:24*(nDays-1))
 % Plot [G]
 subplot(3,1,2)
 hold on
@@ -120,9 +120,9 @@ plot(tStC/60, utils.meanPercent(GC, 1440))
 hold off
 xlabel('Time (days)')
 ylabel('[G] (%)')
-xlim([24 24*nDays])
+xlim([48 24*nDays])
 xticks(0:6:24*nDays)
-xticklabels(-24:6:24*(nDays-1))
+xticklabels(-48:6:24*(nDays-1))
 
 % Plot ISR
 subplot(3,1,3)
@@ -134,9 +134,9 @@ plot(tStC/60, utils.meanPercent(ISR_circ,1440))
 hold off
 xlabel('Time (days)')
 ylabel('ISR (%)')
-xlim([24 24*nDays])
+xlim([48 24*nDays])
 xticks(0:6:nDays*24)
-xticklabels(-24:6:24*(nDays-1))
+xticklabels(-48:6:24*(nDays-1))
 
 %subplot(3,1,3)
 %hold on
