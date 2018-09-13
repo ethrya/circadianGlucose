@@ -130,6 +130,13 @@ for j=1:length(paramList)
 end
 
 %%
+order = [16 8 10 11 17 18 12 13 19 14 9 15 20 1:4];
+SiReturn = SiReturn(order,:);
+
+%%
+paramListSorted = paramList(order);
+
+%%
 paramPlot = categorical(paramList);
 %Si = Si;%/max(max(Si));
 figure()
@@ -140,7 +147,10 @@ legend('Li', 'Sturis', 'Tolic')
 
 %%
 figure()
-bar(categorical(paramList), SiReturn)
+bar(SiReturn)
+xticks(1:length(paramListSorted))
+xticklabels(paramListSorted)
+
 xlabel('Parameter')
 ylabel('S_i Return time')
 legend('Li', 'Sturis', 'Tolic')
