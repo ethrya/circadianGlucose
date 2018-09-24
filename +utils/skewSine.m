@@ -3,13 +3,12 @@ function C = skewSine(t,ps,Ac)
 %Takes a vector of times (hours) and amplitude&phase shift,
     % or uses defaults
 % Author: Svetlana Postnova
-if nargin==1
-    ps = -pi/5; % phase shift
-    Ac = 1; % amplitude
-end
-
 wc = 2*pi/(24); % s^(-1)
 
+if nargin==1
+    ps = -0.209*pi/wc; % phase shift
+    Ac = 1; % amplitude
+end
 
 C = Ac * ( + 0.97  * sin(1*wc*(ps+t)) ...
            + 0.22  * sin(2*wc*(ps+t)) ...
