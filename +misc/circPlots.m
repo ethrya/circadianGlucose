@@ -1,0 +1,21 @@
+t=0:0.01:48;
+subplot(1,3,1)
+plot(t,-utils.skewSine(t),'LineWidth',2)
+title('a) Circadian Drive', 'FontSize', 10)
+ylabel('C(t)')
+xlabel('time (h)')
+xlim([0 48])
+subplot(1,3,2)
+plot(t,1-utils.skewSine(t),'LineWidth',2)
+title('b) Excitatory Drive', 'FontSize', 10)
+ylabel('C_E(t)')
+xlabel('time (h)')
+
+xlim([0 48])
+subplot(1,3,3)
+plot(t,1+utils.skewSine(t),'LineWidth',2)
+title('c) Inhibitory Drive', 'FontSize', 10)
+ylabel('C_I(t)')
+xlabel('time (h)')
+
+xlim([0 48])
