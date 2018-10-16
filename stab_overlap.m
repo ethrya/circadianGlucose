@@ -1,9 +1,9 @@
 % Code to create plot of locations where models are stable/limit cycles
 
 % Load data
-%data = load('import/suphys/erya7975/simResults/limitLocs/');
+%data = load('/import/suphys1/erya7975/simResults/limit_locations/g_100-175');
 
-data = load('~/scratch/test');
+data = load('~/2018-06-25_bf');
 
 liStab = abs(data.LiResults(:,:,1)-data.LiResults(:,:,2))<1;
 sturisStab = abs(data.SturisResults(:,:,1)-data.SturisResults(:,:,2))<1;
@@ -49,11 +49,11 @@ ylabel('G_{in} (mg/min)')
 % Colors from: 
  % http://math.loyola.edu/~loberbro/matlab/html/colorsInMatlab.html
 colormap([0.4660 0.6740 0.1880; % Green
-          0.4660 0.6740 0.1880; % Green
-          0.8500 0.3250 0.0980; % Orange
+          0.4660 0.6740 0; % Green
+          00 0.0 0; % Orange
           0.8500 0.3250 0.0980; % Orange
           0 0.4470 0.7410; % Blue
-          0 0.4470 0.7410; % Blue          
+          0 0.4470 0; % Blue          
           0.9290 0.6940 0.1250; % Yellow
           0.6350 0.0780 0.1840; % Red
           1 1 1])

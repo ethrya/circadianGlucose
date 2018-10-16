@@ -4,10 +4,10 @@ clear;
 const = models.constants;
 
 %Change constants from default values
-const.Gin = 108;
+const.Gin = 0;
 const.g = 0;
-const.tau2 = 12;
-const.td = 12;
+%const.tau2 = 12;
+%const.td = 12;
 % Initial conditions for Li
 liState = [10000; % Glucose
     40]; % Insulin
@@ -70,3 +70,5 @@ xlabel('[G] (mg/dl)')
 ylabel('[I_p] (\muU/ml)')
 legend('Li et al. (2006)', 'Sturis et al. (1991)', 'Tolic et al. (2000)')
 hold off
+
+%%

@@ -93,7 +93,7 @@ subplot(3,2,5)
 hold on
 for model = 1:3
     %h = histogram(real(baseI(:,model)).*real(baseG(:,model))/402);%, 0:.5:200);
-    h = histogram(360*baseI(normalIdx(:,model),model)./(baseG(normalIdx(:,model),model)-63), 0:10:400);
+    h = histogram(360*baseI(normalIdx(:,model),model)./(baseG(normalIdx(:,model),model)-63), 0:20:400);
     h.LineWidth = 2;
     h.DisplayStyle = 'stairs';
     h.EdgeColor = modelColors(model,:);
@@ -108,7 +108,7 @@ subplot(3,2,6)
 hold on
 for model = 1:3
     %h = histogram(real(baseI(:,model)).*real(baseG(:,model))/402);%, 0:.5:200);
-    h = histogram(360*baseI(diabeticIdx(:,model),model)./(baseG(diabeticIdx(:,model),model)-63), 0:10:400);
+    h = histogram(360*baseI(diabeticIdx(:,model),model)./(baseG(diabeticIdx(:,model),model)-63), 0:20:400);
     h.LineWidth = 2;
     h.DisplayStyle = 'stairs';
     h.EdgeColor = modelColors(model,:);

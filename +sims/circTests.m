@@ -5,7 +5,7 @@
 clear
 tic
 const = models.constants;
-const.g1 = 0.02;
+const.g1 = 0.25;
 const.phi1 = 0;
 const.g2 = 0.1;
 const.phi2 = pi;

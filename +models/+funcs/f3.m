@@ -4,7 +4,7 @@ function f = f3(G, const)
     if length(const.C)==0
         f = G/(const.C3*const.Vg);
     else
-        C = 1;%1-const.g1*const.C;
-        f = C.*G/(const.C3*const.Vg);
+        C = 1;%-const.g1*const.C;
+        f = G/(C*const.C3*const.Vg);
     end
 end
