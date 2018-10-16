@@ -1,8 +1,14 @@
+%% Dose response curve for HGP
+% Uses data from a number of different studies and protocols. Need to
+% better understand thes protocols.
+
+% Campbell et al (1998) Fig 1
 campbell = [8.846236327438668, 71.42857142857143;
 41.64327352211947, 20.535714285714278;
 98.58964964922463, 6.249999999999986;
 1888.8395313735557, 2.232142857142847];
 
+% Basu (2004) (note that this is EGP)
 basu = [150 6.746987951807229;
     350 4.216867469879519;
     700 4.0361445783132535];
@@ -13,6 +19,7 @@ fernannini = [0.5403030968592191, 72.5587524708983;
 37.81792224906654, 2.67076652756424;
 72.02943114430045, 0.6975620470019663];
 
+% Rizza (1981) Note that this is used to fit f1 in original paper
 rizza = [12.554310424342344, 2.021630456417559;
 27.74332752830766, 0.7579654892594125;
 55.39509648429487, 0.03043038904965334;
@@ -20,14 +27,15 @@ rizza = [12.554310424342344, 2.021630456417559;
 206.62037322894446, 0.013167363312051261;
 652.9566585223614, 0.01741613461332392];
 
+% Our assumptions about height/weight
 height = 1.75;
 weight= 90;
-%%
+%% Compile data into one array
 allData = [campbell(:,1), campbell(:,2)*height;
         %basu(:,1)/6.9, basu(:,2)*.18*weight;
         fernannini(:,1)+10, fernannini(:,2)*height;
         rizza(:,1), rizza(:,2)*weight];
-%%
+%% Plot (and convert data to common scale)
 hold on
 plot(campbell(:,1), campbell(:,2)*height,'.')
 plot(basu(:,1)/6.9, basu(:,2)*.18*weight,'.')

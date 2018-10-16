@@ -1,4 +1,5 @@
 % Test class definition
+% Unit tests for the model functions
 classdef funcsTests < matlab.unittest.TestCase
     methods (Test)
         

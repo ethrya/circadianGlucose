@@ -1,4 +1,5 @@
 % Test class definition
+% Tests for various functions
 classdef utilsTests < matlab.unittest.TestCase
     methods (Test)
         function testBaselineCritical(testCase)

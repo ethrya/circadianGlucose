@@ -1,6 +1,7 @@
-% Gin values from Saad
+%% Code to create a function for Gin(t) following a meal.
+% Uses Ra values from Saad et al. (2012)
 
-% Data for Ra from Saad figure2A breakfast
+% Data for Ra from Saad (2012) figure2A breakfast
 Saad = [8.665207877461711, 20.178890876565305
 19.299781181619267, 69.12343470483006
 29.540481400437628, 71.2701252236136
@@ -14,28 +15,31 @@ Saad = [8.665207877461711, 20.178890876565305
 360.00000000000006, 3.0053667262969697];
 
 % Convert mumol/kg/min to mg/min
-
 Gin = Saad(:,2)*18*10*70/1000;
 
+% Choose (visually) fitting function
 fitFunc = fittype('k*(x-x0)^(n)/b^2*exp(-(x-x0)^n/(b^2))');
 
+% Set boundaries and methods to ensure fitting is realistic
 opts = fitoptions( 'Method', 'NonlinearLeastSquares' );
 opts.Display = 'Off';
 opts.StartPoint = [80, 5000, 2, 0.95]; 
 opts.Lower      = [0 0 0 0]; % allow for a very small range of change for a and b
 opts.Upper      = [Inf Inf Inf 20];
 
+% Create best fitting curve
 f = fit(Saad(:,1),  Gin, fitFunc, opts);
 
+% Plot final fit
 hold on
 scatter(Saad(:,1), Gin)
 x = f.x0:400;
 plot(x, f.k*(x-f.x0).^(f.n)./f.b^2.*exp(-(x-f.x0).^f.n/f.b^2))
 xlabel('Time (min)')
-ylabel('mg/min')
+ylabel('G_{in} (mg/min)')
 hold off
 
-% Calculate total meal (AUC) in mg
+% Calculate total meal (AUC) in mg by integrating area
 mealTotalSaad = trapz(Saad(:,1), Gin);
 sprintf('Total meal size in Saad et al. 2012 is %.2f g',mealTotalSaad/1000)
 
