@@ -26,8 +26,9 @@ brandt = [18.4632, 927.273;
 
 
 hold on
+% Convert data to mg/dl and muU/l
 scatter(jones(:,1)*18, jones(:,2)/6.91, '.')
-scatter(byrne(:,1)*18, byrne(:,2)*23/6.91, '.')
+scatter(byrne(:,1)*18, byrne(:,2)*23/6.91, '.') %Assume BMI=23
 scatter(brandt(:,1)*18, brandt(:,2)/6.91, '.')
 G = 0:350;
 const = models.constants;

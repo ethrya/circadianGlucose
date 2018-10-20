@@ -26,10 +26,11 @@ Ip = in(1); Ii = in(2); G = in(3);
 
 % Convert t into circadian frequency
 const.C = utils.skewSine(t/60);
+C = 0;
 
 %% Model Equations
 out = zeros(6,1);
-out(1) = models.funcs.f1(G,const) -E*(Ip/Vp-Ii/Vi)-Ip/(tp);
+out(1) = models.funcs.f1(G,const) -E*(Ip/Vp-Ii/Vi)-Ip/(tp)+C;
 out(2) = E*(Ip/Vp-Ii/Vi)-Ii/ti;
 
 % Either calculate the value or use a glucose clamp

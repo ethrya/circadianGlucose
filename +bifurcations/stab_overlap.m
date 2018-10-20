@@ -1,8 +1,6 @@
 % Code to create plot of locations where models are stable/limit cycles
 
 % Load data
-%data = load('import/suphys/erya7975/simResults/limitLocs/');
-
 data = load('~/scratch/test');
 
 liStab = abs(data.LiResults(:,:,1)-data.LiResults(:,:,2))<1;

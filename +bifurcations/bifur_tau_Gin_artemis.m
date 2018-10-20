@@ -1,3 +1,4 @@
+% Bifurcation code designed to work on artemis.
 clear all
 tic
 

@@ -1,3 +1,4 @@
+%% Script to create a Bifurcation diagram for Gin over the defined values
 clear all;
 tic
 % Bifurification parameter
@@ -49,7 +50,7 @@ parfor i=1:nValues
     [t, y] = sturisSolver(sturisState, constArray(i), time);
     [tT, yT] = tolicSolver(sturisState, constArray(i), time);
     
-    % Store Results
+    % Store min/max values for G and Ip
     LiResults(i,:) = [min(sol.y(1,sol.x>tmin)), max(sol.y(1,sol.x>tmin))...
                       min(sol.y(2,sol.x>tmin)), max(sol.y(2,sol.x>tmin))];
     SturisResults(i,:) = [min(y(t>tmin,3)), max(y(t>tmin,3))...

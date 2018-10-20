@@ -95,13 +95,3 @@ toc
 save(outPath,'LiResults','SturisResults','TolicResults','Gin', 'tau');
 
 end
-
-%% Plotting
-% hold on
-% plot(Gin, LiResults(:,3,1), 'b')
-% plot(Gin, LiResults(:,3,2), 'b')
-% plot(Gin, SturisResults(:,3,1), 'r')
-% plot(Gin, SturisResults(:,3,2), 'r')
-% plot(Gin, TolicResults(:,3,1), 'y')
-% plot(Gin, TolicResults(:,3,2), 'y')
-% hold off
