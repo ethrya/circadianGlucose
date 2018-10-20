@@ -30,7 +30,7 @@ C = 0;
 
 %% Model Equations
 out = zeros(6,1);
-out(1) = models.funcs.f1(G,const) -E*(Ip/Vp-Ii/Vi)-Ip/(tp)+0;
+out(1) = models.funcs.f1(G,const) -E*(Ip/Vp-Ii/Vi)-Ip/(tp)+C;
 out(2) = E*(Ip/Vp-Ii/Vi)-Ii/ti;
 
 % Either calculate the value or use a glucose clamp
