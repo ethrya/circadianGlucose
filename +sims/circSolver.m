@@ -1,25 +1,15 @@
 clear;
 %% Preliminaries
-nDays = 2;
-deltaT = 0.5;
+nDays = 4; % Simulation time (days)
+deltaT = 0.5; % Solver timestep (min)
+
 % Import constants class
 const = models.constants;
+% Change constants from default values
+const.Gin = 243;
+const.g1 = 0.25;
 
-%Change constants from default values
-%[const.times, const.Gin] = protocols.IdenticalMeals(50, nDays, deltaT);
-const.times = 0:deltaT:2*1440;
-const.Gin = protocols.saad12(deltaT);
-%%
-%const.Gin = 200;
 
-const.g1 = 0.1;
-const.phi1 = pi;
-const.g2 = 0.2;
-const.phi2 = 0;
-const.g3 = 0.2;
-const.phi3 = 0;
-%const.td = 5;
-%const.E = 0.2;
 % Initial condition for Sturis and Tolic
 sturisState = [40; % Ip
     40; % Ii
@@ -33,15 +23,12 @@ time = [0, 1440*nDays];
   
 
 %% Solve equations
+% Simulation time
 tSt = 0:1440*nDays; tStC = 0:1440*nDays;
 
-const.C1 = 1720; const.Rm = 150; const.a1 = 350;
-%const.C5 = 18.6; const.Rg = 181.5; const.alpha = 0.1168;
-const.Vg = 13.3; const.Vi = 3.15; const.Vp = 5;
 
-ySt = utils.rk4Fixed(@models.sturisIK, sturisState, const, tSt);
-
-yStC = utils.rk4Fixed(@models.sturisIKCirc, sturisState, const, tSt);
+ySt = utils.rk4Fixed(@models.sturis, sturisState, const, tSt);
+yStC = utils.rk4Fixed(@models.sturisCirc, sturisState, const, tSt);
 
 
 %% Plotting

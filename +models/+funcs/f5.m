@@ -5,6 +5,7 @@ if ~exist('modelName','var')
     modelName = 'Other';
 end
 
+% Get different parameter for tolic and sturis/li models
 if modelName == 'Tolic'
     alpha = const.alphaT;
     C5 = const.C5T;
@@ -16,7 +17,7 @@ end
 if length(const.C)==0
     f = const.Rg./(1+exp(alpha*(x3/const.Vp-C5)));
 else
-    C = (1+const.g3*sin(const.C+const.phi3));
+    C = 1;
     f = C*const.Rg./(1+exp(alpha*(x3/const.Vp-C5)));
 end
 end
