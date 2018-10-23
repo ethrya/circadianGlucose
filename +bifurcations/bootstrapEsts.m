@@ -21,9 +21,9 @@ for i=1:3
     
     % Bootstrap samples of % of population with [G]_b<81 mg/ml.
     % Use mean as est of % and std of bootstap samples as SE
-    lowSample = bootstrp(n, @(x) sum(x<81), baseG(:,i)/100);
+    lowSample = bootstrp(n, @(x) sum(x<81)/length(baseG(:,i))*100, baseG(:,i)/100);
     lowMean = mean(lowSample);
     lowSE = std(lowSample);
     sprintf('n<81 +/- SE = %f +/- %f',...
-            lowMean/length(baseG(:,i))*100, lowSE)
+            lowMean, lowSE)
 end
