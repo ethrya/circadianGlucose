@@ -27,6 +27,7 @@ The Model analysis is contained in folders for each key component.
   - 2D plot of limit cycle locations. Initial data created and saved using bifurcations.bifur_tau_Gin. Plot created using bifurcations.stab_overlap.
 * MC simulation. Functions contained in +parameter_sensitivity
   - Simulation and plot can be created by running parameter_sensitivity.mcBaseSim.m with the appropriate input.
+  - Bootstrap resamples calculated using ourput of the simulation and bifurcations.bootstrapEsts
 * Parameter Sensitivity. Functions contained in +parameter_sensitivity
   - Local Sensitivity analysis. Can be performed by running parameter_sensitivity.local_sensitivity.
   - EET. Performed by running 
