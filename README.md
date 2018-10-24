@@ -8,6 +8,8 @@ Included here is also additional code used throughout the project generally to t
 1. MATLAB2017b
 2. Statistics toobox
 3. Parallel computing toolbox
+4. Curve Fitting Toolbox
+5. Symbolic Math Toolbox
 
 I have tried to comment on the specific functions and scripts which I know require one of these prerequisites, although there are likely other dependencies.
 
