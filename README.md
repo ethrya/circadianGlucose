@@ -19,6 +19,7 @@ I have tried to comment on the specific functions and scripts which I know requi
   * Note sturisSolver and liSolver both use ODE45 with a variable timestep. ODESolver used a 4th order fixed timestep runge-Kutta.
 - Model Parameters. Default values are set in the models.constants class. It is preferable to call this class and change values in the script where the simulations are being called only.
 - Circadian Model Simulations. Simulations of the Sturis circadian model can be run through sims.circSolver.
+  * Other models (e.g. Tolic and Li) can be run through sims.circSolverTolic and sims.circSolverLi, respectively.
   * The circadian clock is implemented by adding a circadian oscillator to the model (models.sturisCirc) or by changing C in the relevant functions files (models.funcs.fi). The example in this repo is for f4.
   * For one one circadian clock, the amplitude is const.g1. 
 
